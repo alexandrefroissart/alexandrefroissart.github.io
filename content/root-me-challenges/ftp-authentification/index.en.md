@@ -3,11 +3,12 @@ title: "FTP - Authentification"
 date: 2026-01-23
 image: "/img/banners/rootme-banner.png"
 draft: false
+rootme_id: 96
 categories: ["Root-Me", "Réseau"]
 tags: ["FTP", "Wireshark", "PCAP", "Facile"]
 ---
 
-{{< rootme-challenge slug="ftp-authentification" >}}
+{{< rootme-challenge slug="ftp-authentication" >}}
 
 ---
 

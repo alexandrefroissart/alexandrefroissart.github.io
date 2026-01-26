@@ -1,10 +1,11 @@
 ---
-title: "ETHERNET - Frame"
+title: "ETHERNET - Trame"
 date: 2026-01-24
 image: "/img/banners/rootme-banner.png"
 draft: false
-categories: ["Root-Me", "Network"]
-tags: ["Ethernet", "Wireshark", "Base64", "HTTP", "Easy"]
+rootme_id: 336
+categories: ["Root-Me", "Réseau"]
+tags: ["Ethernet", "Wireshark", "Base64", "HTTP", "Facile"]
 ---
 
 {{< rootme-challenge slug="ethernet-trame" >}}
@@ -13,18 +14,18 @@ tags: ["Ethernet", "Wireshark", "Base64", "HTTP", "Easy"]
 
 ## Context
 
-This challenge involves analyzing a raw Ethernet frame provided in hexadecimal format.  
-The goal is to identify sensitive information transmitted, particularly HTTP Basic authentication.
+This challenge consists of analyzing a raw Ethernet frame provided in hexadecimal.  
+The objective is to identify sensitive information transmitted, including HTTP Basic authentication.
 
 ---
 
 ## Environment / Setup
 
-- **Machine**: Debian VM (XFCE) on VMware Fusion (MacBook Pro M1 Pro)
+- **Machine**: VM Debian (XFCE) on VMware Fusion (MacBook Pro M1 Pro)
 - **User**: `alex`
 - **Tools**: CyberChef, online Base64 decoder
 
-### Provided Data
+### Data provided
 
 ```
 00 05 73 a0 00 00 e0 69 95 d8 5a 13 86 dd 60 00
@@ -47,28 +48,28 @@ d7 03 80 18 00 e1 cf a0 00 00 01 01 08 0a 09 3e
 
 ## Analysis (method)
 
-### 1. Hexadecimal → ASCII Conversion
+### 1. Hexadecimal → ASCII conversion
 
-Converting the hexadecimal frame to ASCII reveals the HTTP request:
+By converting the hexadecimal frame to ASCII, we can identify the HTTP request:
 
 ```
-GET / HTTP/1.1
+GET/HTTP/1.1
 Authorization: Basic Y29uZmk6ZGVudGlhbA==
 User-Agent: InsaneBrowser
 Host: www.myipv6.org
 Accept: */*
 ```
 
-### 2. HTTP Basic Authentication Identification
+### 2. Identifying HTTP Basic Authentication
 
 The key line is:
 ```
 Authorization: Basic Y29uZmk6ZGVudGlhbA==
 ```
 
-**HTTP Basic** authentication encodes credentials in `username:password` format using **Base64**.
+**HTTP Basic** authentication encodes credentials in `username:password` format in **Base64**.
 
-### 3. Base64 Decoding
+### 3. Base64 decoding
 
 The string `Y29uZmk6ZGVudGlhbA==` ends with two `==` signs, which is characteristic of Base64 encoding.
 
@@ -81,34 +82,34 @@ Y29uZmk6ZGVudGlhbA== → confi:dential
 - Username: `confi`
 - Password: `dential`
 
-The expected password for the challenge is: **`dential`**
+The password expected by the challenge is: **`dential`**
 
 ---
 
-## Comments
+## Notes
 
-- **HTTP Basic Auth**: This authentication mechanism transmits credentials in clear text (Base64 encoded, but **not encrypted**). This is why it's dangerous without HTTPS.
-- **Base64**: Base64 encoding can be recognized by:
+- **HTTP Basic Auth**: This authentication mechanism transmits credentials in plain text (Base64 encoded, but **not encrypted**). This is why it is dangerous without HTTPS.
+- **Base64**: Base64 encoding is often recognized by:
   - Alphanumeric characters + `+` and `/`
   - Ending with `=` or `==` (padding)
 - **Useful tools**:
   - CyberChef (https://gchq.github.io/CyberChef/)
   - Online Base64 decoders
-  - `echo "Y29uZmk6ZGVudGlhbA==" | base64 -d` (command line)
+  - echo "Y29uZmk6ZGVudGlhbA==" | base64 -d` (command line)
 
 ---
 
 ## Result
 
 ✅ I identified the HTTP request in the Ethernet frame.  
-✅ I decoded the Basic authentication from Base64.  
+✅ I decoded Basic authentication to Base64.  
 ✅ **Challenge validated on Root-Me.**
 
 ---
 
 ## Demonstrated skills
 
-- Reading and analyzing raw network frames (hexadecimal)
-- Understanding HTTP protocol and Basic authentication
+- Reading and analysis of raw network frames (hexadecimal)
+- Understanding of HTTP protocol and Basic authentication
 - Base64 decoding
-- Detecting sensitive information in network traffic
+- Detection of sensitive information in network traffic

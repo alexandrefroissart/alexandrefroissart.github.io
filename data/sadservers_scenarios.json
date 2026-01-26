@@ -35,14 +35,19 @@
   "rio": {
     "url": "https://sadservers.com/scenario/rio",
     "titre": "\"Rio de Janeiro\": Do we have another option?",
+    "niveau": "Easy",
+    "type": "Fix",
     "tags": [
       "java",
       "realistic-interviews",
       "jenkins",
       "systemd"
     ],
+    "access": "Paid",
     "description": "This scenario server is dedicated to Jenkins, a Java application managed by systemd. Jenkins is failing to start. Troubleshoot and find the problem, then apply the solution so Jenkins runs properly.",
-    "test": "The service must return the string \"Sign in - Jenkins\" amongst some other html code. You can check with the command curl -s localhost:8888/login | grep Jenkins | head -n1 The \"Check My Solution\" button runs the script /home/admin/agent/check.sh, which you can see and execute."
+    "root_access": true,
+    "test": "The service must return the string \"Sign in - Jenkins\" amongst some other html code. You can check with the command curl -s localhost:8888/login | grep Jenkins | head -n1 The \"Check My Solution\" button runs the script /home/admin/agent/check.sh, which you can see and execute.",
+    "time_to_solve": "15 minutes"
   },
   "monaco": {
     "url": "https://sadservers.com/scenario/monaco",
