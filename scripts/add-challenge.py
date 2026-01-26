@@ -1067,7 +1067,7 @@ def main():
     
     # Lancement automatique du fetch pour mettre à jour les donnés complètes
     run_fetch_script()
-    update_frontmatter_dates(info)
+    # update_frontmatter_dates(info) <--- Désactivé pour garder la date d'ajout sur le site
         
     print("\n🎉 Terminé ! Tu n'as plus qu'à rédiger ton writeup dans :")
     print(f"   content/root-me-challenges/{info['slug']}/index.md")
