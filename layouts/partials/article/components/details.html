@@ -44,7 +44,7 @@
             <time class="article-time--reading">
                 {{/* Override logic: check .Params.reading_time first */}}
                 {{ $readingTime := .Params.reading_time | default .ReadingTime }}
-                {{ T "article.readingTime" $readingTime }}
+                {{ T "article.readingTime" (dict "Count" $readingTime) }}
             </time>
         </div>
         {{ end }}
