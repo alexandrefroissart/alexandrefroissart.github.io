@@ -1,7 +1,7 @@
 {
   "ftp-authentification": {
     "id": "96",
-    "titre": "FTP - Authentification",
+    "titre": "Making sure you're not a bot!",
     "rubrique": "Réseau",
     "auteur": "g0uZ",
     "date": "2010-08-30 12:01:34",
@@ -13,7 +13,7 @@
   },
   "ethernet-trame": {
     "id": "336",
-    "titre": "ETHERNET - trame",
+    "titre": "Making sure you're not a bot!",
     "rubrique": "Réseau",
     "auteur": "abu_youssef",
     "date": "2013-05-20 18:18:54",
@@ -22,17 +22,5 @@
     "validations": 81216,
     "note": "22%",
     "url": "https://www.root-me.org/fr/Challenges/Reseau/ethernet-trame"
-  },
-  "The-h-ckers-l4b": {
-    "id": "186",
-    "titre": "The h@ckers l4b",
-    "rubrique": "Réaliste",
-    "auteur": "RedCrach,Luxerails",
-    "date": "2011-12-28 02:35:40",
-    "score": 25,
-    "difficulte": "Moyen",
-    "validations": 5582,
-    "note": "2%",
-    "url": "https://www.root-me.org/fr/Challenges/Realiste/The-h-ckers-l4b"
   }
 }
