@@ -42,9 +42,11 @@
         <div>
             {{ partial "helper/icon" "clock" }}
             <time class="article-time--reading">
-                {{/* Override logic: check .Params.reading_time first */}}
-                {{ $readingTime := .Params.reading_time | default .ReadingTime }}
-                {{ T "article.readingTime" (dict "Count" $readingTime) }}
+                {{ if .Params.reading_time }}
+                {{ T "article.resolutionTime" (dict "Count" .Params.reading_time) }}
+                {{ else }}
+                {{ T "article.readingTime" (dict "Count" .ReadingTime) }}
+                {{ end }}
             </time>
         </div>
         {{ end }}

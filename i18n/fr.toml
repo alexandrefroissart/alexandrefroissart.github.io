@@ -34,3 +34,7 @@ other = "Temps pour résoudre"
 
 [sadservers_test]
 other = "Test"
+
+[article]
+[article.resolutionTime]
+other = "{{ .Count }} minutes pour résoudre"
