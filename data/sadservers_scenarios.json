@@ -122,5 +122,22 @@
     "root_access": true,
     "test": "The solution will be validated by checking if a backup file has been created in the last 10 minutes. The \"Check My Solution\" button runs the script /home/admin/agent/check.sh, which you can see and execute.",
     "time_to_solve": "5 minutes"
+  },
+  "paris": {
+    "url": "https://sadservers.com/scenario/paris",
+    "titre": "\"Paris\": Where is my webserver?",
+    "niveau": "Medium",
+    "type": "Hack",
+    "tags": [
+      "unusual-tricky",
+      "hack",
+      "python",
+      "systemd"
+    ],
+    "access": "Email",
+    "description": "A developer put an important password on his webserver localhost:5000 . However, he can't find a way to recover it. This scenario is easy to to once you realize the one \"trick\". Find the password and save it in /home/admin/mysolution , for example: echo \"somepassword\" > ~/mysolution Scenario credit: PuppiestDoggo",
+    "root_access": false,
+    "test": "md5sum ~/mysolution returns d8bee9d7f830d5fb59b89e1e120cce8e",
+    "time_to_solve": "15 minutes"
   }
 }
