@@ -2,10 +2,11 @@ name: Update Root-Me Data
 
 on:
   schedule:
-    # Run every 4 hours at minutes 0 (UTC time)
-    # 00:00 UTC = 01:00 or 02:00 France
-    # 04:00 UTC, 08:00 UTC, etc.
-    - cron: '0 0,4,8,12,16,20 * * *'
+    # Run every 4 hours, aligned with French Time (UTC+1)
+    # 23:00 UTC = 00:00 FR
+    # 03:00 UTC = 04:00 FR
+    # etc.
+    - cron: '0 3,7,11,15,19,23 * * *'
   workflow_dispatch: # Allows manual triggering from GitHub UI
 
 permissions:
