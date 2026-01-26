@@ -1,0 +1,318 @@
+/* Custom CSS pour les bannières style Root-Me */
+
+/* ----------------------------------------------------------- */
+/* 1. HEADER DE SECTION (Page /rootme/)                        */
+/* ----------------------------------------------------------- */
+.section-card {
+    flex-direction: column-reverse !important;
+    /* Image au dessus */
+    padding: 0 !important;
+    gap: 0 !important;
+    overflow: hidden;
+}
+
+.section-card .section-image {
+    width: 100%;
+    margin: 0 !important;
+    background-color: #1a1a1a;
+}
+
+.section-card .section-image img {
+    width: 100% !important;
+    height: auto !important;
+    /* Ratio naturel */
+    max-height: none !important;
+    object-fit: contain !important;
+    border-radius: 0 !important;
+    display: block;
+}
+
+.section-card .section-details {
+    padding: 20px;
+    width: 100%;
+}
+
+
+/* ----------------------------------------------------------- */
+/* 2. PAGE D'ACCUEIL - Les cartes d'articles (Liste)           */
+/* ----------------------------------------------------------- */
+/* On cible les articles dans la liste compacte de la home */
+.article-list--compact article a {
+    flex-direction: column-reverse !important;
+    /* Image au dessus */
+    align-items: stretch !important;
+}
+
+.article-list--compact article .article-image {
+    width: 100% !important;
+    height: auto !important;
+    margin: 0 !important;
+    min-width: 0 !important;
+    /* Annule la largeur fixe du thème */
+    max-width: none !important;
+}
+
+.article-list--compact article .article-image img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: cover !important;
+    /* Cover ici pour remplir le rectangle sans bandes */
+    max-height: 180px !important;
+    /* On limite la hauteur pour pas que ce soit géant */
+    border-radius: 8px 8px 0 0 !important;
+    /* Arrondi en haut seulement */
+}
+
+/* Ajustement du padding du texte */
+.article-list--compact article .article-details {
+    padding: 20px !important;
+    width: 100% !important;
+}
+
+
+/* ----------------------------------------------------------- */
+/* 3. PAGE ARTICLE (Détail)                                    */
+/* ----------------------------------------------------------- */
+.article-header .article-image {
+    width: 100%;
+    margin-bottom: 0px !important;
+    /* Réduit l'espace sous l'image */
+    background: transparent;
+}
+
+/* On remonte le bloc de titre */
+.article-header .article-details {
+    padding-top: 10px !important;
+}
+
+.article-header .article-image img {
+    width: 100%;
+    height: auto !important;
+    max-height: none !important;
+    /* On laisse la hauteur libre pour voir toute l'image */
+    object-fit: contain !important;
+    border-radius: 8px;
+    /* Plus propre */
+}
+
+/* ----------------------------------------------------------- */
+/* 4. BADGES DE CATÉGORIES - Couleurs personnalisées          */
+/* ----------------------------------------------------------- */
+
+/* Root-Me et catégories associées : fond noir */
+.article-category a[href*="root-me"],
+.article-category a[href*="réseau"],
+.article-category a[href*="reseau"],
+.article-category a[href*="network"] {
+    background-color: #000000 !important;
+    color: #ffffff !important;
+}
+
+/* SadServers et catégories associées : fond jaune */
+.article-category a[href*="sadservers"],
+.article-category a[href*="linux"] {
+    background-color: #fbbf24 !important;
+    color: #000000 !important;
+}
+
+/* ----------------------------------------------------------- */
+/* 5. SIDEBAR STATS COMPACT (Mobile visibility)               */
+/* ----------------------------------------------------------- */
+.site-stats-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 25px;
+    color: var(--card-text-color-secondary);
+}
+
+.site-stats-header svg {
+    width: 20px;
+    height: 20px;
+}
+
+.site-stats-header h3 {
+    font-size: 0.8rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0;
+}
+
+.menu-social {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+
+
+/* On cache les stats compactes du header sur Desktop */
+@media (min-width: 1024px) {
+
+    .site-stats-header,
+    .site-stats-compact {
+        display: none !important;
+    }
+}
+
+.site-stats-compact {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 5px;
+    padding: 12px;
+    background: var(--card-background);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+}
+
+.rootme-header-compact {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.site-stats-compact .rootme-verified {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.6rem;
+    font-weight: bold;
+}
+
+.site-stats-compact .stats-grid {
+    display: flex;
+    justify-content: space-between;
+    text-align: center;
+}
+
+.site-stats-compact .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.site-stats-compact .stat-value {
+    font-weight: 800;
+    font-size: 1rem;
+    color: var(--accent-color);
+}
+
+.site-stats-compact .stat-label {
+    font-size: 0.55rem;
+    color: var(--card-text-color-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.rootme-link-compact {
+    display: block;
+    text-align: center;
+    padding: 6px;
+    margin-top: 10px;
+    background: #121212;
+    color: #ffffff;
+    border-radius: 20px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.75rem;
+    transition: background 0.2s;
+}
+
+.rootme-link-compact:hover {
+    background: var(--accent-color);
+    color: var(--accent-color-text);
+}
+
+.rootme-update-compact {
+    text-align: center;
+    font-size: 0.55rem;
+    color: var(--card-text-color-tertiary);
+    margin-top: 8px;
+    margin-bottom: 0;
+}
+
+/* 6. MOBILE HOME BUTTON                                      */
+/* ----------------------------------------------------------- */
+.mobile-home-button {
+    display: none;
+    position: absolute;
+    top: var(--section-padding);
+    right: 70px;
+    /* À gauche du hamburger qui est à droite */
+    width: 40px;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    color: var(--card-text-color-main);
+    z-index: 100;
+}
+
+.mobile-home-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+@media (max-width: 1023px) {
+    .mobile-home-button {
+        display: flex;
+    }
+
+    /* FIX MENU MOBILE SCROLL */
+    /* ---------------------- */
+    body.show-menu #main-menu {
+        position: fixed !important;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 90;
+        /* Juste en dessous des boutons (100) */
+        padding-top: 80px;
+        /* Espace pour les boutons fixés en haut */
+        height: 100vh !important;
+        margin: 0 !important;
+    }
+
+    /* OPTIMISATION ARTICLES MOBILE */
+    /* ----------------------------- */
+    .article-page {
+
+        /* On masque le header du haut (Avatar + Stats) sur les articles */
+        .sidebar header {
+            display: none;
+        }
+
+        /* On fixe le bouton Home et le Menu Hamburger */
+        .mobile-home-button,
+        .hamburger {
+            position: fixed !important;
+            top: 15px !important;
+            background: rgba(18, 18, 18, 0.9) !important;
+            /* Fond semi-transparent */
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            z-index: 100 !important;
+        }
+
+        .mobile-home-button {
+            right: 70px;
+        }
+
+        .hamburger {
+            right: 15px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            .hamburger-box {
+                margin: 0;
+                /* Centre l'icône */
+            }
+        }
+    }
+}

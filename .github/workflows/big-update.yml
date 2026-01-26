@@ -1,0 +1,84 @@
+name: Big Update
+
+on:
+  # 1. Mise à jour des données (Planifiée)
+  schedule:
+    # Exécution : 00h, 04h, 08h, 12h, 16h, 20h (Heure Française UTC+1)
+    # Correspond à UTC : 23h, 03h, 07h, 11h, 15h, 19h
+    - cron: '0 3,7,11,15,19,23 * * *'
+  # 2. Déploiement du site (Sur modification)
+  push:
+    branches: ["main"]
+  # 3. Manuel
+  workflow_dispatch:
+
+permissions:
+  contents: write      # Pour commiter les mises à jour de données
+  pages: write         # Pour déployer sur GitHub Pages
+  id-token: write      # Pour l'authentification OIDC Pages
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  # JOB 1 : MISE À JOUR DES DONNÉES (Seulement sur Schedule ou Manuel)
+  update-data:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch Root-Me & SadServers Data
+        env:
+          ROOTME_API_KEY: ${{ secrets.ROOTME_API_KEY }}
+        run: python3 scripts/fetch-rootme.py
+
+      - name: Check for changes
+        id: git-check
+        run: |
+          git diff --quiet data/ || echo "changed=true" >> $GITHUB_OUTPUT
+
+      - name: Commit and push if changed
+        if: steps.git-check.outputs.changed == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/
+          git commit -m "🔄 Update Data (Big Update)"
+          git push
+
+  # JOB 2 : DÉPLOIEMENT DU SITE (Seulement sur Push ou Manuel)
+  # Note : Si update-data fait un push, cela déclenchera ce job dans un nouveau run
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "0.154.5"
+          extended: true
+
+      - name: Build
+        run: hugo --minify --config hugo.yaml
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}

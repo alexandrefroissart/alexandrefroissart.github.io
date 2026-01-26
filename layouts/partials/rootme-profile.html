@@ -1,0 +1,137 @@
+{{/*
+Root-Me Profile Widget
+
+Ce partial affiche le profil Root-Me avec données en temps réel.
+Les données sont récupérées via JavaScript depuis le Cloudflare Worker.
+*/}}
+
+<div class="rootme-profile widget">
+    <div class="widget-icon">
+        {{ partial "helper/icon" "rootme" }}
+    </div>
+    <h2 class="widget-title section-title">Profil Root-Me</h2>
+
+    {{/* Container pour le contenu dynamique */}}
+    <div id="rootme-profile">
+        {{/* Fallback statique si JS désactivé */}}
+        <noscript>
+            <div class="rootme-card">
+                <a href="https://www.root-me.org/alexandre_froissart" target="_blank" rel="noopener"
+                    class="rootme-link">
+                    Voir le profil Root-Me →
+                </a>
+            </div>
+        </noscript>
+    </div>
+</div>
+
+{{/* Styles du widget */}}
+<style>
+    .rootme-profile {
+        margin-bottom: 1.5rem;
+    }
+
+    .rootme-card {
+        background: var(--card-background);
+        border-radius: var(--card-border-radius);
+        padding: 1.25rem;
+        box-shadow: var(--shadow-l1);
+    }
+
+    .rootme-loading {
+        text-align: center;
+        color: var(--card-text-color-secondary);
+    }
+
+    .rootme-spinner {
+        width: 24px;
+        height: 24px;
+        border: 3px solid var(--card-text-color-tertiary);
+        border-top-color: var(--accent-color);
+        border-radius: 50%;
+        margin: 0 auto 0.5rem;
+        animation: rootme-spin 1s linear infinite;
+    }
+
+    @keyframes rootme-spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .rootme-header {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 1rem;
+    }
+
+    .rootme-verified {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        padding: 0.25rem 0.75rem;
+        border-radius: 1rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+    }
+
+    .rootme-stats {
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+        margin-bottom: 1rem;
+    }
+
+    .rootme-stat {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .rootme-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--accent-color);
+    }
+
+    .rootme-label {
+        font-size: 0.75rem;
+        color: var(--card-text-color-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .rootme-link {
+        display: block;
+        text-align: center;
+        padding: 0.75rem;
+        background: var(--accent-color);
+        color: var(--accent-color-text);
+        border-radius: var(--card-border-radius);
+        text-decoration: none;
+        font-weight: 600;
+        transition: opacity 0.2s;
+    }
+
+    .rootme-link:hover {
+        opacity: 0.9;
+    }
+
+    .rootme-update {
+        text-align: center;
+        font-size: 0.7rem;
+        color: var(--card-text-color-tertiary);
+        margin-top: 0.75rem;
+        margin-bottom: 0;
+    }
+
+    .rootme-error {
+        text-align: center;
+        color: var(--card-text-color-secondary);
+    }
+
+    .rootme-error p {
+        margin-bottom: 1rem;
+    }
+</style>
+
+{{/* Script pour charger les données */}}
+<script src="/js/rootme-profile.js" defer></script>

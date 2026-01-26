@@ -1,0 +1,1487 @@
+<!-- url: https://www.root-me.org/fr/Challenges/Reseau/ETHERNET-trame status: 200 -->
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" class="no-js" lang="fr" xml:lang="fr">
+<head>
+<base href="https://www.root-me.org/" />
+<title>Challenges/Réseau : ETHERNET - trame [Root Me : plateforme d'apprentissage dédiée au Hacking et à la Sécurité de l'Information]</title>
+<meta name="Description" content="ETHERNET - trame : Analyse de trame" />
+<meta name="author" content="abu_youssef"/>
+<link rel="alternate" type="application/rss+xml" title="RSS [Root Me : plateforme d&#039;apprentissage d&#233;di&#233;e au Hacking et &#224; la S&#233;curit&#233; de l&#039;Information]" href="https://www.root-me.org?page=backend&amp;lang=fr" />
+<link rel="alternate" type="application/rss+xml" title="RSS (breves) [Root Me : plateforme d&#039;apprentissage d&#233;di&#233;e au Hacking et &#224; la S&#233;curit&#233; de l&#039;Information]" href="https://www.root-me.org?page=backend-breves&amp;lang=fr" />
+<link rel="alternate" type="application/rss+xml" title="RSS Forum [Root Me : plateforme d&#039;apprentissage d&#233;di&#233;e au Hacking et &#224; la S&#233;curit&#233; de l&#039;Information]" href="https://www.root-me.org?page=backend-forums&amp;lang=fr" />
+<link rel="alternate" type="application/rss+xml" title="RSS challenges [Root Me : plateforme d&#039;apprentissage d&#233;di&#233;e au Hacking et &#224; la S&#233;curit&#233; de l&#039;Information]" href="https://www.root-me.org?page=backend-challenges&amp;lang=fr" />
+<link rel="alternate" type="application/rss+xml" title="RSS solutions [Root Me : plateforme d&#039;apprentissage d&#233;di&#233;e au Hacking et &#224; la S&#233;curit&#233; de l&#039;Information]" href="https://www.root-me.org?page=backend-solutions&amp;lang=fr" />
+<link rel="alternate" type="application/rss+xml" title="RSS CTF all the day [Root Me : plateforme d&#039;apprentissage d&#233;di&#233;e au Hacking et &#224; la S&#233;curit&#233; de l&#039;Information]" href="https://www.root-me.org?page=backend-ctfalltheday&amp;lang=fr" />
+<link rel="alternate" type="application/rss+xml" title="RSS CTF calendar [Root Me : plateforme d&#039;apprentissage d&#233;di&#233;e au Hacking et &#224; la S&#233;curit&#233; de l&#039;Information]" href="https://www.root-me.org?page=backend-ctf&amp;lang=fr" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />            
+<meta name="color-scheme" content="light dark"/>
+<link rel='stylesheet' href='local/cache-css/45a4eea956b04d1bdfa863b3692d6768.css?1757808240' type='text/css' />    
+<script type="text/javascript">/* <![CDATA[ */
+var mediabox_settings={"auto_detect":true,"ns":"box","tt_img":true,"sel_g":"#documents_portfolio a[type='image\/jpeg'],#documents_portfolio a[type='image\/png'],#documents_portfolio a[type='image\/gif']","sel_c":".mediabox, .popin","str_ssStart":"Diaporama","str_ssStop":"Arr\u00eater","str_cur":"{current}\/{total}","str_prev":"Pr\u00e9c\u00e9dent","str_next":"Suivant","str_close":"Fermer","str_loading":"Chargement\u2026","str_petc":"Taper \u2019Echap\u2019 pour fermer","str_dialTitDef":"Boite de dialogue","str_dialTitMed":"Affichage d\u2019un media","splash_url":"","colorbox":{"skin":"black-striped","transition":"elastic","speed":"100","maxWidth":"90%","maxHeight":"90%","minWidth":"400px","minHeight":"","slideshow_speed":"2500","opacite":"0.8"}};
+/* ]]> */</script>
+<!-- insert_head_css -->
+<script type='text/javascript'>
+var jQl={q:[],dq:[],gs:[],ready:function(a){"function"==typeof a&&jQl.q.push(a);return jQl},getScript:function(a,c){jQl.gs.push([a,c])},unq:function(){for(var a=0;a<jQl.q.length;a++)jQl.q[a]();jQl.q=[]},ungs:function(){for(var a=0;a<jQl.gs.length;a++)jQuery.getScript(jQl.gs[a][0],jQl.gs[a][1]);jQl.gs=[]},bId:null,boot:function(a){"undefined"==typeof window.jQuery.fn?jQl.bId||(jQl.bId=setInterval(function(){jQl.boot(a)},25)):(jQl.bId&&clearInterval(jQl.bId),jQl.bId=0,jQl.unqjQdep(),jQl.ungs(),jQuery(jQl.unq()), "function"==typeof a&&a())},booted:function(){return 0===jQl.bId},loadjQ:function(a,c){setTimeout(function(){var b=document.createElement("script");b.src=a;document.getElementsByTagName("head")[0].appendChild(b)},1);jQl.boot(c)},loadjQdep:function(a){jQl.loadxhr(a,jQl.qdep)},qdep:function(a){a&&("undefined"!==typeof window.jQuery.fn&&!jQl.dq.length?jQl.rs(a):jQl.dq.push(a))},unqjQdep:function(){if("undefined"==typeof window.jQuery.fn)setTimeout(jQl.unqjQdep,50);else{for(var a=0;a<jQl.dq.length;a++)jQl.rs(jQl.dq[a]); jQl.dq=[]}},rs:function(a){var c=document.createElement("script");document.getElementsByTagName("head")[0].appendChild(c);c.text=a},loadxhr:function(a,c){var b;b=jQl.getxo();b.onreadystatechange=function(){4!=b.readyState||200!=b.status||c(b.responseText,a)};try{b.open("GET",a,!0),b.send("")}catch(d){}},getxo:function(){var a=!1;try{a=new XMLHttpRequest}catch(c){for(var b=["MSXML2.XMLHTTP.5.0","MSXML2.XMLHTTP.4.0","MSXML2.XMLHTTP.3.0","MSXML2.XMLHTTP","Microsoft.XMLHTTP"],d=0;d<b.length;++d){try{a= new ActiveXObject(b[d])}catch(e){continue}break}}finally{return a}}};if("undefined"==typeof window.jQuery){var $=jQl.ready,jQuery=$;$.getScript=jQl.getScript};
+jQl.loadjQ('local/cache-js/aaeba6d0dc582a982ae28d048176414a.js?1763111201')
+</script>
+<!-- insert_head -->
+<script>jQl.loadjQ("https://www.root-me.org/local/cache-js/jsdyn-script_onload_js-46f8f148.js?1763111215");</script>
+<script  defer src="https://www.googletagmanager.com/gtag/js?id=G-SRYSKX09J7"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-SRYSKX09J7', { 'anonymize_ip': true });
+</script>        
+<link rel="icon" type="image/x-icon" href="https://www.root-me.org/squelettes/img/rblack.ico?1448449194" />
+<link rel="icon" type="image/png" href="https://www.root-me.org/squelettes/img/rblackGrand32.png?1556531825" sizes="32x32" />
+<link rel="icon" type="image/png" href="https://www.root-me.org/squelettes/img/rblackGrand16.png?1556531831" sizes="16x16" />   
+</head>
+<body class="antialiased hide-extras" dir="ltr" itemscope itemtype="http://schema.org/WebPage">
+<header id="header" role="banner">
+<nav class="top-bar" data-topbar>
+<ul class="title-area" itemprop="isPartOf" itemscope itemtype="https://schema.org/WebSite">
+<li class="name">
+<a itemprop="url" href="https://www.root-me.org?lang=fr" title="la root est longue mais la voie est Libre" target="_top">
+<img width="48" height="48" class="show-for-medium-up vmiddle invert" alt="logo https://www.root-me.org" src="IMG/logo/siteon0.svg?1637496509" itemprop="image"  />
+<img width="48" height="48" class="show-for-small-only toggleSidebar vmiddle" alt="logo https://www.root-me.org" src="IMG/logo/siteon0.svg?1637496509" itemprop="image" />
+<span class="show-for-large-up blanc" itemprop="name">Root&nbsp;Me</span>
+</a>
+</li>    
+</ul>
+<section class="top-bar-section">
+<ul class="right">    
+<li class="lang">
+<span>
+<span>
+<a id="url_en" href="en/Challenges/Network/ETHERNET-frame"><img class="vmiddle" src="squelettes/img/pays/en.svg" alt="English" height="16" width="16" title="English" /></a>
+<a id="url_de" href="de/Herausforderungen/Netzwerk/ETHERNET-frame"><img class="vmiddle" src="squelettes/img/pays/de.svg" alt="Deutsch" height="16" width="16" title="Deutsch" /></a>
+<a id="url_es" href="es/Desafios/Red/ETHERNET-frame"><img class="vmiddle" src="squelettes/img/pays/es.svg" alt="Espa&#241;ol" height="16" width="16" title="Espa&#241;ol" /></a>
+<a id="url_ru" href="ru/Zadachi-i-problemy/Set/ETHERNET-frame"><img class="vmiddle" src="squelettes/img/pays/ru.svg" alt="&#1088;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;" height="16" width="16" title="&#1088;&#1091;&#1089;&#1089;&#1082;&#1080;&#1081;" /></a>
+<a id="url_zh" href="zh/%E6%8C%91%E6%88%98/%E7%BD%91%E7%BB%9C/ETHERNET-frame"><img class="vmiddle" src="squelettes/img/pays/zh.svg" alt="&#20013;&#25991;" height="16" width="16" title="&#20013;&#25991;" /></a>
+</span>
+<a href="/fr/Challenges/Reseau/ETHERNET-trame#"><img width="16" height="16" src="squelettes/img/pays/fr.svg" alt="fr" class="grayscale" title="fr"/></a>
+</span>
+</li>
+<li class="has-dropdown">
+<a class="show-for-small-only" href="/fr/Challenges/Reseau/ETHERNET-trame#b8bfad6da9d5ae23065492c690a2b1d0" title="Alexandre Froissart"><img class="vmiddle logo_auteur logo_6forum" width="36" height="36" src="IMG/logo/auton0.png?1637503221" alt="Alexandre Froissart" /></a>
+<a class="hide-for-small-only" href="Alexandre-Froissart?lang=fr#b8bfad6da9d5ae23065492c690a2b1d0"><img class="vmiddle logo_auteur logo_6forum" width="36" height="36" src="IMG/logo/auton0.png?1637503221" alt="Alexandre Froissart" /></a>
+<ul class="dropdown">
+<li class="text-right"><a href="./?page=preferences&amp;lang=fr"><span style="padding-right: 1.5rem; background: url('squelettes/img/parametres.svg?1566640369') right center no-repeat; background-size:contain;">Mes paramètres</span></a></li>
+<li class="text-right"><a href="./?page=messagerie&amp;lang=fr"><span style="padding-right: 1.5rem; background: url('squelettes/img/messagerie.svg?1566640228') right center no-repeat; background-size:contain;">Mes Messages</span></a></li>
+<li class="text-right"><a class="gris" href="https://www.root-me.org/?action=logout&amp;logout=public&amp;url=https%3A%2F%2Fwww.root-me.org%3Flang%3Dfr"><span style="padding-right: 1.5rem; background: url('squelettes/img/logout.svg') right center no-repeat; background-size:contain;">Se déconnecter</span></a></li>        
+</ul>
+</li>            </ul>   
+<ul class="left">
+<li class="hide-for-small-only"><a title="Foire Aux Questions" href="https://www.root-me.org?page=faq&amp;lang=fr"><img src='squelettes/img/faq_nb.svg?1566640929' alt='faq' width='32' height='32' /></a></li>
+<li class="hide-for-small-only"><a title="Plan du site" href="https://www.root-me.org?page=plan&amp;lang=fr"><img src='squelettes/img/plan_nb.svg?1566640893' alt='plan' width='32' height='32' /></a></li>
+<li class="hide-for-small-only"><a title="Contact" href="https://www.root-me.org?page=contact&amp;lang=fr"><img src='squelettes/img/contact_nb.svg?1566640717' alt='contact' width='32' height='32' /></a></li>
+<li class="hide-for-small-only"><a title="État des services" href="https://www.root-me.org?page=structure&amp;inc=inclusions%2Fservices&amp;lang=fr"><img src="squelettes/img/service_state_nb.svg" width="32" height="32" alt="services" /></a></li>
+<li class="hide-for-small-only"><a title="Shop" href="https://shop.root-me.org"><img src="squelettes/img/shop_nb.svg" alt="shop" width="32" height="32"/></a></li>            
+<li class="search">
+<form action="https://www.root-me.org" method="get">
+<input type="hidden" value="recherche" name="page"/>
+<input type="hidden" value="fr" name="lang" />                    
+<input class="search" name="recherche" placeholder="Rechercher" minlength="3" type="search" />
+</form>
+</li>
+</ul>
+</section>
+</nav>
+</header><div id="container">
+<div id="main_row">
+<div id="aside_wrapper">
+<aside id="aside" role="complementary" itemscope itemtype="https://schema.org/WPSideBar">
+<nav class="top-bar" data-topbar="" >
+<div class="top-bar-section" role="navigation" itemprop="hasPart" itemscope itemtype="https://schema.org/SiteNavigationElement">
+<ul class="right">
+<li class="has-dropdown">
+<a itemprop="url" href="fr/Capture-The-Flag/">
+<span class="logo left">
+<img  class="grayscale grayscale_hoveroff" src="IMG/logo/rubon188.svg?1637496499" width="16" height="16" alt="0x0"/>
+</span>
+<span class="hide-for-medium-only">Capture The Flag</span>
+</a>
+<ul class="dropdown">
+<li class="show-for-medium-only first">Capture The Flag</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Capture-The-Flag/Calendrier/" title="Le calendrier des CTF &#224; venir. N&#039;h&#233;sitez pas &#224; nous indiquer ceux que l&#039;on aurait oubli&#233; en envoyant un message via [la page de contact-&gt;./?page=contact&#38;lang=fr]"  itemprop="url">
+<img src='IMG/logo/rubon195.svg?1637496499' alt='Calendrier' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+Calendrier
+</a>
+</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Capture-The-Flag/CTF-all-the-day/" title="Am&#233;liorez vos techniques de hack dans un environnement r&#233;el o&#249; l&#039;objectif est de compromettre, &#171; rooter &#187; compl&#232;tement la machine !"  itemprop="url">
+<img src='IMG/logo/rubon196.svg?1637496499' alt='CTF all the day' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+CTF all the day
+</a>
+</li>
+</ul>
+</li>
+<li class="has-dropdown active">
+<a itemprop="url" href="fr/Challenges/">
+<span class="logo left">
+<img  src="IMG/logo/rubon5.svg?1637496507" width="16" height="16" alt="0x0"/>
+</span>
+<span class="hide-for-medium-only">Challenges</span>
+</a>
+<ul class="dropdown">
+<li class="show-for-medium-only first">Challenges</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Challenges/App-Script/" title="Cette s&#233;rie d&#039;&#233;preuves vous confronte aux vuln&#233;rabilit&#233;s li&#233;es &#224; des faiblesses d&#039;environnement, de configuration ou encore &#224; des erreurs de d&#233;veloppement dans des langages de script ou de programmation."  itemprop="url">
+<img src='IMG/logo/rubon189.svg?1637496499' alt='App - Script' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+App - Script
+</a>
+</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Challenges/App-Systeme/" title="Cette s&#233;rie d&#039;&#233;preuves vous confronte aux vuln&#233;rabilit&#233;s applicatives principalement li&#233;es aux erreurs de programmation aboutissant &#224; des corruptions de zones m&#233;moire."  itemprop="url">
+<img src='IMG/logo/rubon203.svg?1637496500' alt='App - Syst&#232;me' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+App - Système
+</a>
+</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Challenges/Cracking/" title="Ces challenges permettent de comprendre le sens du terme &#171; langage compil&#233; &#187;. Ce sont des fichiers binaires &#224; d&#233;cortiquer pour aller chercher les instructions bas niveau permettant de r&#233;pondre au probl&#232;me pos&#233;."  itemprop="url">
+<img src='IMG/logo/rubon69.svg?1637496508' alt='Cracking' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+Cracking
+</a>
+</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Challenges/Cryptanalyse/" title="Retrouvez les secrets prot&#233;g&#233;s par des syst&#232;mes de chiffrement plus ou moins solides en r&#233;alisant des attaques cryptographiques."  itemprop="url">
+<img src='IMG/logo/rubon18.svg?1637496499' alt='Cryptanalyse' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+Cryptanalyse
+</a>
+</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Challenges/Forensic/" title="Mettez &#224; l&#039;&#233;preuve vos techniques d&#039;investigations num&#233;riques en analysant des traces m&#233;moire, des fichiers de journalisation, des captures r&#233;seaux..."  itemprop="url">
+<img src='IMG/logo/rubon208.svg?1637496500' alt='Forensic' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+Forensic
+</a>
+</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Challenges/Programmation/" title="Automatisez des t&#226;ches de plus en plus complexes pour valider ces challenges en moins de quelques secondes."  itemprop="url">
+<img src='IMG/logo/rubon17.svg?1637496498' alt='Programmation' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+Programmation
+</a>
+</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Challenges/Realiste/" title="Vous allez vous retrouver dans des environnements complets sur des th&#232;mes divers et vari&#233;s. &#192; vous d&#039;en comprendre le fonctionnement, d&#039;identifier les faiblesses et de cibler les vuln&#233;rabilit&#233;s &#224; exploiter."  itemprop="url">
+<img src='IMG/logo/rubon70.svg?1637496509' alt='R&#233;aliste' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+Réaliste
+</a>
+</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Challenges/Reseau/" title="Apprenez &#224; analyser et &#224; manipuler les diff&#233;rents protocoles et services les plus courants pour les tourner &#224; votre avantage."  itemprop="url">
+<img src='IMG/logo/rubon182.svg?1637496499' alt='R&#233;seau' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+Réseau
+</a>
+</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Challenges/Steganographie/" title="Si la cryptographie est l&#039;art du secret, la st&#233;ganographie est l&#039;art de la dissimulation : l&#039;objet de la st&#233;ganographie n&#039;est pas de rendre un message inintelligible aux personnes non autoris&#233;es mais de le faire passer inaper&#231;u. "  itemprop="url">
+<img src='IMG/logo/rubon67.svg?1637496507' alt='St&#233;ganographie' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+Stéganographie
+</a>
+</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Challenges/Web-Client/" title="Apprenez &#224; exploiter les failles des applications web pour impacter leurs utilisateurs ou contourner des m&#233;canismes de s&#233;curit&#233; c&#244;t&#233; client."  itemprop="url">
+<img src='IMG/logo/rubon16.svg?1637496498' alt='Web - Client' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+Web - Client
+</a>
+</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Challenges/Web-Serveur/" title="Ces &#233;preuves vous permettront d&#039;appr&#233;hender les techniques intrusives retrouv&#233;es sur le web, allant de l&#039;exploitation de faiblesses de configuration jusqu&#039;aux injections de code c&#244;t&#233; serveur."  itemprop="url">
+<img src='IMG/logo/rubon68.svg?1637496507' alt='Web - Serveur' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+Web - Serveur
+</a>
+</li>
+</ul>
+</li>
+<li class="has-dropdown">
+<a itemprop="url" href="fr/Communaute/">
+<span class="logo left">
+<img  class="grayscale grayscale_hoveroff" src="IMG/logo/rubon19.svg?1714487248" width="16" height="16" alt="0x0"/>
+</span>
+<span class="hide-for-medium-only">Communauté</span>
+</a>
+<ul class="dropdown">
+<li class="show-for-medium-only first">Communauté</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Communaute/Contribuer/" title="Vous avez des id&#233;es, des comp&#233;tences dans le domaine de la s&#233;curit&#233; informatique ? N&#039;h&#233;sitez pas, participez ;-)"  itemprop="url">
+<img src='IMG/logo/rubon175.svg?1637496498' alt='Contribuer' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+Contribuer
+</a>
+</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Communaute/Discuter/" title="Plusieurs canaux de communication sont &#224; votre disposition pour &#233;changer avec les autres utilisateurs de la plateforme."  itemprop="url">
+<img src='IMG/logo/rubon388.svg?1647250612' alt='Discuter' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+Discuter
+</a>
+</li>
+</ul>
+</li>
+<li class="has-dropdown">
+<a itemprop="url" href="fr/Informations/">
+<span class="logo left">
+<img  class="grayscale grayscale_hoveroff" src="IMG/logo/rubon106.svg?1637496496" width="16" height="16" alt="0x0"/>
+</span>
+<span class="hide-for-medium-only">Informations</span>
+</a>
+<ul class="dropdown">
+<li class="show-for-medium-only first">Informations</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Informations/Faiblesses-Decouvertes/" title="Comme n&#039;importe quel syst&#232;me d&#039;informations ce portail comporte des vuln&#233;rabilit&#233;s... "  itemprop="url">
+<img src='IMG/logo/rubon111.svg?1637496496' alt='Faiblesses D&#233;couvertes' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+Faiblesses Découvertes
+</a>
+</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Informations/L-association/" title="Root-Me est une association loi de 1901 &#224; but non lucratif dont l&#039;objectif est de promouvoir la diffusion libre du savoir relatif au hacking et &#224; la s&#233;curit&#233; de l&#039;information."  itemprop="url">
+<img src='IMG/logo/rubon107.svg?1637496496' alt='L&#039;association' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+L&#8217;association
+</a>
+</li>
+<li class="hide-for-small-only">
+<a class="smenu" href="fr/Informations/Sponsors-Partenaires-Root-Me-PRO/" title="Voici les entreprises et institutions qui permettent &#224; l&#039;association de perdurer et continuer de proposer toujours plus de contenus ! Pour plus d&#039;informations sur comment devenir Sponsor ou Partenaire, contactez [Root-Me PRO-&gt;https://pro.root-me.org/]."  itemprop="url">
+<img src='IMG/logo/rubon201.svg?1637496500' alt='Sponsors &#38; Partenaires Root-Me PRO' width='16' height='16' class='vmiddle grayscale grayscale_hoveroff' />
+Sponsors &amp; Partenaires Root-Me PRO
+</a>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</nav>
+<div class="small-12 columns hide-for-medium-only">
+<h3>376 visiteurs en ce moment</h3>
+derniers inscrits&nbsp;:
+<ul class="inline-list ts">
+<li><a class=" txt_6forum"  title="profil de Mrjoker" href="/Mrjoker-1073180?lang=fr">Mrjoker</a></li>
+<li><a class=" txt_6forum"  title="profil de Vyn" href="/Vyn-1073177?lang=fr">Vyn</a></li>
+<li><a class=" txt_6forum"  title="profil de TrickSiebzehn" href="/TrickSiebzehn?lang=fr">TrickSiebzehn</a></li>
+<li><a class=" txt_6forum"  title="profil de ari" href="/ari-1073175?lang=fr">ari</a></li>
+<li><a class=" txt_6forum"  title="profil de mariosilcor" href="/mariosilcor?lang=fr">mariosilcor</a></li>
+<li><a class=" txt_6forum"  title="profil de Reefly" href="/Reefly?lang=fr">Reefly</a></li>
+<li><a class=" txt_6forum"  title="profil de xzibit" href="/xzibit?lang=fr">xzibit</a></li>
+</ul>     
+<div class='ajaxbloc' data-ajax-env='iUKJXeOw77Wsn9HbswmtbY9T4vheSBTeMNjuK1XG/EheGQNcgwlYVuJrsKGlvy3DcdHgrBhD7MCwLjry8DGCEfqa8nIlwuvi9ux6Bv5vMp2ig2O9FdZ1/lsxECIdf8Iqgc7UCTI4jH08bhjqgduEuU+wtFjHsGvR+N9LEjhU330wxm2mndhHca45uOXnAAHj86+9yXg3cZW2SkkM817fefNf8OzQzyqP95V4/ynj+L622MFIOz8ajhKEE8cdh6IScBr9u8lr+A==' data-origin="/fr/Challenges/Reseau/ETHERNET-trame">
+<h3>Offres</h3>
+<a id='pagination_offres' class='pagination_ancre'></a>
+<ul>
+<li>
+<a href="https://pro.root-me.org/" title="ROOT-ME PRO" target="_BLANK"><span style="background: white; border-radius: 3px;width:24px; height: 24px; line-height: 32px; padding: 2px; margin:2px;"><img class="vmiddle" src="https://console.pro.root-me.org/IMG/logo/organisationon33.png?1678276526" alt="organisation_logo" style="width: 20px; height:20px; object-fit: cover;" /></span></a>&nbsp;<span class="gras txs">CDI</span>&nbsp;<a title="ROOT-ME PRO : D&#233;veloppeur Web Fullstack confirm&#233;" class="txs" href="./?page=news&amp;inc=offre&amp;id_offre=122&amp;lang=fr">Autre</a>
+</li>
+<li>
+<a href="https://elysium-security.com" title="Elysium Security" target="_BLANK"><span style="background: white; border-radius: 3px;width:24px; height: 24px; line-height: 32px; padding: 2px; margin:2px;"><img class="vmiddle" src="https://console.pro.root-me.org/IMG/logo/organisationon32.png?1678276537" alt="organisation_logo" style="width: 20px; height:20px; object-fit: cover;" /></span></a>&nbsp;<span class="gras txs">CDI</span>&nbsp;<a title="Elysium Security : Tech Lead SOC / CSIRT" class="txs" href="./?page=news&amp;inc=offre&amp;id_offre=121&amp;lang=fr">SOC</a>
+</li>
+<li>
+<a href="/fr/Challenges/Reseau/ETHERNET-trame#" title="SNS SECURITY" ><span style="background: white; border-radius: 3px;width:24px; height: 24px; line-height: 32px; padding: 2px; margin:2px;"><img class="vmiddle" src="https://console.pro.root-me.org/IMG/logo/logo_sns_rose_fond_noir.png?1762330467" alt="organisation_logo" style="width: 20px; height:20px; object-fit: cover;" /></span></a>&nbsp;<span class="gras txs">CDI</span>&nbsp;<a title="SNS SECURITY :  Pentester" class="txs" href="./?page=news&amp;inc=offre&amp;id_offre=120&amp;lang=fr">Penetration tester</a>
+</li>
+<li>
+<a href="https://elysium-security.com" title="Elysium Security" target="_BLANK"><span style="background: white; border-radius: 3px;width:24px; height: 24px; line-height: 32px; padding: 2px; margin:2px;"><img class="vmiddle" src="https://console.pro.root-me.org/IMG/logo/organisationon32.png?1678276537" alt="organisation_logo" style="width: 20px; height:20px; object-fit: cover;" /></span></a>&nbsp;<span class="gras txs">CDI</span>&nbsp;<a title="Elysium Security : Consultant en cybers&#233;curit&#233; - offensif ou d&#233;fensif - confirm&#233;" class="txs" href="./?page=news&amp;inc=offre&amp;id_offre=93&amp;lang=fr">Consultant sécurité</a>
+</li>
+</ul>
+<div class="pagination"></div>
+</div><!--ajaxbloc-->                        <h3>Sponsorisé par</h3>
+<ul>
+<li><a href="https://www.algosecure.fr" target="_BLANK" >Algosecure</a></li>
+<li><a href="https://www.ecole2600.com/" target="_BLANK" >École 2600</a></li>
+<li><a href="https://www.elysium-security.com/" target="_BLANK" >Elysium Security</a></li>
+<li><a href="https://public.geoide.fr" target="_BLANK" >GEOIDE</a></li>    
+<li><a href="https://www.oteria.fr/?utm_source=RootMe&utm_medium=partnership" target="_BLANK" >Oteria Cyber School</a></li>
+<li><a href="https://www.synacktiv.com" target="_BLANK" >Synacktiv</a></li>
+<li><a class="mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=page-don&amp;lang=fr">Vous&nbsp;;-)</a></li>
+</ul>        </div>
+</aside>
+</div>        <div id="main_wrapper" class="row">
+<ul id="breadcrumb" class="breadcrumbs" itemscope itemtype="https://schema.org/BreadcrumbList">
+<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+<a href="https://www.root-me.org?lang=fr" title="Home" itemprop="item"><span itemprop="name">Home</span></a>
+<meta itemprop="position" content="1">
+</li>
+<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+<a title="Challenges" href="https://www.root-me.org/fr/Challenges/" itemprop="item"><span itemprop="name">Challenges</span></a>
+<meta itemprop="position" content="2">
+</li>
+<li itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+<a title="Réseau" href="https://www.root-me.org/fr/Challenges/Reseau/" itemprop="item"><span itemprop="name">Réseau</span></a>
+<meta itemprop="position" content="3">
+</li>
+</ul>
+<main id="main" itemprop="mainEntity" itemscope itemtype="http://schema.org/Course" itemid="urn:fr/Challenges/Reseau/ETHERNET-trame">
+<div  class="small-12 columns"  >
+<div class="tile">
+<div class="t-body tb-padding"  >
+<div class="row">
+<div class="columns medium-10">
+<h1 class="crayon challenge-titre-336 " itemprop="headline name">ETHERNET - trame</h1>                          
+</div>
+<div class="columns medium-2">
+<span id="socialtags" class="right text-right"></span>
+</div>
+<div class="columns small-12">
+<h2 class="crayon challenge-score-336 ">10&nbsp;Points&nbsp;&nbsp;<a href="fr/Challenges/Reseau/" itemprop="isPartOf"><img src="IMG/logo/rubon182.svg?1637496499" itemprop="image" alt="0x0" class="vmiddle" width="32" height="32"/></a></h2>
+<h3 class="crayon challenge-soustitre-336 " itemprop="description">Analyse de trame</h3>                    
+</div>
+</div>
+<div class="row">
+<div class="columns small-6 medium-3">
+<h4>Auteur</h4>                                     
+<span itemscope="" itemprop="author publisher" itemtype="http://schema.org/Person"><a class=" txt_6forum" itemprop="name url" title="profil de abu_youssef" href="/abu_youssef?lang=fr">abu_youssef</a></span>,&nbsp;&nbsp;<time itemprop="datePublished" datetime="2026-01-23T17:57:54+01:00">20&nbsp;mai 2013</time>                               
+</div>  
+<div class="columns small-6 medium-3">
+<h4>Niveau&nbsp;&nbsp;<a class="mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Flegende&amp;lang=fr#difficulte" title="Difficulté"><img src="squelettes/img/question_mark.svg" width="16" height="16" alt="Difficulté"/></a></h4>
+<a   itemprop="keywords" class="difficulte difficulte1   difficulte1a" style="min-width: 12px; height: 0.75rem;" href="tag/Tres-facile?lang=fr" title="Tr&#232;s facile : Premier niveau des challenges"></a>
+<a  class="difficulte difficulte2 " style="min-width: 12px; height: 1rem;" href="tag/Facile?lang=fr" title="Facile : Deuxi&#232;me niveau des challenges"></a>
+<a  class="difficulte difficulte3 " style="min-width: 12px; height: 1.25rem;" href="tag/Moyen?lang=fr" title="Moyen : Troisi&#232;me niveau des challenges"></a>
+<a  class="difficulte difficulte4 " style="min-width: 12px; height: 1.5rem;" href="tag/Difficile?lang=fr" title="Difficile : Quatri&#232;me niveau des challenges"></a>
+<a  class="difficulte difficulte36 " style="min-width: 12px; height: 1.75rem;" href="tag/Very-hard?lang=fr" title="Tr&#232;s difficile : Dernier niveau des challenges"></a>
+</div>
+<div class="columns small-6 medium-3">
+<h4>Validations</h4>                                   
+<span class="left">
+<a class="mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=336&amp;lang=fr" title="Qui a validé ?">81216&nbsp;Challengeurs</a>
+</span>                                    
+<span class="left gras" style="margin-left: 1rem; border-radius: 5px; padding-left: 5px; width: 11%; background-color: #ff9c70;">22%</span>
+</div>
+<div class="note_challenge columns small-6 medium-3">
+<h4>Note&nbsp;&nbsp;<a class="mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Flegende&amp;lang=fr#note" title="Notation"><img src="squelettes/img/question_mark.svg" width="16" height="16" alt="Notation"/></a></h4>                                     
+<!--formulaire_notation-->
+<div class="formulaire_notation formulaire_jaime_jaimepas ajax">
+<div class="notation_note_container">
+<div class='notation_note' itemprop="aggregateRating" itemscope itemtype="http://schema.org/aggregateRating"><meta itemprop="ratingCount" class="count" content="4480" /><meta itemprop="bestRating" class="best" content="5" /><meta itemprop="worstRating" class="worst" content="0" /><meta itemprop="ratingValue" content="5" /><div class='star-rating ratingstar_group_notation-challenges336 star-rating-readonly star-rating-on'><a>1</a></div><div class='star-rating ratingstar_group_notation-challenges336 star-rating-readonly star-rating-on'><a>2</a></div><div class='star-rating ratingstar_group_notation-challenges336 star-rating-readonly star-rating-on'><a>3</a></div><div class='star-rating ratingstar_group_notation-challenges336 star-rating-readonly star-rating-on'><a>4</a></div><div class='star-rating ratingstar_group_notation-challenges336 star-rating-readonly star-rating-on'><a>5</a></div></div>
+<span class="notation_valeur">4480 votes</span>
+</div>
+<form action="/fr/Challenges/Reseau/ETHERNET-trame" method="post" id="jaime_jaimepas-challenges336">
+<span class="form-hidden"><input name='formulaire_action' type='hidden'
+value='jaime_jaimepas' /><input name='formulaire_action_args' type='hidden'
+value='GQQJIeOw9/EThcvHNy2mozNBWZwn+3T0eMXjhfY8VDeIv6fS4Z7slcN+NUK0L1prbn+OrNtwFjJ/cFiDWfBxceqKvgoMJzghgeaa2DAHviH/1asdqZyjyhmUmLVu+0uaCw==' /><input name='formulaire_action_sign' type='hidden'
+value='abf1c6525cd61af7225851e741952798612e6f6343f67944767f160b176d9aaf' /><input type='hidden' name='_jeton' value='6a737e6f9b414e1fc0fd0b05151325d692feccd5c13aadf8f58158304f194600' /></span><div>
+<input type="hidden" name="notation_id_donnees" id="id_donnees-challenges336" value="336" />
+<input type="hidden" name="content" id="content-challenges336" value="" />
+<button type="submit" class="submit jaime" name="jaime-challenges336" value="X">J’aime</button>
+<button type="submit" class="submit jaimepas" name="jaimepas-challenges336" value="X">Je n’aime pas</button>
+</div>
+<div class="editer saisie_session_email" style="display: none;">
+<label for="give_me_your_email">Veuillez laisser ce champ vide :</label>
+<input type="text" class="text email" name="email_nobot" id="give_me_your_email" value="" size="10" />
+</div></form>
+</div>
+</div>
+</div>                    
+<div class="row">
+<div class="columns small-12">
+<h4>Énoncé</h4>
+<div class="crayon challenge-descriptif-336 "><p>Retrouvez les données normalement confidentielles contenues dans cette trame.</p>
+<p><a class="button small radius" target="_blank" href="https://static.root-me.org/reseau/ch12/ch12.txt" rel="noreferrer noopener">Télécharger le challenge</a></p></div>
+<div class="crayon challenge-ressources-336 ">
+<div class='ajaxbloc' data-ajax-env='WUL1XeOg73KMH+PO8vafJu+lGhfzAytDDKff/4Rk2RuabKdtGX0tdCt6o8G7/i9Pgj/7ZIGgw5dDVsFZd03WLOek2376ZKG2OmsKQheWGdovLaDyBe5sWCVrpPXnCzkNKMSWVA67EDInBG368YszMtQLiP65W35L2snt7OOnOToNCMrY3dT600YpV2YqYxrvwJJOHcYRcIeARQzi1TJ8L232AiZjlgZKSYzGUGQxpqNfkPYPT3qG3h7+ipJq0LwS88w=' data-origin="/fr/Challenges/Reseau/ETHERNET-trame">
+<a id='pagination_repository_recherche' class='pagination_ancre'></a>
+<h4>4&nbsp;ressource(s) associée(s)</h4>
+<ul class="spip">
+<li class="gris"><img src="squelettes/img/pays/fr.svg" alt="fr" class="vmiddle" height="16" width="16"/>&nbsp;<a href="https://repository.root-me.org/Réseau/FR - Format des trames Ethernet.pdf">Format des trames Ethernet</a> (Réseau)</li>
+<li class="gris"><img src="squelettes/img/pays/fr.svg" alt="fr" class="vmiddle" height="16" width="16"/>&nbsp;<a href="https://repository.root-me.org/Réseau/FR - Les réseaux Ethernet - le format des trames.pdf">Les réseaux Ethernet - le format des trames</a> (Réseau)</li>
+<li class="gris"><img src="squelettes/img/pays/en.svg" alt="en" class="vmiddle" height="16" width="16"/>&nbsp;<a href="https://repository.root-me.org/RFC/EN - rfc1042.txt">rfc1042</a> (RFC)</li>
+<li class="gris"><img src="squelettes/img/pays/en.svg" alt="en" class="vmiddle" height="16" width="16"/>&nbsp;<a href="https://repository.root-me.org/Exploitation - Web/EN - HTTP basic authentication and digest authentication.pdf">HTTP basic authentication and digest authentication</a> (Exploitation - Web)</li>
+</ul>
+</div><!--ajaxbloc-->
+</div>                
+<div id="validation_challenge" class="ajax">
+<a name="validation_challenge"></a>
+<div class="formulaire_spip formulaire_validation_challenge formulaire_editer_message_validation_challenge" id="formulaire_validation_challenge">
+<br class='bugajaxie' />
+<h4>Validation</h4>
+<form name="formulaire_validation_challenge" method="post" action="/fr/Challenges/Reseau/ETHERNET-trame#validation_challenge">
+<span class="form-hidden"><input name='formulaire_action' type='hidden'
+value='validation_challenge' /><input name='formulaire_action_args' type='hidden'
+value='KQuDPqCg9/EDZwnEKQlkq3O5EqTgqoxuu9VLSGtIBWZKuqUQZJBSOnkAYIRb0eyAlTYQVhnKcVNifQ2a/AiPo3IhRt5UYs1+AUz08tqJd7KjXQDQ+LxQ' /><input name='formulaire_action_sign' type='hidden'
+value='d6c0e410407151a2bdfb6551c4d26a68387a9e4493203e8f1c9ae6f0dace222b' /></span>
+<fieldset>
+<div class="editer-groupe">
+<div class='editer saisie_passe obligatoire'>
+<label for="passe">Entrer le mot de passe</label>
+<input type="password" autocomplete="off" name="passe" id="passe" length="30" class="spip_bouton"   required="required" autocapitalize="off" autocorrect="off" />        
+</div>
+</div>
+</fieldset>
+<p class="boutons"><input type="submit" value="envoyer" class="submit" /></p>
+</form>
+</div>
+</div>
+<h4>Obtenir de l'aide</h4>
+<p>
+Vous êtes bloqué(e) dans une épreuve ?&nbsp;Demandez de l'aide dans la section 
+<a href="fr/Communaute/Discuter/Forum/Challenges/Reseau" title="Demandez de l'aide dans la section R&#233;seau">Réseau</a>&nbsp;du forum ou sur <a href="spip.php?rubrique388">le serveur Discord</a>
+</p>
+</div>                    </div>
+</div>
+</div>
+</div>
+<div class='ajaxbloc' data-ajax-env='YUETPeKw77Qk+DUpBkxPUP6DbWEF2NtPL83Tv6dW76DB8fFUnBn53JmyGsMlzV9M7s7i86gCwBHhdJZQpj/i/RqNQ1Is+OiVSb+koX/djR5y0wGm/1SLTuswhqmw4WRucNw3hhlXTTUNGwKBA+RVu0XVm03jR/DKtqglC/ee3kGEqROlPh/omCxOWu5XgONtXFyDgNkouRROhL0=' data-origin="/fr/Challenges/Reseau/ETHERNET-trame">
+<div  class="small-12 columns"  >
+<div class="tile">
+<div class="t-body tb-padding"  >
+<a name="ancre_solution" id ="ancre_solution"></a>
+<div class="row">
+<div class="columns medium-6">
+<h1><img src='squelettes/img/solution.svg?1566640207' alt='solutions' width='48' height='48' class='vmiddle' />&nbsp;<b class="color1">10</b>&nbsp;Solutions</h1>
+</div>
+<div class="columns medium-6 text-right">
+<a class="ajax button small radius" href="/fr/Challenges/Reseau/ETHERNET-trame?action_solution=voir#ancre_solution">Voir les solutions</a>
+<a class="ajax button small radius" href="/fr/Challenges/Reseau/ETHERNET-trame?action_solution=proposer#ancre_solution">Proposer une solution</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div><!--ajaxbloc-->                
+<div class='ajaxbloc' data-ajax-env='QUAZPeKw77U8+Dah7w4lEtQ7/kyH0sp7w/3FiYOYUtKbVX/QBZnm9T7+V4XVFaICWeNQ3qMUHdE0K6f169pEVyjMgro3e+NwWiYCe0wQikbs9S8tP69DRtuZ7XbEzbjHxqFzQlh7AmZ+Qfia54NfV5jBo0fgiX3OpsN0S05X15/zNrYz' data-origin="/fr/Challenges/Reseau/ETHERNET-trame">
+<div  class="small-12 columns"  >
+<div class="tile">
+<div class="t-body tb-padding"  >
+<a id='pagination_dernieres_validations' class='pagination_ancre'></a>
+<h1><img src="squelettes/img/valid.svg" alt="Résultats des challenges" class="vmiddle" width="48" height="48"/>&nbsp;Résultats des challenges</h1>
+<div class="box">
+<table class="text-center mauto" style="width: 100%;">
+<thead>
+<tr class="row_first">
+<td style="width: 20%;">Pseudonyme</td>
+<td style="width: 35%;">Epreuve</td>
+<td class="hide-for-small-only" style="width: 10%;">Langue</td>
+<td class="hide-for-small-only" style="width: 30%;">Date</td>
+</tr>
+</thead>
+<tbody>
+<tr class="row_even">
+<td><a class=" txt_6forum"  title="profil de liu" href="/liu-737225?lang=fr">liu</a></td>
+<td>
+<a href="fr/Challenges/Reseau/" title="R&#233;seau"><img src='IMG/logo/rubon182.svg?1637496499' alt='R&#233;seau' width='16' height='16' class='vmiddle' />&nbsp;</a>
+<a href="fr/Challenges/Reseau/ETHERNET-trame" title="Analyse de trame">ETHERNET - trame</a>
+</td>
+<td class="hide-for-small-only"><img src='squelettes/img/pays/fr.svg?1594376628' alt='fr' width='16' height='16' /></td>
+<td class="hide-for-small-only">25 janvier 2026&nbsp;to&nbsp;20:36</td>
+</tr>
+<tr class="row_odd">
+<td><a class=" txt_6forum"  title="profil de owenzenight" href="/owenzenight?lang=fr">owenzenight</a></td>
+<td>
+<a href="en/Challenges/Network/" title="Network"><img src='IMG/logo/rubon182.svg?1637496499' alt='Network' width='16' height='16' class='vmiddle' />&nbsp;</a>
+<a href="en/Challenges/Network/ETHERNET-frame" title="Frame analysis">ETHERNET - frame</a>
+</td>
+<td class="hide-for-small-only"><img src='squelettes/img/pays/en.svg?1637569714' alt='en' width='16' height='16' /></td>
+<td class="hide-for-small-only">25 janvier 2026&nbsp;to&nbsp;20:28</td>
+</tr>
+<tr class="row_even">
+<td><a class=" txt_6forum"  title="profil de bele3" href="/bele3?lang=fr">bele3</a></td>
+<td>
+<a href="fr/Challenges/Reseau/" title="R&#233;seau"><img src='IMG/logo/rubon182.svg?1637496499' alt='R&#233;seau' width='16' height='16' class='vmiddle' />&nbsp;</a>
+<a href="fr/Challenges/Reseau/ETHERNET-trame" title="Analyse de trame">ETHERNET - trame</a>
+</td>
+<td class="hide-for-small-only"><img src='squelettes/img/pays/fr.svg?1594376628' alt='fr' width='16' height='16' /></td>
+<td class="hide-for-small-only">25 janvier 2026&nbsp;to&nbsp;20:03</td>
+</tr>
+<tr class="row_odd">
+<td><a class=" txt_6forum"  title="profil de angel loera" href="/angel-loera?lang=fr">angel loera</a></td>
+<td>
+<a href="en/Challenges/Network/" title="Network"><img src='IMG/logo/rubon182.svg?1637496499' alt='Network' width='16' height='16' class='vmiddle' />&nbsp;</a>
+<a href="en/Challenges/Network/ETHERNET-frame" title="Frame analysis">ETHERNET - frame</a>
+</td>
+<td class="hide-for-small-only"><img src='squelettes/img/pays/en.svg?1637569714' alt='en' width='16' height='16' /></td>
+<td class="hide-for-small-only">25 janvier 2026&nbsp;to&nbsp;19:30</td>
+</tr>
+<tr class="row_even">
+<td><a class=" txt_6forum"  title="profil de YohanDef" href="/YohanDef?lang=fr">YohanDef</a></td>
+<td>
+<a href="fr/Challenges/Reseau/" title="R&#233;seau"><img src='IMG/logo/rubon182.svg?1637496499' alt='R&#233;seau' width='16' height='16' class='vmiddle' />&nbsp;</a>
+<a href="fr/Challenges/Reseau/ETHERNET-trame" title="Analyse de trame">ETHERNET - trame</a>
+</td>
+<td class="hide-for-small-only"><img src='squelettes/img/pays/fr.svg?1594376628' alt='fr' width='16' height='16' /></td>
+<td class="hide-for-small-only">25 janvier 2026&nbsp;to&nbsp;18:41</td>
+</tr>
+<tr class="row_odd">
+<td><a class=" txt_6forum"  title="profil de Kemel" href="/Kemel-447635?lang=fr">Kemel</a></td>
+<td>
+<a href="fr/Challenges/Reseau/" title="R&#233;seau"><img src='IMG/logo/rubon182.svg?1637496499' alt='R&#233;seau' width='16' height='16' class='vmiddle' />&nbsp;</a>
+<a href="fr/Challenges/Reseau/ETHERNET-trame" title="Analyse de trame">ETHERNET - trame</a>
+</td>
+<td class="hide-for-small-only"><img src='squelettes/img/pays/fr.svg?1594376628' alt='fr' width='16' height='16' /></td>
+<td class="hide-for-small-only">25 janvier 2026&nbsp;to&nbsp;18:32</td>
+</tr>
+<tr class="row_even">
+<td><a class=" txt_6forum"  title="profil de Chefmine" href="/Chefmine?lang=fr">Chefmine</a></td>
+<td>
+<a href="fr/Challenges/Reseau/" title="R&#233;seau"><img src='IMG/logo/rubon182.svg?1637496499' alt='R&#233;seau' width='16' height='16' class='vmiddle' />&nbsp;</a>
+<a href="fr/Challenges/Reseau/ETHERNET-trame" title="Analyse de trame">ETHERNET - trame</a>
+</td>
+<td class="hide-for-small-only"><img src='squelettes/img/pays/fr.svg?1594376628' alt='fr' width='16' height='16' /></td>
+<td class="hide-for-small-only">25 janvier 2026&nbsp;to&nbsp;18:28</td>
+</tr>
+<tr class="row_odd">
+<td><a class=" txt_6forum"  title="profil de joseph" href="/joseph-1057294?lang=fr">joseph</a></td>
+<td>
+<a href="en/Challenges/Network/" title="Network"><img src='IMG/logo/rubon182.svg?1637496499' alt='Network' width='16' height='16' class='vmiddle' />&nbsp;</a>
+<a href="en/Challenges/Network/ETHERNET-frame" title="Frame analysis">ETHERNET - frame</a>
+</td>
+<td class="hide-for-small-only"><img src='squelettes/img/pays/en.svg?1637569714' alt='en' width='16' height='16' /></td>
+<td class="hide-for-small-only">25 janvier 2026&nbsp;to&nbsp;18:07</td>
+</tr>
+<tr class="row_even">
+<td><a class=" txt_6forum"  title="profil de WindowsXP" href="/WindowsXP?lang=fr">WindowsXP</a></td>
+<td>
+<a href="en/Challenges/Network/" title="Network"><img src='IMG/logo/rubon182.svg?1637496499' alt='Network' width='16' height='16' class='vmiddle' />&nbsp;</a>
+<a href="en/Challenges/Network/ETHERNET-frame" title="Frame analysis">ETHERNET - frame</a>
+</td>
+<td class="hide-for-small-only"><img src='squelettes/img/pays/en.svg?1637569714' alt='en' width='16' height='16' /></td>
+<td class="hide-for-small-only">25 janvier 2026&nbsp;to&nbsp;17:58</td>
+</tr>
+<tr class="row_odd">
+<td><a class=" txt_6forum"  title="profil de Marwanbtsciel1" href="/Marwanbtsciel1?lang=fr">Marwanbtsciel1</a></td>
+<td>
+<a href="fr/Challenges/Reseau/" title="R&#233;seau"><img src='IMG/logo/rubon182.svg?1637496499' alt='R&#233;seau' width='16' height='16' class='vmiddle' />&nbsp;</a>
+<a href="fr/Challenges/Reseau/ETHERNET-trame" title="Analyse de trame">ETHERNET - trame</a>
+</td>
+<td class="hide-for-small-only"><img src='squelettes/img/pays/fr.svg?1594376628' alt='fr' width='16' height='16' /></td>
+<td class="hide-for-small-only">25 janvier 2026&nbsp;to&nbsp;17:54</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="pagination-centered">
+<ul class="pagination">
+<li class="current"><a href='/fr/Challenges/Reseau/ETHERNET-trame?q=%2Ffr%2FChallenges%2FReseau%2Fethernet-trame&amp;debut_dernieres_validations=0#pagination_dernieres_validations' class='lien_pagination gris' rel='nofollow'>0</a></li>
+<li><a href='/fr/Challenges/Reseau/ETHERNET-trame?q=%2Ffr%2FChallenges%2FReseau%2Fethernet-trame&amp;debut_dernieres_validations=10#pagination_dernieres_validations' class='lien_pagination gris' rel='nofollow'>10</a></li>
+<li><a href='/fr/Challenges/Reseau/ETHERNET-trame?q=%2Ffr%2FChallenges%2FReseau%2Fethernet-trame&amp;debut_dernieres_validations=20#pagination_dernieres_validations' class='lien_pagination gris' rel='nofollow'>20</a></li>
+<li><a href='/fr/Challenges/Reseau/ETHERNET-trame?q=%2Ffr%2FChallenges%2FReseau%2Fethernet-trame&amp;debut_dernieres_validations=30#pagination_dernieres_validations' class='lien_pagination gris' rel='nofollow'>30</a></li>
+<li><a href='/fr/Challenges/Reseau/ETHERNET-trame?q=%2Ffr%2FChallenges%2FReseau%2Fethernet-trame&amp;debut_dernieres_validations=40#pagination_dernieres_validations' class='lien_pagination gris' rel='nofollow'>40</a></li>
+<li><a href='/fr/Challenges/Reseau/ETHERNET-trame?q=%2Ffr%2FChallenges%2FReseau%2Fethernet-trame&amp;debut_dernieres_validations=50#pagination_dernieres_validations' class='lien_pagination gris' rel='nofollow'>50</a></li>
+<li><a href='/fr/Challenges/Reseau/ETHERNET-trame?q=%2Ffr%2FChallenges%2FReseau%2Fethernet-trame&amp;debut_dernieres_validations=60#pagination_dernieres_validations' class='lien_pagination gris' rel='nofollow'>60</a></li>
+<li><a href='/fr/Challenges/Reseau/ETHERNET-trame?q=%2Ffr%2FChallenges%2FReseau%2Fethernet-trame&amp;debut_dernieres_validations=70#pagination_dernieres_validations' class='lien_pagination gris' rel='nofollow'>70</a></li>
+<li><a href='/fr/Challenges/Reseau/ETHERNET-trame?q=%2Ffr%2FChallenges%2FReseau%2Fethernet-trame&amp;debut_dernieres_validations=80#pagination_dernieres_validations' class='lien_pagination gris' rel='nofollow'>80</a></li>
+<li><a href='/fr/Challenges/Reseau/ETHERNET-trame?q=%2Ffr%2FChallenges%2FReseau%2Fethernet-trame&amp;debut_dernieres_validations=490#pagination_dernieres_validations' class='lien_pagination ajax' rel='nofollow'>...</a></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div><!--ajaxbloc-->                
+<div class="clearfix"></div><br/>
+<div class='ajaxbloc' data-ajax-env='WUIDPeOw77I8CCTtevRgAyGTf3CRSlr6nNBg9X9eyLRyfmQ4CRzJmW54IhbU+QyoNYQxsHinIHFPDnSUzAUFJyb4gkHnBMrduyM+/GT4wMhLI7p1YzjGbFG4xlmv6YrxQt1UHh9SwfLwopHMTKbTBr9K0lmw6UU38+/QpA4xSvKht8UMFnaM/DbWSmrLWlwztKLnb4coZq1KhA==' data-origin="/fr/Challenges/Reseau/ETHERNET-trame">
+<script> 
+function reload_liste_challenge(){
+ajaxReload('liste_challenge_inc',{args:{id_rubrique:182,titre_co:$('#titre_co').val()},history:false});
+}
+$(document).ready(function(){
+var t = null;
+$("#titre_co").on('input propertychange paste', function() {
+if (t) clearTimeout(t);
+t = setTimeout(reload_liste_challenge, 250);
+});
+});
+</script>
+<div  class="small-12 columns"  >
+<div class="tile">
+<div class="t-body tb-padding"  >
+<div class="right">
+<form id="filtrer_liste_challenge" action="/fr/Challenges/Reseau/Kerberos-Authentification#liste_challenge" method="get">
+<input type="search" id="titre_co" name="titre_co"  placeholder="Filtrer" />
+</form>
+</div>                
+<div class='ajaxbloc ajax-id-liste_challenge_inc' data-ajax-env='WUEDPeKg87U82DCFyGXibVhVq+g8iBXhmCrK2W8FK/eV+2toGwtzq2c1/dWFZQ/j1jo42bTA4dP+EYME6g2zLMKmmr17+bb5dKl3h7XjoJBRhgRNdqupRnJCyWoiFYPKP8Qz+JNPMTHDdILNC9pQiaF60kfQ6QU7s9DHpKv5S/KpYc7sv6E0JESZ1GjAd+dxbWWqrl9uO4+7MKNhBQ==' data-origin="/fr/Challenges/Reseau/ETHERNET-trame">
+<h1 id="liste_challenge">
+<img src='IMG/logo/rubon5.svg?1637496507' alt='challenges' width='48' height='48' class='vmiddle' />&nbsp;<b class="color1">35</b>&nbsp;Challenges
+</h1>
+<a id='pagination_co' class='pagination_ancre'></a>
+<table class="text-center" style="width: 100%">
+<thead>
+<tr class="row_first">
+<td>Résultats</td>
+<td><a href='/fr/Challenges/Reseau/RIPv1-no-authentication?tri_co=titre' class='ajax'>Nom</a></td>
+<td class="hide-for-small-only"><a href='/fr/Challenges/Reseau/RIPv1-no-authentication?tri_co=nombre_validation' class='ajax'>Validations</a></td>
+<td><a href='/fr/Challenges/Reseau/RIPv1-no-authentication?tri_co=score' class='ajax'>Nombre de points</a>&nbsp;&nbsp;<a class="mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Flegende&amp;lang=fr#score" title="Explications sur les scores"><img src="squelettes/img/question_mark.svg" width="16" height="16" alt="Explications sur les scores"/></a></td>
+<td class="text-center show-for-medium-up"><a href='/fr/Challenges/Reseau/RIPv1-no-authentication?tri_co=id_mot' class='ajax'>Difficulté</a>&nbsp;&nbsp;<a class="mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Flegende&amp;lang=fr#difficulte" title="Difficulté"><img src="squelettes/img/question_mark.svg" width="16" height="16" alt="Difficulté"/></a></td>
+<td class="text-center show-for-large-up"><a href='/fr/Challenges/Reseau/RIPv1-no-authentication?tri_co=auteurs' class='ajax'>Auteur</a></td>
+<td class="show-for-medium-up"><a href='/fr/Challenges/Reseau/RIPv1-no-authentication?tri_co=note_ponderee' class='ajax'>Note</a>&nbsp;&nbsp;<a class="mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Flegende&amp;lang=fr#note" title="Notation"><img src="squelettes/img/question_mark.svg" width="16" height="16" alt="Notation"/></a></td>
+<td class="show-for-large-up"><a href='/fr/Challenges/Reseau/RIPv1-no-authentication?tri_co=nombre_solution' class='ajax'>Solution</a></td>
+<td class="show-for-large-up"><a href='/fr/Challenges/Reseau/RIPv1-no-authentication?tri_co=date_publication' class='ajax'>Date</a></td>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/valide.svg" width="12" height="12" alt="valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/FTP-Authentification" title="Analyse de capture r&#233;seau">FTP - Authentification</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 30%; background-color: #ff9c70;">30%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=96&amp;lang=fr" title="Qui a validé ?">114301</a>
+</span>
+</td>
+<td>5</td>
+<td class="show-for-medium-up">
+<a href="tag/Tres-facile?lang=fr" title="Tr&#232;s facile : Premier niveau des challenges"><span class="difficulte difficulte1   difficulte1a" style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_1comite" title="profil de g0uZ" href="/g0uZ?lang=fr">g0uZ</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">9</td>
+<td class="show-for-large-up">30 août 2010</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/TELNET-authentification" title="Analyse de capture r&#233;seau">TELNET - authentification</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 27%; background-color: #ff9c70;">27%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=98&amp;lang=fr" title="Qui a validé ?">101565</a>
+</span>
+</td>
+<td>5</td>
+<td class="show-for-medium-up">
+<a href="tag/Tres-facile?lang=fr" title="Tr&#232;s facile : Premier niveau des challenges"><span class="difficulte difficulte1   difficulte1a" style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_1comite" title="profil de g0uZ" href="/g0uZ?lang=fr">g0uZ</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">6</td>
+<td class="show-for-large-up">30 août 2010</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/valide.svg" width="12" height="12" alt="valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/ETHERNET-trame" title="Analyse de trame">ETHERNET - trame</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 22%; background-color: #ff9c70;">22%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=336&amp;lang=fr" title="Qui a validé ?">81216</a>
+</span>
+</td>
+<td>10</td>
+<td class="show-for-medium-up">
+<a href="tag/Tres-facile?lang=fr" title="Tr&#232;s facile : Premier niveau des challenges"><span class="difficulte difficulte1   difficulte1a" style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de abu_youssef" href="/abu_youssef?lang=fr">abu_youssef</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">10</td>
+<td class="show-for-large-up">20 mai 2013</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/Kerberos-Authentification" title="OUAF OUAF OUAF !">Kerberos - Authentification</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=4592&amp;lang=fr" title="Qui a validé ?">2975</a>
+</span>
+</td>
+<td>10</td>
+<td class="show-for-medium-up">
+<a href="tag/Facile?lang=fr" title="Facile : Deuxi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2   difficulte2a" style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de nuts." href="/nuts7?lang=fr">nuts.</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note4.svg?1640086082" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">6</td>
+<td class="show-for-large-up">28 mai 2024</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/NTLM-Authentification" title="User::Domain:Server Challenge:HMAC-MD5 (NTProofStr):NTLMv2Response">NTLM - Authentification</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=4591&amp;lang=fr" title="Qui a validé ?">2751</a>
+</span>
+</td>
+<td>10</td>
+<td class="show-for-medium-up">
+<a href="tag/Facile?lang=fr" title="Facile : Deuxi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2   difficulte2a" style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de nuts." href="/nuts7?lang=fr">nuts.</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">5</td>
+<td class="show-for-large-up">28 mai 2024</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/Authentification-twitter" title="Analyse de capture r&#233;seau">Authentification twitter</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 22%; background-color: #ff9c70;">22%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=100&amp;lang=fr" title="Qui a validé ?">83925</a>
+</span>
+</td>
+<td>15</td>
+<td class="show-for-medium-up">
+<a href="tag/Facile?lang=fr" title="Facile : Deuxi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2   difficulte2a" style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_1comite" title="profil de g0uZ" href="/g0uZ?lang=fr">g0uZ</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">9</td>
+<td class="show-for-large-up">30 août 2010</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/Bluetooth-Fichier-inconnu" title="Google est ton ami">Bluetooth - Fichier inconnu</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 10%; background-color: #ff4b4b;">10%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=1489&amp;lang=fr" title="Qui a validé ?">34697</a>
+</span>
+</td>
+<td>15</td>
+<td class="show-for-medium-up">
+<a href="tag/Facile?lang=fr" title="Facile : Deuxi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2   difficulte2a" style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de Neptune" href="/Neptune?lang=fr">Neptune</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note4.svg?1640086082" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">10</td>
+<td class="show-for-large-up">1er mars 2019</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/CISCO-mot-de-passe" title="Tous les hash n&#039;en sont pas.">CISCO - mot de passe</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 15%; background-color: #ff4b4b;">15%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=360&amp;lang=fr" title="Qui a validé ?">54358</a>
+</span>
+</td>
+<td>15</td>
+<td class="show-for-medium-up">
+<a href="tag/Facile?lang=fr" title="Facile : Deuxi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2   difficulte2a" style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de Thanat0s" href="/Thanat0s?lang=fr">Thanat0s</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">7</td>
+<td class="show-for-large-up">10 juillet 2013</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/DNS-transfert-de-zone" title="Service r&#233;seau">DNS - transfert de zone</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 8%; background-color: #ff4b4b;">8%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=321&amp;lang=fr" title="Qui a validé ?">27667</a>
+</span>
+</td>
+<td>15</td>
+<td class="show-for-medium-up">
+<a href="tag/Facile?lang=fr" title="Facile : Deuxi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2   difficulte2a" style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_1comite" title="profil de g0uZ" href="/g0uZ?lang=fr">g0uZ</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note4.svg?1640086082" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">8</td>
+<td class="show-for-large-up">20 mai 2013</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/IP-Time-To-Live" title="Analyse de capture r&#233;seau">IP - Time To Live</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 13%; background-color: #ff4b4b;">13%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=108&amp;lang=fr" title="Qui a validé ?">49958</a>
+</span>
+</td>
+<td>15</td>
+<td class="show-for-medium-up">
+<a href="tag/Facile?lang=fr" title="Facile : Deuxi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2   difficulte2a" style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_1comite" title="profil de g0uZ" href="/g0uZ?lang=fr">g0uZ</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note4.svg?1640086082" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">5</td>
+<td class="show-for-large-up">1er septembre 2010</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/LDAP-null-bind" title="Service r&#233;seau">LDAP - null bind</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 5%; background-color: #ff4b4b;">5%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=345&amp;lang=fr" title="Qui a validé ?">16897</a>
+</span>
+</td>
+<td>15</td>
+<td class="show-for-medium-up">
+<a href="tag/Facile?lang=fr" title="Facile : Deuxi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2   difficulte2a" style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_1comite" title="profil de g0uZ" href="/g0uZ?lang=fr">g0uZ</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note4.svg?1640086082" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">7</td>
+<td class="show-for-large-up">26 mai 2013</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/OPSF-Authentification" title="Authentication Message-digest">OSPF - Authentification </a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 2%; background-color: #ff4b4b;">2%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=2942&amp;lang=fr" title="Qui a validé ?">3869</a>
+</span>
+</td>
+<td>15</td>
+<td class="show-for-medium-up">
+<a href="tag/Facile?lang=fr" title="Facile : Deuxi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2   difficulte2a" style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de Tidusrose" href="/Tidusrose?lang=fr">Tidusrose</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">3</td>
+<td class="show-for-large-up">5 juin 2023</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/POP-APOP" title="Authentification s&#233;curis&#233;e">POP - APOP</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 3%; background-color: #ff4b4b;">3%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=2339&amp;lang=fr" title="Qui a validé ?">8755</a>
+</span>
+</td>
+<td>15</td>
+<td class="show-for-medium-up">
+<a href="tag/Facile?lang=fr" title="Facile : Deuxi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2   difficulte2a" style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de lutzenfried" href="/lutzenfried?lang=fr">lutzenfried</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note4.svg?1640086082" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">8</td>
+<td class="show-for-large-up">11 novembre 2020</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/RF-AM-Transmission" title="Premiers pas dans les radios fr&#233;quences">RF - AM Transmission</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=2319&amp;lang=fr" title="Qui a validé ?">2699</a>
+</span>
+</td>
+<td>15</td>
+<td class="show-for-medium-up">
+<a href="tag/Facile?lang=fr" title="Facile : Deuxi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2   difficulte2a" style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_5pre" title="profil de Podalirius" href="/Podalirius?lang=fr">Podalirius</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note4.svg?1640086082" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">10</td>
+<td class="show-for-large-up">28 janvier 2021</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/Extraction-de-donnees" title="SMB, FTP, NFS">Extraction de données</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=4328&amp;lang=fr" title="Qui a validé ?">1381</a>
+</span>
+</td>
+<td>20</td>
+<td class="show-for-medium-up">
+<a href="tag/Moyen?lang=fr" title="Moyen : Troisi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3   difficulte3a" style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de Tidusrose" href="/Tidusrose?lang=fr">Tidusrose</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">7</td>
+<td class="show-for-large-up">28 mai 2024</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/RF-FM-Transmission" title="Bases de la modulation">RF - FM Transmission</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=2809&amp;lang=fr" title="Qui a validé ?">728</a>
+</span>
+</td>
+<td>20</td>
+<td class="show-for-medium-up">
+<a href="tag/Facile?lang=fr" title="Facile : Deuxi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2   difficulte2a" style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_5pre" title="profil de Podalirius" href="/Podalirius?lang=fr">Podalirius</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note4.svg?1640086082" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">4</td>
+<td class="show-for-large-up">28 janvier 2021</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/RF-Key-Fixed-Code" title="Crochetage de serrures &#224; distance">RF - Key Fixed Code</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=2220&amp;lang=fr" title="Qui a validé ?">547</a>
+</span>
+</td>
+<td>20</td>
+<td class="show-for-medium-up">
+<a href="tag/Moyen?lang=fr" title="Moyen : Troisi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3   difficulte3a" style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_5pre" title="profil de Podalirius" href="/Podalirius?lang=fr">Podalirius</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note4.svg?1640086082" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">4</td>
+<td class="show-for-large-up">28 janvier 2021</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/SIP-Authentification" title="Analyse de capture r&#233;seau">SIP - Authentification</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 10%; background-color: #ff4b4b;">10%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=102&amp;lang=fr" title="Qui a validé ?">37011</a>
+</span>
+</td>
+<td>20</td>
+<td class="show-for-medium-up">
+<a href="tag/Facile?lang=fr" title="Facile : Deuxi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2   difficulte2a" style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_1comite" title="profil de g0uZ" href="/g0uZ?lang=fr">g0uZ</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note3.svg?1640086076" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">4</td>
+<td class="show-for-large-up">30 août 2010</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/ETHERNET-Transmission-alteree" title="Reconstitution de trame">ETHERNET - Transmission altérée</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 4%; background-color: #ff4b4b;">4%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=347&amp;lang=fr" title="Qui a validé ?">12300</a>
+</span>
+</td>
+<td>25</td>
+<td class="show-for-medium-up">
+<a href="tag/Moyen?lang=fr" title="Moyen : Troisi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3   difficulte3a" style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de Thanat0s" href="/Thanat0s?lang=fr">Thanat0s</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note4.svg?1640086082" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">4</td>
+<td class="show-for-large-up">31 mai 2013</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/Trafic-Global-System-for-Mobile-communications" title="Analyse de capture r&#233;seau">Trafic Global System for Mobile communications</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 2%; background-color: #ff4b4b;">2%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=60&amp;lang=fr" title="Qui a validé ?">7213</a>
+</span>
+</td>
+<td>25</td>
+<td class="show-for-medium-up">
+<a href="tag/Moyen?lang=fr" title="Moyen : Troisi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3   difficulte3a" style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de koma" href="/koma?lang=fr">koma</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note4.svg?1640086082" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">7</td>
+<td class="show-for-large-up">25 avril 2012</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/HTTP-DNS-Rebinding" title="TTL=0">HTTP - DNS Rebinding</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=2349&amp;lang=fr" title="Qui a validé ?">1025</a>
+</span>
+</td>
+<td>30</td>
+<td class="show-for-medium-up">
+<a href="tag/Moyen?lang=fr" title="Moyen : Troisi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3   difficulte3a" style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de erk3" href="/erk3?lang=fr">erk3</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note4.svg?1640086082" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">7</td>
+<td class="show-for-large-up">10 décembre 2020</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/SSL-echange-HTTP" title="Analyse de capture r&#233;seau">SSL - échange HTTP</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 2%; background-color: #ff4b4b;">2%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=104&amp;lang=fr" title="Qui a validé ?">7100</a>
+</span>
+</td>
+<td>30</td>
+<td class="show-for-medium-up">
+<a href="tag/Moyen?lang=fr" title="Moyen : Troisi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3   difficulte3a" style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_1comite" title="profil de g0uZ" href="/g0uZ?lang=fr">g0uZ</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note4.svg?1640086082" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">8</td>
+<td class="show-for-large-up">30 août 2010</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/Netfilter-erreurs-courantes" title="Si &#231;a ne passe pas, essaie encore !">Netfilter - erreurs courantes</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=448&amp;lang=fr" title="Qui a validé ?">3082</a>
+</span>
+</td>
+<td>35</td>
+<td class="show-for-medium-up">
+<a href="tag/Moyen?lang=fr" title="Moyen : Troisi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3   difficulte3a" style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de spump" href="/spump?lang=fr">spump</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">10</td>
+<td class="show-for-large-up">3 janvier 2015</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/SNMP-Authentification" title="Version 3">SNMP - Authentification</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 2%; background-color: #ff4b4b;">2%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=374&amp;lang=fr" title="Qui a validé ?">3912</a>
+</span>
+</td>
+<td>35</td>
+<td class="show-for-medium-up">
+<a href="tag/Moyen?lang=fr" title="Moyen : Troisi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3   difficulte3a" style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de 0x0ff" href="/0x0ff-7247?lang=fr">0x0ff</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">11</td>
+<td class="show-for-large-up">17 octobre 2014</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/Wired-Equivalent-Privacy" title="Analyse de capture r&#233;seau">Wired Equivalent Privacy</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=273&amp;lang=fr" title="Qui a validé ?">1610</a>
+</span>
+</td>
+<td>35</td>
+<td class="show-for-medium-up">
+<a href="tag/Moyen?lang=fr" title="Moyen : Troisi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3   difficulte3a" style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de Deva" href="/Deva?lang=fr">Deva</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note3.svg?1640086076" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">10</td>
+<td class="show-for-large-up">20 novembre 2012</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/Charge-ICMP" title="Analyse de capture r&#233;seau">Charge ICMP</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 2%; background-color: #ff4b4b;">2%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=106&amp;lang=fr" title="Qui a validé ?">5138</a>
+</span>
+</td>
+<td>40</td>
+<td class="show-for-medium-up">
+<a href="tag/Moyen?lang=fr" title="Moyen : Troisi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3   difficulte3a" style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_1comite" title="profil de g0uZ" href="/g0uZ?lang=fr">g0uZ</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note2.svg?1640086068" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">9</td>
+<td class="show-for-large-up">30 août 2010</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/Video-analogique" title="Never Twice the Same Color">Vidéo analogique</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=4593&amp;lang=fr" title="Qui a validé ?">101</a>
+</span>
+</td>
+<td>40</td>
+<td class="show-for-medium-up">
+<a href="tag/Moyen?lang=fr" title="Moyen : Troisi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3   difficulte3a" style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_1comite" title="profil de kevin.mille" href="/kevin-mille?lang=fr">kevin.mille</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">4</td>
+<td class="show-for-large-up">23 juin 2025</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/ARP-Spoofing-Ecoute-active" title="Si seulement je pouvais &#233;couter ce qu&#039;ils disent...">ARP Spoofing - Écoute active</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=4016&amp;lang=fr" title="Qui a validé ?">440</a>
+</span>
+</td>
+<td>45</td>
+<td class="show-for-medium-up">
+<a href="tag/Moyen?lang=fr" title="Moyen : Troisi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3   difficulte3a" style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_1comite" title="profil de voydstack" href="/voydstack?lang=fr">voydstack</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">6</td>
+<td class="show-for-large-up">5 juin 2023</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/XMPP-Authentification" title="Analyse de capture r&#233;seau">XMPP - Authentification </a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=196&amp;lang=fr" title="Qui a validé ?">2635</a>
+</span>
+</td>
+<td>45</td>
+<td class="show-for-medium-up">
+<a href="tag/Moyen?lang=fr" title="Moyen : Troisi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3   difficulte3a" style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de koma" href="/koma?lang=fr">koma</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">10</td>
+<td class="show-for-large-up">4 février 2012</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/RF-Transmission-satellite" title="Qu&#039;il est long ce scan !">RF - Transmission satellite</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=2811&amp;lang=fr" title="Qui a validé ?">223</a>
+</span>
+</td>
+<td>50</td>
+<td class="show-for-medium-up">
+<a href="tag/Difficile?lang=fr" title="Difficile : Quatri&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4   difficulte4a" style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_5pre" title="profil de Podalirius" href="/Podalirius?lang=fr">Podalirius</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">4</td>
+<td class="show-for-large-up">28 janvier 2021</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/WPA2-Enterprise-4431" title="802.1X-EAP-RADIUS">WPA2 - Enterprise</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=4431&amp;lang=fr" title="Qui a validé ?">181</a>
+</span>
+</td>
+<td>50</td>
+<td class="show-for-medium-up">
+<a href="tag/Difficile?lang=fr" title="Difficile : Quatri&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4   difficulte4a" style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de cb34" href="/cb34?lang=fr">cb34</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">6</td>
+<td class="show-for-large-up">28 mai 2024</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/ARP-Spoofing-L-homme-du-milieu" title="Si seulement je pouvais prendre part &#224; leur conversation">ARP Spoofing - L&#8217;homme du milieu</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=4017&amp;lang=fr" title="Qui a validé ?">149</a>
+</span>
+</td>
+<td>55</td>
+<td class="show-for-medium-up">
+<a href="tag/Difficile?lang=fr" title="Difficile : Quatri&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4   difficulte4a" style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_1comite" title="profil de o71" href="/o71?lang=fr">o71</a> ,  
+<a class="txt_1comite" title="profil de voydstack" href="/voydstack?lang=fr">voydstack</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">4</td>
+<td class="show-for-large-up">28 mai 2024</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/RF-Bande-L" title=" Gladys passe t-elle &#224; l&#039;Est ?">RF - Bande L</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=2903&amp;lang=fr" title="Qui a validé ?">89</a>
+</span>
+</td>
+<td>55</td>
+<td class="show-for-medium-up">
+<a href="tag/Moyen?lang=fr" title="Moyen : Troisi&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3   difficulte3a" style="height: 0.6rem;"></span><span class="difficulte difficulte4 " style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de Matioupi" href="/Matioupi?lang=fr">Matioupi</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">1</td>
+<td class="show-for-large-up">18 mars 2022</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/RIPv1-no-authentication" title="Une injection sans contrainte">RIPv1 - no authentication</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=2344&amp;lang=fr" title="Qui a validé ?">55</a>
+</span>
+</td>
+<td>55</td>
+<td class="show-for-medium-up">
+<a href="tag/Difficile?lang=fr" title="Difficile : Quatri&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4   difficulte4a" style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_0minirezo" title="profil de apges01" href="/apges01?lang=fr">apges01</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">2</td>
+<td class="show-for-large-up">15 décembre 2020</td>
+</tr>
+<tr>
+<td>
+<img class="vmiddle" src="squelettes/img/pas_valide.svg" width="12" height="12" alt="pas_valide" />
+</td>
+<td class="text-left">
+<a href="fr/Challenges/Reseau/WPA3-SAE" title="Simultaneous Authentication of Equals">WPA3 - SAE</a>
+</td>
+<td class="hide-for-small-only text-left">
+<span class="gras left text-left" style="display: inline-block; border-radius: 5px; padding: 2px; width: 1%; background-color: #ff4b4b;">1%</span>
+<span class="right">
+<a class="txs gris mediabox pageajax" data-box-type="ajax" href="./?page=structure&amp;inc=inclusions%2Fqui_a_valid&amp;id_r=182&amp;id_c=4432&amp;lang=fr" title="Qui a validé ?">80</a>
+</span>
+</td>
+<td>90</td>
+<td class="show-for-medium-up">
+<a href="tag/Difficile?lang=fr" title="Difficile : Quatri&#232;me niveau des challenges"><span class="difficulte difficulte1 " style="height: 0.2rem;"></span><span class="difficulte difficulte2 " style="height: 0.4rem;"></span><span class="difficulte difficulte3 " style="height: 0.6rem;"></span><span class="difficulte difficulte4   difficulte4a" style="height: 0.8rem;"></span><span class="difficulte difficulte36 " style="height: 1rem;"></span></a>
+</td>
+<td class="show-for-large-up">
+<a class="txt_6forum" title="profil de cb34" href="/cb34?lang=fr">cb34</a>
+</td>
+<td class="show-for-medium-up"><img src="squelettes/img/note/note5.svg?1640086090" alt="" width="16" height="16" class="note_smiley" /></td>
+<td class="show-for-large-up">2</td>
+<td class="show-for-large-up">28 mai 2024</td>
+</tr>
+</tbody>
+</table>
+</div><!--ajaxbloc-->                
+</div>
+</div>
+</div>
+</div><!--ajaxbloc-->                
+</main>
+<footer id="footer" role="contentinfo" itemscope itemtype="https://schema.org/WPFooter">
+<div class="text-center">
+<div class="columns small-12">
+<img src="IMG/logo/siteon0.svg?1637496509" class="vmiddle grayscale" alt="Root-Me" width="48" height="48"/>
+</div>
+<div class="columns small-12">
+<a class="gris2" title="Confidentialité" href="https://www.root-me.org?page=structure&amp;inc=page-confidentialite&amp;lang=fr">Confidentialité</a>
+&nbsp;|&nbsp;
+<a class="gris2" title="Mentions Légales" href="https://www.root-me.org?page=structure&amp;inc=page-mentions_legales&amp;lang=fr">Mentions Légales</a>
+&nbsp;|&nbsp;
+<a class="gris2" title="Conditions Générales d'Utilisation" href="https://www.root-me.org?page=structure&amp;inc=page-CGU&amp;lang=fr">Conditions Générales d'Utilisation</a><br/>
+Root Me&nbsp;: plateforme d&#8217;apprentissage dédiée au Hacking et à la Sécurité de l&#8217;Information<br/>
+©&nbsp;2010&nbsp;-&nbsp;2026<br/>
+<hr/>
+</div>
+</div>
+<div class="text-center">
+<div class="small-10 large-3 small-centered columns">
+<div class="small-2 columns"><a href="https://www.twitch.tv/rootme" title="Twitch"><img src='squelettes/img/twitch.svg?1683788777' alt='Twitch' class='vmiddle grayscale grayscale_hoveroff' width='24' height='24' /></a></div>
+<div class="small-2 columns"><a href="https://www.youtube.com/channel/UCnvB1SJdVYv-1zkByuYM73g" title="Youtube"><img src='squelettes/img/youtube.svg?1683788771' alt='Youtube' class='vmiddle grayscale grayscale_hoveroff' width='24' height='24' /></a></div>
+<div class="small-2 columns"><a href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fwww.root-me.org%2F&region=follow_link&screen_name=rootme_org&tw_p=followbutton" title="Twitter"><img src='squelettes/img/twitter.svg?1573023931' alt='Twitter' class='vmiddle grayscale grayscale_hoveroff' width='24' height='24' /></a></div>
+<div class="small-2 columns"><a href="https://fr.linkedin.com/company/root-me-pro" title="Linkedin"><img src='squelettes/img/linkedin.svg?1573023925' alt='Linkedin' class='vmiddle grayscale grayscale_hoveroff' width='24' height='24' /></a></div>
+<div class="small-2 columns"><a href="https://www.root-me.org?page=flux_rss&amp;lang=fr" title="Flux Dynamique"><img src='squelettes/img/rss.svg?1573023935' alt='Flux Dynamique' class='vmiddle grayscale grayscale_hoveroff' width='24' height='24' /></a></div>
+<div class="small-2 columns"><a href="https://discord.gg/XejsBJdUch" title="Discord"><img src='squelettes/img/discord.svg?1640079279' alt='Discord' class='vmiddle grayscale grayscale_hoveroff' width='24' height='24' /></a></div>
+</div>
+</div>
+</footer>        </div>
+</div>
+</div>
+</body>
+</html>

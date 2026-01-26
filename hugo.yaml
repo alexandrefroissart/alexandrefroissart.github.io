@@ -1,0 +1,225 @@
+baseURL: "https://alexandrefroissart.github.io/"
+languageCode: "fr-FR"
+title: "Alexandre FROISSART"
+theme: "hugo-theme-stack-3.33.0"
+
+defaultContentLanguage: "fr"
+defaultContentLanguageInSubdir: false
+hasCJKLanguage: false
+
+languages:
+  fr:
+    languageName: "🇫🇷 Français"
+    weight: 1
+    menu:
+      main:
+        - identifier: home
+          name: Home
+          url: /
+          weight: 1
+          params:
+            icon: home
+        - identifier: rootme
+          name: Root-Me
+          url: /rootme/
+          weight: 10
+          params:
+            icon: rootme
+        - identifier: sadservers
+          name: SadServers
+          url: /sadservers/
+          weight: 20
+          params:
+            icon: sadservers
+        - identifier: misc
+          name: Misc
+          url: /misc/
+          weight: 30
+          params:
+            icon: misc
+        - identifier: archives
+          name: Archives
+          url: /archives/
+          weight: 40
+          params:
+            icon: archives
+        - identifier: search
+          name: Search
+          url: /search/
+          weight: 50
+          params:
+            icon: search
+      social:
+        - identifier: github
+          name: GitHub
+          url: "https://github.com/alexandrefroissart"
+          params:
+            icon: brand-github
+        - identifier: linkedin
+          name: LinkedIn
+          url: "https://www.linkedin.com/in/alexandre-froissart/"
+          params:
+            icon: brand-linkedin
+    permalinks:
+      root-me-challenges: /rootme/:slug/
+      sadservers: /sadservers/:slug/
+      misc: /misc/:slug/
+      page: /:slug/
+
+  en:
+    languageName: "🇬🇧 English"
+    weight: 2
+    menu:
+      main:
+        - identifier: home
+          name: Home
+          url: /en/
+          weight: 1
+          params:
+            icon: home
+        - identifier: rootme
+          name: Root-Me
+          url: /en/root-me-challenges/
+          weight: 10
+          params:
+            icon: rootme
+        - identifier: sadservers
+          name: SadServers
+          url: /en/sadservers/
+          weight: 20
+          params:
+            icon: sadservers
+        - identifier: misc
+          name: Misc
+          url: /en/misc/
+          weight: 30
+          params:
+            icon: misc
+        - identifier: archives
+          name: Archives
+          url: /en/archives/
+          weight: 40
+          params:
+            icon: archives
+        - identifier: search
+          name: Search
+          url: /en/search/
+          weight: 50
+          params:
+            icon: search
+      social:
+        - identifier: github
+          name: GitHub
+          url: "https://github.com/alexandrefroissart"
+          params:
+            icon: brand-github
+        - identifier: linkedin
+          name: LinkedIn
+          url: "https://www.linkedin.com/in/alexandre-froissart/"
+          params:
+            icon: brand-linkedin
+    permalinks:
+      root-me-challenges: /root-me-challenges/:slug/
+      sadservers: /sadservers/:slug/
+      misc: /misc/:slug/
+      page: /:slug/
+
+disableLanguages:
+  - zh-cn
+  - zh-tw
+  - ja
+  - ar
+  
+pagination:
+  pagerSize: 10
+
+
+
+taxonomies:
+  tag: tags
+  category: categories
+
+params:
+  mainSections:
+    - root-me-challenges
+    - sadservers
+    - misc
+
+  featuredImageField: image
+  rssFullContent: true
+  favicon: /favicon.svg
+
+  sidebar:
+    emoji: "💻"
+    subtitle: "Page projet"
+    avatar:
+      enabled: true
+      local: true
+      # IMPORTANT :
+      # - si ton avatar est dans static/img/me.png -> src: "img/me.png"
+      # - surtout PAS "static/img/..."
+      src: "img/me.png"
+
+  article:
+    math: false
+    toc: true
+    readingTime: true
+
+  widgets:
+    homepage:
+      - type: search
+      - type: rootme
+      - type: archives
+        params:
+          limit: 10
+      - type: categories
+        params:
+          limit: 20
+      - type: tag-cloud
+        params:
+          limit: 30
+    page:
+      - type: toc
+      - type: rootme
+
+  colorScheme:
+    toggle: true
+    default: dark
+
+  imageProcessing:
+    cover:
+      enabled: true
+    content:
+      enabled: true
+
+
+
+  # Social items moved to menu.social per language
+
+
+related:
+  includeNewer: true
+  threshold: 60
+  toLower: false
+  indices:
+    - name: tags
+      weight: 100
+    - name: categories
+      weight: 200
+
+markup:
+  goldmark:
+    renderer:
+      unsafe: true
+  tableOfContents:
+    endLevel: 4
+    ordered: true
+    startLevel: 2
+  highlight:
+    noClasses: false
+    codeFences: true
+    guessSyntax: true
+    lineNoStart: 1
+    lineNos: true
+    lineNumbersInTable: true
+    tabWidth: 4

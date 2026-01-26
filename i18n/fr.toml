@@ -1,0 +1,36 @@
+[rootme_author]
+other = "Auteur"
+
+[rootme_level]
+other = "Niveau"
+
+[rootme_validations]
+other = "Validations"
+
+[rootme_challengers]
+other = "Challengeurs"
+
+[rootme_category]
+other = "Rubrique"
+
+[rootme_see]
+other = "Voir sur Root-Me"
+
+# SadServers translations
+[sadservers_see]
+other = "Voir sur SadServers"
+
+[sadservers_description]
+other = "Description"
+
+[sadservers_root_access]
+other = "Accès Root (sudo)"
+
+[sadservers_access]
+other = "Accès"
+
+[sadservers_time]
+other = "Temps pour résoudre"
+
+[sadservers_test]
+other = "Test"

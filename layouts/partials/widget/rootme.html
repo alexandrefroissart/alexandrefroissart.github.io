@@ -1,0 +1,129 @@
+{{/*
+Root-Me Profile Widget
+Affiche le profil Root-Me avec données statiques générées par le script fetch-rootme.py
+*/}}
+
+<section class="widget rootme-widget">
+    <div class="widget-icon">
+        {{ partial "helper/icon" "rootme" }}
+    </div>
+    <h2 class="widget-title section-title">Profil Root-Me</h2>
+
+    <div class="rootme-container">
+        {{ with $.Context.Site.Data.rootme }}
+        <div class="rootme-card">
+            <div class="rootme-header">
+                <span class="rootme-verified" title="Données vérifiées via l'API Root-Me">
+                    ✓ Vérifié
+                </span>
+            </div>
+            <div class="rootme-stats">
+                <div class="rootme-stat">
+                    <span class="rootme-value">{{ .score }}</span>
+                    <span class="rootme-label">Points</span>
+                </div>
+                <div class="rootme-stat">
+                    <span class="rootme-value">#{{ .position }}</span>
+                    <span class="rootme-label">Rang</span>
+                </div>
+                <div class="rootme-stat">
+                    <span class="rootme-value">{{ .challenges_resolus }}</span>
+                    <span class="rootme-label">Challenges</span>
+                </div>
+            </div>
+            <a href="{{ .profil_url }}" target="_blank" rel="noopener" class="rootme-link">
+                Voir sur Root-Me →
+            </a>
+            <p class="rootme-update">Màj: {{ .derniere_mise_a_jour }}</p>
+        </div>
+        {{ else }}
+        <div class="rootme-card">
+            <a href="https://www.root-me.org/Alexandre-Froissart" target="_blank" rel="noopener" class="rootme-link">
+                Voir le profil Root-Me →
+            </a>
+        </div>
+        {{ end }}
+    </div>
+</section>
+
+<style>
+    .rootme-widget {
+        margin-bottom: 1.5rem;
+    }
+
+    .rootme-container {
+        margin-top: 0.75rem;
+    }
+
+    .rootme-card {
+        background: var(--card-background);
+        border-radius: var(--card-border-radius);
+        padding: 1rem;
+        box-shadow: var(--shadow-l1);
+    }
+
+    .rootme-header {
+        display: flex;
+        justify-content: flex-end;
+        margin-bottom: 0.75rem;
+    }
+
+    .rootme-verified {
+        background: linear-gradient(135deg, #10b981, #059669);
+        color: white;
+        padding: 0.2rem 0.6rem;
+        border-radius: 1rem;
+        font-size: 0.65rem;
+        font-weight: 600;
+    }
+
+    .rootme-stats {
+        display: flex;
+        justify-content: space-around;
+        text-align: center;
+        margin-bottom: 0.75rem;
+    }
+
+    .rootme-stat {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .rootme-value {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--accent-color);
+    }
+
+    .rootme-label {
+        font-size: 0.65rem;
+        color: var(--card-text-color-secondary);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .rootme-link {
+        display: block;
+        text-align: center;
+        padding: 0.5rem;
+        background: #121212;
+        color: #ffffff;
+        border-radius: var(--card-border-radius);
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 0.85rem;
+        transition: opacity 0.2s;
+    }
+
+    .rootme-link:hover {
+        opacity: 0.9;
+    }
+
+    .rootme-update {
+        text-align: center;
+        font-size: 0.6rem;
+        color: var(--card-text-color-tertiary);
+        margin-top: 0.5rem;
+        margin-bottom: 0;
+    }
+</style>
