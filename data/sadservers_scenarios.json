@@ -11,8 +11,7 @@
     "access": "Public",
     "description": "A developer created a testing program that is continuously writing to a log file /var/log/bad.log and filling up disk. You can check for example with tail -f /var/log/bad.log. This program is no longer needed. Find it and terminate it. Do not delete the log file.",
     "root_access": true,
-    "test": "The log file size doesn't change (within a time interval bigger than the rate of change of the log file).",
-    "check_script": "/home/admin/agent/check.sh",
+    "test": "The log file size doesn't change (within a time interval bigger than the rate of change of the log file). The \"Check My Solution\" button runs the script /home/admin/agent/check.sh, which you can see and execute.",
     "time_to_solve": "10 minutes"
   },
   "saskatoon": {
@@ -48,14 +47,19 @@
   "monaco": {
     "url": "https://sadservers.com/scenario/monaco",
     "titre": "\"Monaco\": Disappearing Trick",
+    "niveau": "Hard",
+    "type": "Hack",
     "tags": [
       "unusual-tricky",
       "hack",
       "python",
       "systemd"
     ],
+    "access": "Email",
     "description": "There is a web server on :5000 with a form. POSTing the correct form password into this web service will return a secret. Save this secret provided by the web page (not the password you sent to it) to /home/admin/mysolution, for example: echo \"SecretFromWebSite\" > ~/mysolution TIP: a developer worked on the web server code in this VM, using the same 'admin' account. Scenario credit: PuppiestDoggo",
-    "test": "md5sum /home/admin/mysolution returns a250aa19f16dda6f9fcef286f035ec4b"
+    "root_access": false,
+    "test": "md5sum /home/admin/mysolution returns a250aa19f16dda6f9fcef286f035ec4b",
+    "time_to_solve": "30 minutes"
   },
   "bucharest": {
     "url": "https://sadservers.com/scenario/bucharest",
@@ -68,13 +72,18 @@
   },
   "tokyo": {
     "url": "https://sadservers.com/scenario/tokyo",
-    "titre": "\"Tokyo\": can&#x27;t serve web file",
+    "titre": "\"Tokyo\": can't serve web file",
+    "niveau": "Medium",
+    "type": "Fix",
     "tags": [
       "apache",
       "realistic-interviews"
     ],
+    "access": "Email",
     "description": "There's a web server serving a file /var/www/html/index.html with content \"hello sadserver\" but when we try to check it locally with an HTTP client like curl 127.0.0.1:80, nothing is returned. This scenario is not about the particular web server configuration and you only need to have general knowledge about how web servers work.",
-    "test": "curl 127.0.0.1:80 should return: hello sadserver"
+    "root_access": true,
+    "test": "curl 127.0.0.1:80 should return: hello sadserver",
+    "time_to_solve": "15 minutes"
   },
   "nuuk": {
     "url": "https://sadservers.com/scenario/nuuk",
@@ -88,12 +97,17 @@
   "cairo": {
     "url": "https://sadservers.com/scenario/cairo",
     "titre": "\"Cairo\": Time for a Timer",
+    "niveau": "Easy",
+    "type": "Fix",
     "tags": [
       "bash",
       "systemd"
     ],
+    "access": "Email",
     "description": "A critical health check script at /opt/scripts/health.sh is supposed to run every 10 seconds. This check is triggered by a systemd timer. The script's job is to check the local Nginx server and write its status (e.g., \"STATUS: OK\") to the log file at /var/log/health.log. The log file is not being updated, and it appears the health check is failing. Find out why the health check system is broken and fix it. The check will pass once the /var/log/health.log file is being correctly updated by the timer with a STATUS: OK message.",
-    "test": "The /opt/scripts/health.sh script writes STATUS: OK to /var/log/health.log every 10 seconds. The \"Check My Solution\" button runs the script /home/admin/agent/check.sh, which you can see and execute."
+    "root_access": true,
+    "test": "The /opt/scripts/health.sh script writes STATUS: OK to /var/log/health.log every 10 seconds. The \"Check My Solution\" button runs the script /home/admin/agent/check.sh, which you can see and execute.",
+    "time_to_solve": "15 minutes"
   },
   "alexandria": {
     "url": "https://sadservers.com/scenario/alexandria",

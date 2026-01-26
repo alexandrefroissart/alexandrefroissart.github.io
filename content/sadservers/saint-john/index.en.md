@@ -3,6 +3,7 @@ title: "Saint John: What is Writing to this Log File?"
 date: 2026-01-24
 image: "/img/banners/sadservers.png"
 draft: false
+reading_time: 10
 categories: ["SadServers", "Linux"]
 tags: ["lsof", "process", "troubleshooting", "Easy"]
 ---
