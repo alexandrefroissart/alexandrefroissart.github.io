@@ -1,14 +1,14 @@
 ---
-title: "\"Geneva\": Renew an SSL Certificate"
+title: "\"Nuuk\": More SSH Troubles"
 date: 2026-01-25
 image: "/img/banners/sadservers.png"
 draft: false
 reading_time: 10
 categories: ["SadServers", "Linux"]
-tags: ["ssl"]
+tags: ["ssh"]
 ---
 
-{{< sadservers-scenario slug="geneva" >}}
+{{< sadservers-scenario slug="nuuk" >}}
 
 ---
 

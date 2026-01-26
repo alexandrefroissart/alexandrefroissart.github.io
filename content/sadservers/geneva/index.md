@@ -3,6 +3,7 @@ title: "\"Geneva\": Renew an SSL Certificate"
 date: 2026-01-25
 image: "/img/banners/sadservers.png"
 draft: false
+reading_time: 10
 categories: ["SadServers", "Linux"]
 tags: ["ssl"]
 ---

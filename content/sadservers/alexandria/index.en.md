@@ -1,14 +1,14 @@
 ---
-title: "\"Geneva\": Renew an SSL Certificate"
+title: "\"Alexandria\": The Vanishing Backups"
 date: 2026-01-25
 image: "/img/banners/sadservers.png"
 draft: false
-reading_time: 10
+reading_time: 5
 categories: ["SadServers", "Linux"]
-tags: ["ssl"]
+tags: ["bash"]
 ---
 
-{{< sadservers-scenario slug="geneva" >}}
+{{< sadservers-scenario slug="alexandria" >}}
 
 ---
 

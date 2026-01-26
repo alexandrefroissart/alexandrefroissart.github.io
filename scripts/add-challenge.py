@@ -314,6 +314,45 @@ def fetch_sadservers_data(slug):
     
     return scenario
 
+def update_frontmatter(file_path, key, value):
+    """Met à jour une clé dans le front matter d'un fichier existant."""
+    try:
+        with open(file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        # Check YAML separator
+        if not content.startswith('---'):
+            return False
+
+        # Regex pour trouver la clé dans le bloc YAML
+        pattern = re.compile(f'^{key}:.*$', re.MULTILINE)
+        
+        if pattern.search(content):
+            # Update existing key
+            new_content = pattern.sub(f'{key}: {value}', content)
+        else:
+            # Insert new key after 'draft:' or 'date:'
+            # On cherche la fin du bloc YAML
+            parts = content.split('---', 2)
+            if len(parts) < 3: return False
+            
+            front_matter = parts[1]
+            if f"{key}:" not in front_matter:
+                # Insert before the last line of front matter or specific tag
+                if "draft:" in front_matter:
+                    front_matter = front_matter.replace("draft: false", f"draft: false\n{key}: {value}").replace("draft: true", f"draft: true\n{key}: {value}")
+                else:
+                    front_matter += f"\n{key}: {value}"
+            
+            new_content = '---' + front_matter + '---' + parts[2]
+            
+        with open(file_path, 'w', encoding='utf-8') as f:
+            f.write(new_content)
+        return True
+    except Exception as e:
+        print(f"Erreur update frontmatter: {e}")
+        return False
+
 def create_sadservers_content(slug, scenario):
     """Crée les fichiers markdown pour SadServers."""
     # Créer le dossier du scénario
@@ -353,18 +392,11 @@ def create_sadservers_content(slug, scenario):
             f.write(content_fr)
         print(f"✅ Fichier créé: {fr_file}")
     else:
-        # Update existing file if user requests it? 
-        # For now script says "File exists". But user wants to update existing ones.
-        # I should probably force update the reading_time if file exists? 
-        # The user said "fait en sorte que ça fonctionne pour d'autre ajout sadservers" and "corrige... avec le script qui met à jour".
-        # Re-running the script updates JSON but usually skips file creation if exists.
-        # I'll update the CREATE logic. If file exists, I won't touch it to avoid overwriting user content (writeups).
-        # User has to delete file or I assume he wants it for NEW challenges.
-        # But he said "corrige... de CHAQUE post".
-        # I can try to update the front matter of existing files? 
-        # That's risky with regex replace on file content.
-        # I'll stick to new files first.
         print(f"⚠️ Fichier existe déjà: {fr_file}")
+        # Update reading_time if missing or different
+        if reading_time:
+            update_frontmatter(fr_file, "reading_time", reading_time)
+            print(f"   🔄 Reading time mis à jour: {reading_time}")
     
     # Fichier EN
     en_file = scenario_dir / "index.en.md"
@@ -381,6 +413,9 @@ def create_sadservers_content(slug, scenario):
         print(f"✅ Fichier créé: {en_file}")
     else:
         print(f"⚠️ Fichier existe déjà: {en_file}")
+        if reading_time:
+            update_frontmatter(en_file, "reading_time", reading_time)
+            print(f"   🔄 Reading time mis à jour: {reading_time}")
 
 def update_sadservers_json(slug, scenario):
     """Met à jour le fichier sadservers_scenarios.json"""
