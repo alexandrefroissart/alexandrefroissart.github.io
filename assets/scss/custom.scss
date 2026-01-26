@@ -316,3 +316,21 @@
         }
     }
 }
+
+/* ----------------------------------------------------------- */
+/* 7. METADATA SPACING (Icon + Text)                          */
+/* ----------------------------------------------------------- */
+/* Réduit l'espace entre l'icône et le texte (date, lecture...) */
+.article-time div,
+.article-translations {
+    display: flex;
+    align-items: center;
+    gap: 6px !important;
+    /* On force un petit écart */
+}
+
+/* On s'assure que l'icône n'a pas de marge parasite */
+.article-time svg,
+.article-translations svg {
+    margin: 0 !important;
+}
