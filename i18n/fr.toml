@@ -38,3 +38,6 @@ other = "Test"
 [article]
 [article.resolutionTime]
 other = "{{ .Count }} minutes pour résoudre"
+
+[rootme_no_limit]
+other = "Aucune limite de temps"

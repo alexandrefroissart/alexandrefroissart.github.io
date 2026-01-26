@@ -42,10 +42,14 @@
         <div>
             {{ partial "helper/icon" "clock" }}
             <time class="article-time--reading">
-                {{ $isChallenge := or (in .Params.categories "Root-Me") (in .Params.categories "SadServers") }}
-                {{ if .Params.reading_time }}
+                {{ $isRootMe := in .Params.categories "Root-Me" }}
+                {{ $isSadServers := in .Params.categories "SadServers" }}
+
+                {{ if $isRootMe }}
+                {{ T "rootme_no_limit" }}
+                {{ else if .Params.reading_time }}
                 {{ T "article.resolutionTime" (dict "Count" .Params.reading_time) }}
-                {{ else if $isChallenge }}
+                {{ else if $isSadServers }}
                 {{ T "article.resolutionTime" (dict "Count" .ReadingTime) }}
                 {{ else }}
                 {{ T "article.readingTime" (dict "Count" .ReadingTime) }}
