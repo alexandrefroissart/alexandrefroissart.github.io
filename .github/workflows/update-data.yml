@@ -7,6 +7,12 @@ on:
     # 03:00 UTC = 04:00 FR
     # etc.
     - cron: '15 3,7,11,15,19,23 * * *'
+  push:
+    branches:
+      - main
+    paths:
+      - 'scripts/**'
+      - '.github/workflows/update-data.yml'
   workflow_dispatch: # Allows manual triggering from GitHub UI
 
 permissions:
