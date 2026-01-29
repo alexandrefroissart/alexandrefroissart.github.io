@@ -403,6 +403,101 @@ def fetch_profile_score_direct(headers):
     return None
 
 
+def fetch_rank_from_leaderboard(username):
+    """Récupère le rang réel depuis la page de profil public Root-Me via curl."""
+    if not username:
+        return None
+    
+    import subprocess
+    
+    # Nettoyer le username pour l'URL
+    search_name = username.replace(" ", "-").replace("_", "-")
+    
+    # Construire la commande curl avec les cookies si disponibles
+    profile_url = f"https://www.root-me.org/{search_name}?lang=fr"
+    
+    # Lire les cookies depuis le fichier .env si disponibles
+    cookie_str = ""
+    env_path = Path(__file__).parent.parent / ".env"
+    if env_path.exists():
+        try:
+            cookies = {}
+            with open(env_path, "r") as f:
+                for line in f:
+                    if "=" in line and not line.strip().startswith("#"):
+                        parts = line.strip().split("=", 1)
+                        if len(parts) == 2:
+                            cookies[parts[0]] = parts[1]
+            spip = cookies.get("spip_session", "")
+            php = cookies.get("PHPSESSID", "")
+            if spip or php:
+                cookie_str = f"spip_session={spip}; PHPSESSID={php}"
+        except Exception:
+            pass
+    
+    # Exécuter curl (bypasse la protection anti-bot Anubis)
+    cmd = ["curl", "-s", "-L", "--max-time", "15"]
+    if cookie_str:
+        cmd.extend(["-H", f"Cookie: {cookie_str}"])
+    cmd.append(profile_url)
+    
+    try:
+        result = subprocess.run(cmd, capture_output=True, text=True, timeout=20)
+        html = result.stdout
+        
+        if not html or "classement.svg" not in html:
+            print(f"⚠️ Curl n'a pas retourné le profil attendu")
+            return None
+        
+        # Extraire le rang avec pattern regex
+        # Format: classement.svg...'/>&nbsp;274734
+        patterns = [
+            r"classement\.svg[^/]*/>\s*&nbsp;\s*(\d+)",
+            r"classement\.svg[^/]*/>&nbsp;(\d+)",
+            r"classement\.svg[^>]*>\s*&nbsp;\s*(\d+)",
+            r"classement\.svg.*?(\d{4,})",
+        ]
+        
+        for pattern in patterns:
+            m = re.search(pattern, html, re.IGNORECASE | re.DOTALL)
+            if m:
+                rank = coerce_int(m.group(1))
+                if rank and rank > 0 and rank < 500000:
+                    print(f"✅ Rang trouvé via curl: #{rank}")
+                    return rank
+        
+        print(f"⚠️ Pattern rang non trouvé dans le HTML curl")
+    except subprocess.TimeoutExpired:
+        print(f"⚠️ Curl timeout pour {profile_url}")
+    except FileNotFoundError:
+        print(f"⚠️ Curl non disponible, fallback urllib")
+        # Fallback vers la méthode urllib originale
+        return _fetch_rank_urllib(username)
+    except Exception as e:
+        print(f"⚠️ Erreur curl: {e}")
+    
+    return None
+
+
+def _fetch_rank_urllib(username):
+    """Fallback: récupère le rang via urllib (bloqué par anti-bot)."""
+    search_name = username.replace(" ", "-").replace("_", "-")
+    profile_url = f"https://www.root-me.org/{search_name}?lang=fr"
+    
+    headers = {"User-Agent": "Mozilla/5.0", "Accept-Encoding": "identity"}
+    if ROOTME_COOKIES:
+        headers["Cookie"] = ROOTME_COOKIES
+    
+    html = fetch_url_text(profile_url, headers=headers, timeout=15, max_retries=2, debug_label="profile_rank")
+    if not html or "classement.svg" not in html:
+        return None
+    
+    m = re.search(r"classement\.svg.*?(\d{4,})", html, re.DOTALL)
+    if m:
+        return coerce_int(m.group(1))
+    return None
+
+
 def category_to_segment(category):
     key = normalize_category_key(category)
     return CATEGORY_TO_SEGMENT.get(key)
@@ -1119,6 +1214,15 @@ def scrape_profile_html():
             "profil_url": preferred_url,
             "derniere_mise_a_jour": datetime.now().strftime("%Y-%m-%d")
         }
+        
+        # Si le rang est 0 ou semble invalide, essayer le classement public
+        if not profile["position"] or profile["position"] == 0 or profile["position"] > 500000:
+            username = profile.get("nom") or user
+            print(f"🔍 Récupération du rang depuis le classement public pour {username}...")
+            real_rank = fetch_rank_from_leaderboard(username)
+            if real_rank:
+                profile["position"] = real_rank
+        
         DATA_DIR.mkdir(parents=True, exist_ok=True)
         with open(PROFILE_FILE, "w", encoding="utf-8") as f:
             json.dump(profile, f, indent=2, ensure_ascii=False)
@@ -1141,6 +1245,49 @@ def fetch_profile():
         profile = scrape_profile_html()
         if profile:
             return profile
+        # API et scraping ont échoué - créer un profil de base avec le rang du classement
+        user = ENV.get("ROOTME_USER", "Alexandre-Froissart")
+        print(f"🔍 API/scraping échoué, tentative de récupération du rang depuis le classement public pour {user}...")
+        real_rank = fetch_rank_from_leaderboard(user)
+        if real_rank:
+            # Créer un profil minimal avec le rang récupéré
+            profile = {
+                "nom": user.replace("-", " "),
+                "score": 0,  # Sera mis à jour lors d'une prochaine exécution réussie
+                "position": real_rank,
+                "challenges_resolus": 0,
+                "profil_url": f"https://www.root-me.org/{user}",
+                "derniere_mise_a_jour": datetime.now().strftime("%Y-%m-%d")
+            }
+            # Essayer de récupérer les anciennes données pour conserver score/challenges
+            if PROFILE_FILE.exists():
+                try:
+                    with open(PROFILE_FILE, "r", encoding="utf-8") as f:
+                        old_data = json.load(f)
+                    if old_data.get("score"):
+                        profile["score"] = old_data["score"]
+                    if old_data.get("challenges_resolus"):
+                        profile["challenges_resolus"] = old_data["challenges_resolus"]
+                    if old_data.get("nom"):
+                        profile["nom"] = old_data["nom"]
+                except Exception:
+                    pass
+            DATA_DIR.mkdir(parents=True, exist_ok=True)
+            with open(PROFILE_FILE, "w", encoding="utf-8") as f:
+                json.dump(profile, f, indent=2, ensure_ascii=False)
+            print(f"✅ Profil (classement public): #{profile['position']}")
+            return profile
+        
+        # Fallback final: conserver les données existantes si aucune récupération n'a réussi
+        if PROFILE_FILE.exists():
+            try:
+                with open(PROFILE_FILE, "r", encoding="utf-8") as f:
+                    old_profile = json.load(f)
+                print(f"⚠️ Utilisation des données existantes: #{old_profile.get('position', 'N/A')}")
+                return old_profile
+            except Exception:
+                pass
+        
         return None
     
     if isinstance(data, list) and len(data) > 0:
@@ -1177,6 +1324,14 @@ def fetch_profile():
             for key in ("score", "position", "challenges_resolus"):
                 if score_data.get(key):
                     profile[key] = score_data[key]
+    
+    # Si le rang est 0 ou semble invalide, essayer de le récupérer depuis le classement public
+    if not profile.get("position") or profile["position"] == 0 or profile["position"] > 500000:
+        username = profile.get("nom") or ENV.get("ROOTME_USER", "Alexandre-Froissart")
+        print(f"🔍 Récupération du rang depuis le classement public pour {username}...")
+        real_rank = fetch_rank_from_leaderboard(username)
+        if real_rank:
+            profile["position"] = real_rank
     
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     with open(PROFILE_FILE, "w", encoding="utf-8") as f:
