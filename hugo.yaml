@@ -148,6 +148,7 @@ params:
   featuredImageField: image
   rssFullContent: true
   favicon: /favicon.svg
+  googleAnalytics: "G-3PDHE4B64M"
 
   sidebar:
     emoji: "💻"
