@@ -13,13 +13,13 @@
   },
   "ethernet-trame": {
     "id": "336",
-    "titre": "Making sure you're not a bot!",
+    "titre": "ETHERNET - trame",
     "rubrique": "Réseau",
     "auteur": "abu_youssef",
     "date": "2013-05-20 18:18:54",
     "score": 10,
     "difficulte": "Très facile",
-    "validations": 81216,
+    "validations": 81323,
     "note": "22%",
     "url": "https://www.root-me.org/fr/Challenges/Reseau/ethernet-trame"
   }
