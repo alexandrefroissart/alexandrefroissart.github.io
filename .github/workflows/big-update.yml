@@ -36,9 +36,6 @@ jobs:
   update-data:
     runs-on: [self-hosted, macOS]
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    env:
-      RUNNER_TOOL_CACHE: /Users/alex_mac/actions-runner/_tool
-      AGENT_TOOLSDIRECTORY: /Users/alex_mac/actions-runner/_tool
     outputs:
       data_changed: ${{ steps.git-check.outputs.changed }}
       should_run: ${{ steps.timecheck.outputs.should_run }}
@@ -65,16 +62,9 @@ jobs:
         if: steps.timecheck.outputs.should_run == 'true'
         uses: actions/checkout@v4
 
-      - name: Prepare tool cache
+      - name: Verify Python
         if: steps.timecheck.outputs.should_run == 'true'
-        run: |
-          mkdir -p "/Users/alex_mac/actions-runner/_tool"
-
-      - name: Set up Python
-        if: steps.timecheck.outputs.should_run == 'true'
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
+        run: python3 --version
 
       - name: Install dependencies
         if: steps.timecheck.outputs.should_run == 'true'
@@ -106,9 +96,6 @@ jobs:
   deploy:
     runs-on: [self-hosted, macOS]
     needs: [update-data]
-    env:
-      RUNNER_TOOL_CACHE: /Users/alex_mac/actions-runner/_tool
-      AGENT_TOOLSDIRECTORY: /Users/alex_mac/actions-runner/_tool
     # S'exécute toujours après update-data (même si skip/fail), ou directement sur push
     if: always() && (github.event_name == 'push' || needs.update-data.outputs.should_run == 'true')
     steps:
@@ -122,15 +109,8 @@ jobs:
       - name: Pull latest changes
         run: git pull origin main
 
-      - name: Prepare tool cache
-        run: |
-          mkdir -p "/Users/alex_mac/actions-runner/_tool"
-
-      - name: Setup Hugo
-        uses: peaceiris/actions-hugo@v3
-        with:
-          hugo-version: "0.154.5"
-          extended: true
+      - name: Verify Hugo
+        run: hugo version
 
       - name: Build
         run: hugo --minify --config hugo.yaml
