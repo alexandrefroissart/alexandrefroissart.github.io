@@ -31,3 +31,8 @@ python3 scripts/fetch-rootme.py
 ```
 
 > **Note :** La mise à jour des données est également lancée automatiquement après l'ajout d'un challenge via `add-challenge.py`.
+
+### Automatisation GitHub Actions (cookies)
+Pour que l’exécution automatique fonctionne sans API Root‑Me, ajoute les secrets suivants dans GitHub :
+- `ROOTME_COOKIES` (recommandé) : chaîne complète `spip_session=...; PHPSESSID=...; anubis-cookie-auth=...`
+- ou `ROOTME_SPIP_SESSION`, `ROOTME_PHPSESSID`, `ROOTME_ANUBIS_COOKIE_AUTH`

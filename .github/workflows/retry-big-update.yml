@@ -16,7 +16,7 @@ jobs:
       (github.event.workflow_run.conclusion == 'failure' ||
       github.event.workflow_run.conclusion == 'cancelled') &&
       github.event.workflow_run.event != 'workflow_dispatch'
-    runs-on: [self-hosted, macOS]
+    runs-on: ubuntu-latest
     steps:
       - name: Check runner acquisition failure
         id: reason

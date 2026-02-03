@@ -322,6 +322,27 @@ def is_logged_out(html):
     return False
 
 
+def is_bot_protection(html):
+    if not html:
+        return False
+    text = html.lower()
+    markers = [
+        "making sure you're not a bot",
+        "checking your browser",
+        "assurez-vous que vous n'êtes pas un robot",
+        "vérification du navigateur",
+        "please enable javascript",
+        "cdn-cgi",
+        "cf-challenge",
+        "cloudflare",
+    ]
+    if any(marker in text for marker in markers):
+        return True
+    if "anubis" in text and ("bot" in text or "robot" in text or "javascript" in text):
+        return True
+    return False
+
+
 def find_inc_score_url(html, base_url):
     if not html:
         return None
@@ -1494,6 +1515,7 @@ def fetch_challenge(challenge_id, override_url=None, debug_label=None):
     
     real_validations = nb_validations
     real_votes = "0%"
+    anti_bot = False
 
     if url_challenge:
         try:
@@ -1512,8 +1534,12 @@ def fetch_challenge(challenge_id, override_url=None, debug_label=None):
             html = fetch_url_text(url_challenge, headers=headers, timeout=10, max_retries=3, debug_label=debug_label)
             if not html:
                 raise urllib.error.HTTPError(url_challenge, 429, "Too Many Requests", hdrs=None, fp=None)
-
-            scraped = parse_challenge_html(html) or {}
+            if is_bot_protection(html):
+                anti_bot = True
+                print("⚠️ Protection anti-bot détectée, scraping ignoré.")
+                scraped = {}
+            else:
+                scraped = parse_challenge_html(html) or {}
 
             # Titre
             if scraped.get("titre"):
@@ -1553,6 +1579,9 @@ def fetch_challenge(challenge_id, override_url=None, debug_label=None):
             print(f"⚠️ Erreur scraping (HTTP {e.code}) pour {challenge_id}")
         except Exception as e:
             print(f"⚠️ Erreur scraping: {e}")
+
+    if api_failed and anti_bot:
+        return None
 
     return {
         "id": challenge_id,
