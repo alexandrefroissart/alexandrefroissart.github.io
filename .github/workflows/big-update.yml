@@ -65,12 +65,13 @@ jobs:
       - name: Prepare tool cache
         if: steps.timecheck.outputs.should_run == 'true'
         run: |
-          echo "RUNNER_TOOL_CACHE=$RUNNER_TEMP/_tool" >> "$GITHUB_ENV"
-          mkdir -p "$RUNNER_TEMP/_tool"
+          mkdir -p "$HOME/actions-runner/_tool"
 
       - name: Set up Python
         if: steps.timecheck.outputs.should_run == 'true'
         uses: actions/setup-python@v5
+        env:
+          RUNNER_TOOL_CACHE: $HOME/actions-runner/_tool
         with:
           python-version: '3.11'
 
@@ -119,11 +120,12 @@ jobs:
 
       - name: Prepare tool cache
         run: |
-          echo "RUNNER_TOOL_CACHE=$RUNNER_TEMP/_tool" >> "$GITHUB_ENV"
-          mkdir -p "$RUNNER_TEMP/_tool"
+          mkdir -p "$HOME/actions-runner/_tool"
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
+        env:
+          RUNNER_TOOL_CACHE: $HOME/actions-runner/_tool
         with:
           hugo-version: "0.154.5"
           extended: true
