@@ -3,9 +3,13 @@ name: Big Update
 on:
   # 1. Mise à jour des données (Planifiée)
   schedule:
-    # Exécution : 00h, 04h, 08h, 12h, 16h, 20h (Heure Française UTC+1)
-    # Correspond à UTC : 23h, 03h, 07h, 11h, 15h, 19h
-    - cron: '15 3,7,11,15,19,23 * * *'
+    # Exécution : 00h, 04h, 08h, 12h, 16h, 20h (Heure Française, Europe/Paris)
+    # GitHub Actions utilise UTC pour les schedules, on déclenche donc:
+    # - CET (UTC+1) : 23h, 03h, 07h, 11h, 15h, 19h
+    # - CEST (UTC+2): 22h, 02h, 06h, 10h, 14h, 18h
+    # Un garde-fou dans le job vérifie l'heure locale Paris pour éviter les runs "hors horaires".
+    - cron: '0 23,3,7,11,15,19 * * *'
+    - cron: '0 22,2,6,10,14,18 * * *'
   # 2. Déploiement du site (Sur modification)
   push:
     branches: ["main"]
@@ -28,30 +32,54 @@ jobs:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     outputs:
       data_changed: ${{ steps.git-check.outputs.changed }}
+      should_run: ${{ steps.timecheck.outputs.should_run }}
     steps:
+      - name: Check France time window
+        id: timecheck
+        run: |
+          if [ "${{ github.event_name }}" != "schedule" ]; then
+            echo "should_run=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          hour=$(TZ=Europe/Paris date +%H)
+          case "$hour" in
+            00|04|08|12|16|20)
+              echo "should_run=true" >> "$GITHUB_OUTPUT"
+              ;;
+            *)
+              echo "should_run=false" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+
       - name: Checkout repository
+        if: steps.timecheck.outputs.should_run == 'true'
         uses: actions/checkout@v4
 
       - name: Set up Python
+        if: steps.timecheck.outputs.should_run == 'true'
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
       - name: Install dependencies
+        if: steps.timecheck.outputs.should_run == 'true'
         run: pip install beautifulsoup4
 
       - name: Fetch Root-Me & SadServers Data
+        if: steps.timecheck.outputs.should_run == 'true'
         env:
           ROOTME_API_KEY: ${{ secrets.ROOTME_API_KEY }}
         run: python3 scripts/fetch-rootme.py
 
       - name: Check for changes
         id: git-check
+        if: steps.timecheck.outputs.should_run == 'true'
         run: |
           git diff --quiet data/ || echo "changed=true" >> $GITHUB_OUTPUT
 
       - name: Commit and push if changed
-        if: steps.git-check.outputs.changed == 'true'
+        if: steps.timecheck.outputs.should_run == 'true' && steps.git-check.outputs.changed == 'true'
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
@@ -65,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [update-data]
     # S'exécute toujours après update-data (même si skip/fail), ou directement sur push
-    if: always() && (github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch')
+    if: always() && (github.event_name == 'push' || needs.update-data.outputs.should_run == 'true')
     steps:
       - name: Checkout (with latest changes)
         uses: actions/checkout@v4
