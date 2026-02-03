@@ -34,8 +34,12 @@ def load_env():
             for line in f:
                 line = line.strip()
                 if line and not line.startswith('#'):
+                    if "=" not in line:
+                        continue
                     key, value = line.split('=', 1)
                     env_vars[key.strip()] = value.strip().strip('"').strip("'")
+    # Les variables d'environnement du système priment sur le .env
+    env_vars.update(os.environ)
     return env_vars
 
 ENV = load_env()
@@ -500,27 +504,14 @@ def get_challenge_info(url):
         slug = url.split('/')[-2]
 
     # Tentative via API
-    print("⚠️ Tentative via API (clé présente dans fetch-rootme.py)...")
+    print("⚠️ Tentative via API (ROOTME_API_KEY requise)...")
     return get_challenge_info_via_api(slug)
 
 def get_api_key():
-    """Récupère la clé API depuis .env ou fetch-rootme.py."""
+    """Récupère la clé API depuis .env ou les variables d'environnement."""
     # 1. Priorité au .env
     key = ENV.get("ROOTME_API_KEY")
     if key: return key
-    
-    # 2. Fallback sur le script fetch
-    try:
-        with open(FETCH_SCRIPT, 'r', encoding='utf-8') as f:
-            content = f.read()
-            m = re.search(r'ROOTME_API_KEY\s*=\s*os\.environ\.get\("[^"]*",\s*"([^"]+)"\)', content)
-            if m:
-                return m.group(1)
-            m = re.search(r'ROOTME_API_KEY\s*=\s*"([^"]+)"', content)
-            if m:
-                return m.group(1)
-    except Exception:
-        pass
     return None
 
 def get_challenge_info_via_api(slug):
@@ -528,7 +519,7 @@ def get_challenge_info_via_api(slug):
     import time
     api_key = get_api_key()
     if not api_key:
-        print("❌ Impossible de trouver la clé API dans fetch-rootme.py")
+        print("❌ ROOTME_API_KEY absent (.env ou variable d'environnement).")
         return None
         
     # Stratégies de recherche (du plus précis au plus large)

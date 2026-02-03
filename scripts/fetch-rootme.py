@@ -30,27 +30,58 @@ except Exception:
 # Configuration Root-Me
 ENV_FILE = Path(__file__).parent.parent / ".env"
 
-def load_env():
+def load_env_file():
     env_vars = {}
     if ENV_FILE.exists():
         with open(ENV_FILE, 'r', encoding='utf-8') as f:
             for line in f:
                 line = line.strip()
                 if line and not line.startswith('#'):
+                    if "=" not in line:
+                        continue
                     key, value = line.split('=', 1)
                     env_vars[key.strip()] = value.strip().strip('"').strip("'")
     return env_vars
 
-ENV = load_env()
-ROOTME_UID = ENV.get("ROOTME_UID", "1071705")
-ROOTME_API_KEY = ENV.get("ROOTME_API_KEY", "1071705_b1a923c6f19edcb89aa15bee046a6fe745144f36dbb24c316752ee391fc1a958")
+def merge_env():
+    env_vars = load_env_file()
+    # Les variables d'environnement du système priment sur le .env
+    env_vars.update(os.environ)
+    return env_vars
+
+ENV = merge_env()
+
+def env_get(key, default=None):
+    val = ENV.get(key)
+    if val is None:
+        return default
+    if isinstance(val, str):
+        val = val.strip()
+        if val == "":
+            return default
+    return val
+
+ROOTME_UID = str(env_get("ROOTME_UID", "1071705"))
+ROOTME_USER = env_get("ROOTME_USER", "Alexandre-Froissart")
+ROOTME_API_KEY = env_get("ROOTME_API_KEY", "")
+def _clean_env_value(env, key):
+    val = env.get(key)
+    if val is None:
+        return None
+    if isinstance(val, str):
+        val = val.strip()
+    if not val:
+        return None
+    return val
+
 def build_rootme_cookies(env):
-    if env.get("ROOTME_COOKIES"):
-        return env.get("ROOTME_COOKIES", "")
+    rootme_cookies = _clean_env_value(env, "ROOTME_COOKIES")
+    if rootme_cookies:
+        return rootme_cookies
     parts = []
-    spip = env.get("spip_session") or env.get("SPIP_SESSION") or env.get("ROOTME_SPIP_SESSION")
-    phpsess = env.get("PHPSESSID") or env.get("ROOTME_PHPSESSID")
-    anubis = env.get("anubis-cookie-auth") or env.get("ANUBIS_COOKIE_AUTH") or env.get("ROOTME_ANUBIS_COOKIE_AUTH")
+    spip = _clean_env_value(env, "spip_session") or _clean_env_value(env, "SPIP_SESSION") or _clean_env_value(env, "ROOTME_SPIP_SESSION")
+    phpsess = _clean_env_value(env, "PHPSESSID") or _clean_env_value(env, "ROOTME_PHPSESSID")
+    anubis = _clean_env_value(env, "anubis-cookie-auth") or _clean_env_value(env, "ANUBIS_COOKIE_AUTH") or _clean_env_value(env, "ROOTME_ANUBIS_COOKIE_AUTH")
     if spip:
         parts.append(f"spip_session={spip}")
     if phpsess:
@@ -60,7 +91,7 @@ def build_rootme_cookies(env):
     return "; ".join(parts)
 
 ROOTME_COOKIES = build_rootme_cookies(ENV)  # Cookies complets (e.g. "spip_session=...; api_key=...")
-ROOTME_PROFILE_URL = ENV.get("ROOTME_PROFILE_URL") or f"https://www.root-me.org/{ENV.get('ROOTME_USER', 'Alexandre-Froissart')}"
+ROOTME_PROFILE_URL = env_get("ROOTME_PROFILE_URL") or f"https://www.root-me.org/{ROOTME_USER}"
 
 # Chemins
 SCRIPT_DIR = Path(__file__).parent
@@ -1078,6 +1109,11 @@ def api_request(endpoint):
     global API_DISABLED
     if API_DISABLED:
         return None
+
+    if not ROOTME_COOKIES and not ROOTME_API_KEY:
+        print("⚠️ ROOTME_API_KEY manquant (et pas de cookies). API désactivée pour ce run.")
+        API_DISABLED = True
+        return None
     
     url = f"https://api.www.root-me.org{endpoint}"
     
@@ -1092,7 +1128,7 @@ def api_request(endpoint):
             # Gestion des cookies: Priorité à ROOTME_COOKIES (navigateur) sinon api_key
             if ROOTME_COOKIES:
                 req.add_header("Cookie", ROOTME_COOKIES)
-            else:
+            elif ROOTME_API_KEY:
                 req.add_header("Cookie", f"api_key={ROOTME_API_KEY}")
 
             req.add_header("User-Agent", "Mozilla/5.0")
@@ -1136,7 +1172,7 @@ def scrape_profile_html():
     if ROOTME_COOKIES:
         headers["Cookie"] = ROOTME_COOKIES
 
-    user = ENV.get("ROOTME_USER", "Alexandre-Froissart")
+    user = ROOTME_USER
     candidates = []
     pretty_url = build_pretty_profile_url(user)
     if pretty_url:
@@ -1246,7 +1282,7 @@ def fetch_profile():
         if profile:
             return profile
         # API et scraping ont échoué - créer un profil de base avec le rang du classement
-        user = ENV.get("ROOTME_USER", "Alexandre-Froissart")
+        user = ROOTME_USER
         print(f"🔍 API/scraping échoué, tentative de récupération du rang depuis le classement public pour {user}...")
         real_rank = fetch_rank_from_leaderboard(user)
         if real_rank:
@@ -1293,7 +1329,7 @@ def fetch_profile():
     if isinstance(data, list) and len(data) > 0:
         data = data[0]
 
-    user = ENV.get("ROOTME_USER", "Alexandre-Froissart")
+    user = ROOTME_USER
     preferred_url = None
     if ROOTME_PROFILE_URL and not is_basic_profile_url(ROOTME_PROFILE_URL):
         preferred_url = ROOTME_PROFILE_URL
@@ -1327,7 +1363,7 @@ def fetch_profile():
     
     # Si le rang est 0 ou semble invalide, essayer de le récupérer depuis le classement public
     if not profile.get("position") or profile["position"] == 0 or profile["position"] > 500000:
-        username = profile.get("nom") or ENV.get("ROOTME_USER", "Alexandre-Froissart")
+        username = profile.get("nom") or ROOTME_USER
         print(f"🔍 Récupération du rang depuis le classement public pour {username}...")
         real_rank = fetch_rank_from_leaderboard(username)
         if real_rank:
@@ -1470,7 +1506,7 @@ def fetch_challenge(challenge_id, override_url=None, debug_label=None):
             }
             if ROOTME_COOKIES:
                 headers['Cookie'] = ROOTME_COOKIES
-            else:
+            elif ROOTME_API_KEY:
                 headers['Cookie'] = f"api_key={ROOTME_API_KEY}"
                 
             html = fetch_url_text(url_challenge, headers=headers, timeout=10, max_retries=3, debug_label=debug_label)
@@ -1616,6 +1652,9 @@ def fetch_all_challenges_with_stats():
                     # Petite pause
                     time.sleep(2)
                     url = f"https://api.www.root-me.org/challenges?titre={urllib.parse.quote(search_term)}"
+                    if not ROOTME_API_KEY:
+                        print("     ⚠️ ROOTME_API_KEY manquant, résolution PENDING impossible.")
+                        break
                     headers = {'User-Agent': 'Mozilla/5.0', "Cookie": f"api_key={ROOTME_API_KEY}"}
                     req = urllib.request.Request(url, headers=headers)
                     
