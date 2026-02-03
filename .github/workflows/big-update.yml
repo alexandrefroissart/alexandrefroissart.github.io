@@ -36,8 +36,6 @@ jobs:
   update-data:
     runs-on: [self-hosted, macOS]
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    env:
-      RUNNER_TOOL_CACHE: ${{ runner.temp }}/_tool
     outputs:
       data_changed: ${{ steps.git-check.outputs.changed }}
       should_run: ${{ steps.timecheck.outputs.should_run }}
@@ -64,9 +62,11 @@ jobs:
         if: steps.timecheck.outputs.should_run == 'true'
         uses: actions/checkout@v4
 
-      - name: Ensure tool cache dir
+      - name: Prepare tool cache
         if: steps.timecheck.outputs.should_run == 'true'
-        run: mkdir -p "$RUNNER_TOOL_CACHE"
+        run: |
+          echo "RUNNER_TOOL_CACHE=$RUNNER_TEMP/_tool" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/_tool"
 
       - name: Set up Python
         if: steps.timecheck.outputs.should_run == 'true'
@@ -104,8 +104,6 @@ jobs:
   deploy:
     runs-on: ${{ github.event_name == 'push' && 'ubuntu-latest' || fromJson('["self-hosted","macOS"]') }}
     needs: [update-data]
-    env:
-      RUNNER_TOOL_CACHE: ${{ runner.temp }}/_tool
     # S'exécute toujours après update-data (même si skip/fail), ou directement sur push
     if: always() && (github.event_name == 'push' || needs.update-data.outputs.should_run == 'true')
     steps:
@@ -119,8 +117,10 @@ jobs:
       - name: Pull latest changes
         run: git pull origin main
 
-      - name: Ensure tool cache dir
-        run: mkdir -p "$RUNNER_TOOL_CACHE"
+      - name: Prepare tool cache
+        run: |
+          echo "RUNNER_TOOL_CACHE=$RUNNER_TEMP/_tool" >> "$GITHUB_ENV"
+          mkdir -p "$RUNNER_TEMP/_tool"
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
