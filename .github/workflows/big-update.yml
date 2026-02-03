@@ -68,7 +68,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.timecheck.outputs.should_run == 'true'
-        run: pip install beautifulsoup4
+        run: python3 -m pip install --user beautifulsoup4
 
       - name: Fetch Root-Me & SadServers Data
         if: steps.timecheck.outputs.should_run == 'true'
