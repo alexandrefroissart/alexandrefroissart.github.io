@@ -1,4 +1,5 @@
 name: Big Update
+run-name: ${{ github.event_name == 'workflow_dispatch' && inputs.retry == 'true' && 'Big Update (retry)' || 'Big Update' }}
 
 on:
   # 1. Mise à jour des données (Planifiée)
@@ -15,6 +16,11 @@ on:
     branches: ["main"]
   # 3. Manuel
   workflow_dispatch:
+    inputs:
+      retry:
+        description: "Auto retry after runner acquisition failure"
+        required: false
+        default: "false"
 
 permissions:
   contents: write      # Pour commiter les mises à jour de données
@@ -28,7 +34,7 @@ concurrency:
 jobs:
   # JOB 1 : MISE À JOUR DES DONNÉES (Seulement sur Schedule ou Manuel)
   update-data:
-    runs-on: ubuntu-latest
+    runs-on: [self-hosted, macOS]
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     outputs:
       data_changed: ${{ steps.git-check.outputs.changed }}
@@ -90,7 +96,7 @@ jobs:
   # JOB 2 : DÉPLOIEMENT DU SITE
   # Dépend de update-data si schedule/workflow_dispatch, sinon s'exécute directement sur push
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: ${{ github.event_name == 'push' && 'ubuntu-latest' || fromJson('["self-hosted","macOS"]') }}
     needs: [update-data]
     # S'exécute toujours après update-data (même si skip/fail), ou directement sur push
     if: always() && (github.event_name == 'push' || needs.update-data.outputs.should_run == 'true')
