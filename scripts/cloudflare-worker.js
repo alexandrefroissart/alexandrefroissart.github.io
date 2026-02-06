@@ -10,7 +10,7 @@
  * 3. Coller ce code et cliquer "Deploy"
  * 4. Aller dans Settings > Variables > Add variable
  *    - Nom: ROOTME_API_KEY
- *    - Valeur: 1071705_b1a923c6f19edcb89aa15bee046a6fe745144f36dbb24c316752ee391fc1a958
+ *    - Valeur: <YOUR_ROOTME_API_KEY>
  *    - Cocher "Encrypt"
  * 5. Noter l'URL du worker (ex: rootme-proxy.votre-nom.workers.dev)
  */

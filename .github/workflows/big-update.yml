@@ -26,6 +26,7 @@ permissions:
   contents: write      # Pour commiter les mises à jour de données
   pages: write         # Pour déployer sur GitHub Pages
   id-token: write      # Pour l'authentification OIDC Pages
+  actions: read        # Pour inspecter les artifacts Pages (retry robuste)
 
 jobs:
   # JOB 1 : MISE À JOUR DES DONNÉES (Seulement sur Schedule ou Manuel)
@@ -36,10 +37,9 @@ jobs:
       data_changed: ${{ steps.git-check.outputs.changed }}
       should_run: ${{ steps.timecheck.outputs.should_run }}
     env:
-      ROOTME_COOKIES: ${{ secrets.ROOTME_COOKIES }}
-      ROOTME_SPIP_SESSION: ${{ secrets.ROOTME_SPIP_SESSION }}
-      ROOTME_PHPSESSID: ${{ secrets.ROOTME_PHPSESSID }}
-      ROOTME_ANUBIS_COOKIE_AUTH: ${{ secrets.ROOTME_ANUBIS_COOKIE_AUTH }}
+      ROOTME_API_KEY: ${{ secrets.ROOTME_API_KEY }}
+      ROOTME_STRICT: "1"
+      ROOTME_SCRAPE_HTML: "0"
     steps:
       - name: Check France time window
         id: timecheck
@@ -98,7 +98,12 @@ jobs:
     runs-on: ubuntu-latest
     needs: [update-data]
     # S'exécute toujours après update-data (même si skip/fail), ou directement sur push
-    if: always() && (github.event_name == 'push' || needs.update-data.outputs.should_run == 'true')
+    if: >-
+      always() &&
+      (
+        (github.event_name == 'push' && github.actor != 'github-actions[bot]') ||
+        needs.update-data.outputs.should_run == 'true'
+      )
     concurrency:
       group: "pages"
       cancel-in-progress: true
@@ -122,13 +127,64 @@ jobs:
       - name: Build
         run: hugo --minify --config hugo.yaml
 
-      - name: Upload artifact
+      - name: Upload artifact (attempt 1)
+        id: upload1
         uses: actions/upload-pages-artifact@v3
+        continue-on-error: true
         with:
           path: ./public
 
-      - name: Deploy to GitHub Pages
-        id: deployment
+      - name: Check pages artifact exists
+        id: artifact_check_1
+        if: steps.upload1.outcome == 'failure'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const runId = context.runId;
+            const { data } = await github.rest.actions.listWorkflowRunArtifacts({
+              owner,
+              repo,
+              run_id: runId,
+              per_page: 100,
+            });
+            const exists = (data.artifacts || []).some(a => a && a.name === 'github-pages');
+            core.setOutput('exists', exists ? 'true' : 'false');
+
+      - name: Upload artifact (attempt 2)
+        id: upload2
+        if: steps.upload1.outcome == 'failure' && steps.artifact_check_1.outputs.exists != 'true'
+        uses: actions/upload-pages-artifact@v3
+        continue-on-error: true
+        with:
+          path: ./public
+
+      - name: Fail if artifact upload failed
+        if: >-
+          steps.upload1.outcome == 'failure' &&
+          (
+            steps.artifact_check_1.outputs.exists != 'true' &&
+            (steps.upload2.outcome == 'failure' || steps.upload2.outcome == 'skipped')
+          )
+        run: exit 1
+
+      - name: Deploy to GitHub Pages (attempt 1)
+        id: deploy1
+        if: steps.upload1.outcome == 'success' || steps.upload2.outcome == 'success' || steps.artifact_check_1.outputs.exists == 'true'
         uses: actions/deploy-pages@v4
+        continue-on-error: true
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to GitHub Pages (attempt 2)
+        id: deploy2
+        if: steps.deploy1.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+        continue-on-error: true
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Fail if deploy failed
+        if: steps.deploy1.outcome == 'failure' && steps.deploy2.outcome == 'failure'
+        run: exit 1

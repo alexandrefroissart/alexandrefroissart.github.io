@@ -64,6 +64,24 @@ def env_get(key, default=None):
 ROOTME_UID = str(env_get("ROOTME_UID", "1071705"))
 ROOTME_USER = env_get("ROOTME_USER", "Alexandre-Froissart")
 ROOTME_API_KEY = env_get("ROOTME_API_KEY", "")
+
+def env_flag(key, default=False):
+    """Parse a boolean-ish env value from merged ENV/.env."""
+    val = env_get(key, None)
+    if val is None:
+        return default
+    s = str(val).strip().lower()
+    if s in ("1", "true", "yes", "y", "on"):
+        return True
+    if s in ("0", "false", "no", "n", "off"):
+        return False
+    return default
+
+# CI should set:
+# - ROOTME_SCRAPE_HTML=0 to avoid anti-bot HTML pages
+# - ROOTME_STRICT=1 to fail if we can't refresh Root-Me data
+ROOTME_SCRAPE_HTML = env_flag("ROOTME_SCRAPE_HTML", True)
+ROOTME_STRICT = env_flag("ROOTME_STRICT", False)
 def _clean_env_value(env, key):
     val = env.get(key)
     if val is None:
@@ -1125,32 +1143,29 @@ def fetch_url_text(url, headers=None, timeout=10, max_retries=3, backoff_base=2.
 
 def api_request(endpoint):
     """Effectue une requête vers l'API Root-Me avec retry."""
-    import time
-
     global API_DISABLED
     if API_DISABLED:
         return None
 
-    if not ROOTME_COOKIES and not ROOTME_API_KEY:
-        print("⚠️ ROOTME_API_KEY manquant (et pas de cookies). API désactivée pour ce run.")
+    # API auth uses api_key cookie; browser session cookies are not valid for API.
+    if not ROOTME_API_KEY:
+        print("⚠️ ROOTME_API_KEY manquant. API désactivée pour ce run.")
         API_DISABLED = True
         return None
     
     url = f"https://api.www.root-me.org{endpoint}"
     
-    max_retries = 0 # TEMP: Fail fast to trigger scraping
+    max_retries = 3
+    backoff_base = 1.5
     for attempt in range(max_retries + 1):
         try:
             # Polite delay
-            time.sleep(2)  # Increased to 2s because pagination is aggressive
+            time.sleep(0.6)
             
             req = urllib.request.Request(url)
             
-            # Gestion des cookies: Priorité à ROOTME_COOKIES (navigateur) sinon api_key
-            if ROOTME_COOKIES:
-                req.add_header("Cookie", ROOTME_COOKIES)
-            elif ROOTME_API_KEY:
-                req.add_header("Cookie", f"api_key={ROOTME_API_KEY}")
+            # Always use API key cookie for API calls
+            req.add_header("Cookie", f"api_key={ROOTME_API_KEY}")
 
             req.add_header("User-Agent", "Mozilla/5.0")
             
@@ -1158,17 +1173,19 @@ def api_request(endpoint):
                 return json.loads(response.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
             if e.code == 401:
-                print(f"⚠️ API 401 détecté. Désactivation des appels API pour ce run.")
+                print("❌ API 401: ROOTME_API_KEY invalide ou non autorisée. Désactivation des appels API pour ce run.")
                 API_DISABLED = True
                 return None
             if e.code == 429:
-                print(f"⚠️ API 429 détecté. Désactivation des appels API pour ce run.")
-                API_DISABLED = True
-                return None
-            if e.code == 429 or e.code >= 500:
-                wait_time = (attempt + 1) * 5
-                print(f"⚠️ Erreur API ({endpoint}): {e.code}. Retry dans {wait_time}s...")
+                wait_time = backoff_base * (2 ** attempt) + random.uniform(0.2, 0.8)
+                print(f"⚠️ API 429 ({endpoint}). Retry dans {wait_time:.1f}s...")
                 time.sleep(wait_time)
+                continue
+            if e.code >= 500:
+                wait_time = backoff_base * (2 ** attempt) + random.uniform(0.2, 0.8)
+                print(f"⚠️ Erreur API ({endpoint}): {e.code}. Retry dans {wait_time:.1f}s...")
+                time.sleep(wait_time)
+                continue
             elif e.code == 404:
                 print(f"❌ Ressource non trouvée ({endpoint})")
                 return None
@@ -1176,11 +1193,15 @@ def api_request(endpoint):
                 print(f"❌ Erreur API ({endpoint}): {e}")
                 return None
         except (TimeoutError, socket.timeout) as e:
-            print(f"❌ Erreur connexion ({endpoint}): {e}")
-            time.sleep(2) # Petit retry reseau
+            wait_time = backoff_base * (2 ** attempt) + random.uniform(0.2, 0.8)
+            print(f"⚠️ Timeout API ({endpoint}): {e}. Retry dans {wait_time:.1f}s...")
+            time.sleep(wait_time)
+            continue
         except urllib.error.URLError as e:
-            print(f"❌ Erreur connexion ({endpoint}): {e}")
-            time.sleep(2) # Petit retry reseau
+            wait_time = backoff_base * (2 ** attempt) + random.uniform(0.2, 0.8)
+            print(f"⚠️ Erreur réseau API ({endpoint}): {e}. Retry dans {wait_time:.1f}s...")
+            time.sleep(wait_time)
+            continue
             
     print(f"❌ Abandon après {max_retries} tentatives pour {endpoint}")
     sys.stdout.flush()
@@ -1189,6 +1210,8 @@ def api_request(endpoint):
 
 def scrape_profile_html():
     """Scrape le profil HTML en utilisant les cookies si disponibles."""
+    if not ROOTME_SCRAPE_HTML:
+        return None
     headers = {"User-Agent": "Mozilla/5.0", "Accept-Encoding": "identity"}
     if ROOTME_COOKIES:
         headers["Cookie"] = ROOTME_COOKIES
@@ -1289,19 +1312,14 @@ def scrape_profile_html():
 
 
 def fetch_profile():
-    """Récupère le profil utilisateur."""
+    """Récupère le profil utilisateur. Retourne (profile, status)."""
     print("🔄 Récupération du profil...")
-    if ROOTME_COOKIES:
-        profile = scrape_profile_html()
-        if profile:
-            return profile
-
     data = api_request(f"/auteurs/{ROOTME_UID}")
     
     if not data:
         profile = scrape_profile_html()
         if profile:
-            return profile
+            return profile, "HTML"
         # API et scraping ont échoué - créer un profil de base avec le rang du classement
         user = ROOTME_USER
         print(f"🔍 API/scraping échoué, tentative de récupération du rang depuis le classement public pour {user}...")
@@ -1333,7 +1351,7 @@ def fetch_profile():
             with open(PROFILE_FILE, "w", encoding="utf-8") as f:
                 json.dump(profile, f, indent=2, ensure_ascii=False)
             print(f"✅ Profil (classement public): #{profile['position']}")
-            return profile
+            return profile, "LEADERBOARD"
         
         # Fallback final: conserver les données existantes si aucune récupération n'a réussi
         if PROFILE_FILE.exists():
@@ -1341,11 +1359,11 @@ def fetch_profile():
                 with open(PROFILE_FILE, "r", encoding="utf-8") as f:
                     old_profile = json.load(f)
                 print(f"⚠️ Utilisation des données existantes: #{old_profile.get('position', 'N/A')}")
-                return old_profile
+                return old_profile, "CACHE"
             except Exception:
                 pass
         
-        return None
+        return None, "ERROR"
     
     if isinstance(data, list) and len(data) > 0:
         data = data[0]
@@ -1395,7 +1413,7 @@ def fetch_profile():
         json.dump(profile, f, indent=2, ensure_ascii=False)
     
     print(f"✅ Profil: {profile['score']} pts, #{profile['position']}, {profile['challenges_resolus']} challenges")
-    return profile
+    return profile, "API"
 
 
 def fetch_challenge(challenge_id, override_url=None, debug_label=None):
@@ -1407,19 +1425,23 @@ def fetch_challenge(challenge_id, override_url=None, debug_label=None):
         
     api_failed = False
     if not data:
+        # API-only mode: do not attempt HTML scraping when disabled
+        if not ROOTME_SCRAPE_HTML:
+            print(f"⚠️ Pas de données API pour {challenge_id} (mode API-only).")
+            return None
         # Si API fail, on continue si on a une URL pour scraper
         if override_url:
             print(f"⚠️ Pas de données API pour {challenge_id}, fallback scraping sur {override_url}")
             api_failed = True
             data = {
-               "titre": "Inconnu",
-               "rubrique": "Autre", 
-               "url_challenge": override_url,
-               "validations": [],
-               "score": "?",
-               "difficulte": "Inconnu",
-               "auteurs": {},
-               "date_publication": ""
+                "titre": "Inconnu",
+                "rubrique": "Autre",
+                "url_challenge": override_url,
+                "validations": [],
+                "score": "?",
+                "difficulte": "Inconnu",
+                "auteurs": {},
+                "date_publication": ""
             }
         else:
             print(f"⚠️ Pas de données pour le challenge {challenge_id}")
@@ -1517,7 +1539,7 @@ def fetch_challenge(challenge_id, override_url=None, debug_label=None):
     real_votes = "0%"
     anti_bot = False
 
-    if url_challenge:
+    if url_challenge and ROOTME_SCRAPE_HTML:
         try:
             # Polite delay for scrapping
             time.sleep(random.uniform(*SCRAPE_DELAY_RANGE))
@@ -1796,12 +1818,12 @@ def fetch_all_challenges():
     return d
 
 
-def generate_summary(profile, challenges_data, stats_challenges):
+def generate_summary(profile, profile_status, challenges_data, stats_challenges):
     """Génère un résumé complet pour GitHub Actions et stdout."""
     # Stats gloabales
     total = len(stats_challenges)
     success = len([c for c in stats_challenges if c['status'] == 'OK'])
-    failed = len([c for c in stats_challenges if c['status'] == 'ERROR'])
+    non_ok = len([c for c in stats_challenges if c['status'] != 'OK'])
     
     # 1. Output pour stdout (Console lisible)
     print("\n" + "="*50)
@@ -1814,7 +1836,9 @@ def generate_summary(profile, challenges_data, stats_challenges):
     else:
         print("👤 PROFIL : ❌ Récupération échouée")
         
-    print(f"\n🏆 CHALLENGES : {success}/{total} mis à jour")
+    prof_tag = "✅" if profile_status == "API" else "⚠️"
+    print(f"   Source : {prof_tag} {profile_status}")
+    print(f"\n🏆 CHALLENGES : {success}/{total} OK (non-OK: {non_ok})")
     
     for c in stats_challenges:
         icon = "✅" if c['status'] == 'OK' else "❌"
@@ -1845,10 +1869,10 @@ def generate_summary(profile, challenges_data, stats_challenges):
 
         # Section Challenges
         md_lines.append(f"## 🏆 Challenges ({success}/{total})")
-        if failed == 0:
+        if non_ok == 0 and profile_status == "API":
             md_lines.append("✅ **Tous les challenges sont à jour !**")
         else:
-            md_lines.append(f"⚠️ **{failed} erreurs détectées**")
+            md_lines.append(f"⚠️ **{non_ok} entrées non-OK (ou profil non-API)**")
             
         md_lines.append("| ID | Challenge | Statut | Info |")
         md_lines.append("|---|---|---|---|")
@@ -1882,9 +1906,15 @@ def main():
     print(f"\n🕒 Démarrage cycle unique (CI={is_ci})...")
     sys.stdout.flush()
     
-    profile = fetch_profile()
+    profile, profile_status = fetch_profile()
     challenges_data, run_stats = fetch_all_challenges_with_stats() 
-    generate_summary(profile, challenges_data, run_stats)
+    generate_summary(profile, profile_status, challenges_data, run_stats)
+
+    if ROOTME_STRICT:
+        non_ok = [c for c in run_stats if c.get("status") != "OK"]
+        if profile_status != "API" or non_ok:
+            print("❌ ROOTME_STRICT=1: données Root-Me non rafraîchies de manière fiable (profil non-API ou challenges non-OK).")
+            sys.exit(1)
 
     print("=" * 50)
     print("✅ Mise à jour terminée!")
