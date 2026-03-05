@@ -46,7 +46,7 @@
     border: 1px solid var(--card-separator-color);
     padding: 1.55rem 1.7rem;
     margin-top: 0;
-    margin-bottom: var(--section-separation);
+    margin-bottom: 0;
 }
 
 .home-intro .home-intro-title {
@@ -65,7 +65,7 @@
 
 /* Home uniquement: intro positionnée plus bas pour démarrer visuellement en face de l'identité à gauche */
 .home-news-page .home-intro {
-    margin-top: clamp(7rem, 9vw, 9rem);
+    margin-top: clamp(9rem, 11vw, 11rem);
 }
 
 /* On cible les articles dans la liste compacte de la home */
