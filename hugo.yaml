@@ -37,22 +37,16 @@ languages:
           weight: 20
           params:
             icon: sadservers
-        - identifier: misc
-          name: Misc
-          url: /misc/
-          weight: 30
-          params:
-            icon: misc
         - identifier: archives
           name: Archives
           url: /archives/
-          weight: 40
+          weight: 30
           params:
             icon: archives
         - identifier: search
           name: Search
           url: /search/
-          weight: 50
+          weight: 40
           params:
             icon: search
       social:
@@ -102,22 +96,16 @@ languages:
           weight: 20
           params:
             icon: sadservers
-        - identifier: misc
-          name: Misc
-          url: /en/misc/
-          weight: 30
-          params:
-            icon: misc
         - identifier: archives
           name: Archives
           url: /en/archives/
-          weight: 40
+          weight: 30
           params:
             icon: archives
         - identifier: search
           name: Search
           url: /en/search/
-          weight: 50
+          weight: 40
           params:
             icon: search
       social:
