@@ -19,6 +19,12 @@ languages:
           weight: 1
           params:
             icon: home
+        - identifier: news
+          name: News
+          url: /news/
+          weight: 5
+          params:
+            icon: messages
         - identifier: rootme
           name: Root-Me
           url: /rootme/
@@ -64,6 +70,7 @@ languages:
       root-me-challenges: /rootme/:slug/
       sadservers: /sadservers/:slug/
       misc: /misc/:slug/
+      news: /news/:slug/
       page: /:slug/
 
   en:
@@ -77,6 +84,12 @@ languages:
           weight: 1
           params:
             icon: home
+        - identifier: news
+          name: News
+          url: /en/news/
+          weight: 5
+          params:
+            icon: messages
         - identifier: rootme
           name: Root-Me
           url: /en/root-me-challenges/
@@ -122,6 +135,7 @@ languages:
       root-me-challenges: /root-me-challenges/:slug/
       sadservers: /sadservers/:slug/
       misc: /misc/:slug/
+      news: /news/:slug/
       page: /:slug/
 
 disableLanguages:
@@ -140,7 +154,14 @@ taxonomies:
   category: categories
 
 params:
+  homeSections:
+    - news
+    - root-me-challenges
+    - sadservers
+    - misc
+
   mainSections:
+    - news
     - root-me-challenges
     - sadservers
     - misc

@@ -58,7 +58,7 @@ During installation, Debian asks:
 ## Comments
 
 - I identify the user sent via `USER`:
-  - **USER** = `cdts3500`
+  - **USER** = `[REDACTED]` *(value deliberately hidden)*
 - The password is present in the `PASS` command:
   - **PASS** = `[REDACTED]` *(value deliberately hidden)*
 

@@ -1,0 +1,29 @@
+{{- $title := .Title -}}
+{{- $siteTitle := .Site.Title -}}
+
+{{- if .IsHome -}}
+    {{- $homeSections := default .Site.Params.mainsections .Site.Params.homesections -}}
+    {{- $pages := where .Site.RegularPages "Section" "in" $homeSections -}}
+    {{- $filtered := where $pages "Params.hidden" "!=" true -}}
+    {{- $pag := .Paginate ($filtered.ByDate.Reverse) -}}
+
+    {{ if .Paginator.HasPrev }}
+        {{ $title = printf "%s - %s" .Paginator $siteTitle }}
+    {{ else }}
+        {{ $title = $siteTitle }}
+    {{ end }}
+{{- else if eq .Kind "term" -}}
+    {{- $notHidden := where .Pages "Params.hidden" "!=" true -}}
+    {{- $pag := .Paginate ($notHidden) -}}
+
+    {{- $title = slice (title .Data.Singular) ": " $title -}}
+
+    {{ if .Paginator.HasPrev }}
+        {{ $title = $title | append " - " .Paginator }}
+    {{ end }}
+
+    {{- $title = $title | append " - " $siteTitle -}}
+    {{- $title = delimit $title "" -}}
+{{- end -}}
+
+{{ return $title }}

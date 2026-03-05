@@ -38,25 +38,21 @@ The target files are therefore `/etc/nginx/ssl/nginx.crt` (the public certificat
 
 ---
 
-## Solution
+## Solution (undisclosed version)
 
-To renew the certificate, I generate a new self-signed key/certificate pair with `openssl`. I directly replace existing files.
+To renew the certificate, I generate a new self-signed key/certificate pair with `openssl`.
+
+I then replace the SSL files used by Nginx.
 
 ```bash
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-  -keyout /etc/nginx/ssl/nginx.key \
-  -out /etc/nginx/ssl/nginx.crt
+  -keyout <ssl_key_path> \
+  -out <ssl_certificate_path>
 ```
 
-When generating, `openssl` asks me for information for the "Distinguished Name" (DN). I fill with the following values:
+When generating, `openssl` asks me for the "Distinguished Name" (DN).
 
-- **Country Name (2 letter code)**: `CH`
-- **State or Province Name**: `Geneva`
-- **Locality Name**: `Geneva`
-- **Organization Name**: `Acme`
-- **Organizational Unit Name**: `IT Department`
-- **Common Name (e.g. server FQDN)**: `localhost`
-- **Email Address**: (leave blank)
+I provide values ​​consistent with the server (country, organization, host CN), without publishing the exact game here.
 
 Once the files are generated, I restart Nginx to support the new certificate:
 
@@ -72,18 +68,16 @@ I verify that the certificate is loaded and valid by using `openssl s_client` to
 
 **Date check:**
 ```bash
-echo | openssl s_client -connect localhost:443 2>/dev/null | openssl x509 -noout -dates
+echo | openssl s_client -connect <host>:443 2>/dev/null | openssl x509 -noout -dates
 ```
-*Expected result: `notBefore` should be today's date and `notAfter` one year from now (2025).*
+*Expected result: `notBefore` must be recent and `notAfter` must be later.*
 
 **Topic check:**
 ```bash
-echo | openssl s_client -connect localhost:443 2>/dev/null | openssl x509 -noout -subject
+echo | openssl s_client -connect <host>:443 2>/dev/null | openssl x509 -noout -subject
 ```
-*Result:*
-`subject=CN = localhost, O = Acme, OU = IT Department, L = Geneva, ST = Geneva, C = CH`
 
-Everything matches! The certificate is renewed and valid.
+If the dates are correct and Nginx restarts without errors, the correction is validated.
 
 ---
 

@@ -39,24 +39,24 @@ sudo lsof /var/log/bad.log
 **Résultat** :
 ```
 COMMAND   PID  USER   FD   TYPE DEVICE SIZE/OFF   NODE NAME
-badlog.py 587 admin    3w   REG  259,1    52179 265802 /var/log/bad.log
+[processus_identifie] [PID] admin 3w REG ... /var/log/bad.log
 ```
 
 **Analyse** :
-- **COMMAND** : `badlog.py` → un script Python
-- **PID** : `587` → l'identifiant du processus
+- **COMMAND** : `[processus_identifie]` → processus responsable de l'écriture
+- **PID** : `[PID]` → identifiant du processus
 - **USER** : `admin` → l'utilisateur propriétaire
 - **FD** : `3w` → File Descriptor 3 en mode **write** (écriture)
 - **TYPE** : `REG` → fichier régulier
 
-On en déduit que le script `badlog.py` (PID 587) est responsable de l'écriture dans `/var/log/bad.log`.
+On en déduit que le processus identifié (PID trouvé avec `lsof`) écrit dans `/var/log/bad.log`.
 
 ### 2. Arrêter le processus
 
 Pour arrêter le processus sans supprimer le fichier Python, on utilise la commande `kill` avec le PID :
 
 ```bash
-sudo kill 587
+sudo kill <PID_IDENTIFIE>
 ```
 
 Cette commande envoie un signal `SIGTERM` (terminaison gracieuse) au processus 587.
@@ -87,8 +87,8 @@ Si aucune nouvelle ligne n'apparaît, le processus est arrêté avec succès.
 
 ## Résultat
 
-✅ Processus identifié : `badlog.py` (PID 587)  
-✅ Processus arrêté avec `sudo kill 587`  
+✅ Processus identifié via `lsof`  
+✅ Processus arrêté avec `sudo kill <PID_IDENTIFIE>`  
 ✅ Fichier `/var/log/bad.log` ne grossit plus  
 ✅ **Challenge validé sur SadServers.**
 

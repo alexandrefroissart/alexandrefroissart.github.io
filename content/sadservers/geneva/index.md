@@ -38,25 +38,21 @@ Les fichiers cibles sont donc `/etc/nginx/ssl/nginx.crt` (le certificat public) 
 
 ---
 
-## Solution
+## Solution (version non divulguée)
 
-Pour renouveler le certificat, je génère une nouvelle paire clé/certificat auto-signée avec `openssl`. Je remplace directement les fichiers existants.
+Pour renouveler le certificat, je génère une nouvelle paire clé/certificat auto-signée avec `openssl`.
+
+Je remplace ensuite les fichiers SSL utilisés par Nginx.
 
 ```bash
 sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-  -keyout /etc/nginx/ssl/nginx.key \
-  -out /etc/nginx/ssl/nginx.crt
+  -keyout <chemin_cle_ssl> \
+  -out <chemin_certificat_ssl>
 ```
 
-Lors de la génération, `openssl` me demande des informations pour le "Distinguished Name" (DN). Je remplis avec les valeurs suivantes :
+Lors de la génération, `openssl` me demande le "Distinguished Name" (DN).
 
-- **Country Name (2 letter code)** : `CH`
-- **State or Province Name** : `Geneva`
-- **Locality Name** : `Geneva`
-- **Organization Name** : `Acme`
-- **Organizational Unit Name** : `IT Department`
-- **Common Name (e.g. server FQDN)** : `localhost`
-- **Email Address** : (laisser vide)
+Je renseigne des valeurs cohérentes avec le serveur (pays, organisation, CN du host), sans publier ici le jeu exact.
 
 Une fois les fichiers générés, je redémarre Nginx pour prendre en charge le nouveau certificat :
 
@@ -72,18 +68,16 @@ Je vérifie que le certificat est bien chargé et valide en utilisant `openssl s
 
 **Vérification des dates :**
 ```bash
-echo | openssl s_client -connect localhost:443 2>/dev/null | openssl x509 -noout -dates
+echo | openssl s_client -connect <hote>:443 2>/dev/null | openssl x509 -noout -dates
 ```
-*Résultat attendu : `notBefore` doit être la date d'aujourd'hui et `notAfter` dans un an (2025).*
+*Résultat attendu : `notBefore` doit être récent et `notAfter` doit être postérieur.*
 
 **Vérification du sujet :**
 ```bash
-echo | openssl s_client -connect localhost:443 2>/dev/null | openssl x509 -noout -subject
+echo | openssl s_client -connect <hote>:443 2>/dev/null | openssl x509 -noout -subject
 ```
-*Résultat :*
-`subject=CN = localhost, O = Acme, OU = IT Department, L = Geneva, ST = Geneva, C = CH`
 
-Tout correspond ! Le certificat est renouvelé et valide.
+Si les dates sont correctes et que Nginx redémarre sans erreur, la correction est validée.
 
 ---
 

@@ -1,0 +1,22 @@
+{{ define "body-class" }}home-news-page{{ end }}
+
+{{ define "main" }}
+    {{ $homeSections := default .Site.Params.mainsections .Site.Params.homesections }}
+    {{ $pages := where .Site.RegularPages "Section" "in" $homeSections }}
+    {{ $filtered := where $pages "Params.hidden" "!=" true }}
+    {{ $sorted := $filtered.ByDate.Reverse }}
+    {{ $pag := .Paginate $sorted }}
+
+    <section class="article-list">
+        {{ range $pag.Pages }}
+            {{ partial "article-list/default" . }}
+        {{ end }}
+    </section>
+
+    {{- partial "pagination.html" . -}}
+    {{- partial "footer/footer" . -}}
+{{ end }}
+
+{{ define "right-sidebar" }}
+    {{ partial "sidebar/right.html" (dict "Context" . "Scope" "homepage") }}
+{{ end }}
