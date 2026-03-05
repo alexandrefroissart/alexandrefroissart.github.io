@@ -8,41 +8,41 @@
     {{ $pag := .Paginate $sorted }}
 
     {{ $isFrench := eq .Site.Language.Lang "fr" }}
-    <section class="home-intro">
-        <h1 class="home-intro-title">
-            {{ if $isFrench }}Bienvenue sur mon portfolio technique{{ else }}Welcome to my technical portfolio{{ end }}
-        </h1>
-        <p>
-            {{ if $isFrench }}
-                Ce portfolio suit mon parcours en administration systèmes et réseaux.
-            {{ else }}
-                This portfolio tracks my progression in systems and network administration.
-            {{ end }}
-        </p>
-        <p>
-            {{ if $isFrench }}
-                Vous trouverez ici mes challenges Root-Me et SadServers, que j'utilise pour monter en compétences.
-            {{ else }}
-                You will find my Root-Me and SadServers challenges, which I use to build and strengthen my skills.
-            {{ end }}
-        </p>
-        <p>
-            {{ if $isFrench }}
-                Je publie aussi les actualités IT qui m'intéressent vraiment, avec mon propre retour d'expérience et mon point de vue.
-            {{ else }}
-                I also publish IT updates that truly interest me, with my own field perspective and practical feedback.
-            {{ end }}
-        </p>
-        <p>
-            {{ if $isFrench }}
-                Ce portfolio me permet de montrer une évolution régulière, un raisonnement clair, et un vrai intérêt pour la tech.
-            {{ else }}
-                This portfolio highlights steady progress, clear reasoning, and a genuine interest in technology.
-            {{ end }}
-        </p>
-    </section>
+    <section class="article-list home-feed">
+        <section class="home-intro">
+            <h1 class="home-intro-title">
+                {{ if $isFrench }}Bienvenue sur mon portfolio technique{{ else }}Welcome to my technical portfolio{{ end }}
+            </h1>
+            <p>
+                {{ if $isFrench }}
+                    Ce portfolio suit mon parcours en administration systèmes et réseaux.
+                {{ else }}
+                    This portfolio tracks my progression in systems and network administration.
+                {{ end }}
+            </p>
+            <p>
+                {{ if $isFrench }}
+                    Vous trouverez ici mes challenges Root-Me et SadServers, que j'utilise pour monter en compétences.
+                {{ else }}
+                    You will find my Root-Me and SadServers challenges, which I use to build and strengthen my skills.
+                {{ end }}
+            </p>
+            <p>
+                {{ if $isFrench }}
+                    Vous trouverez aussi les actualités IT qui m'intéressent vraiment, avec mon propre retour d'expérience et mon propre avis.
+                {{ else }}
+                    You will also find the IT updates that truly interest me, with my own field feedback and personal perspective.
+                {{ end }}
+            </p>
+            <p>
+                {{ if $isFrench }}
+                    Ce portfolio me permet de montrer une évolution régulière, un raisonnement clair, et un vrai intérêt pour la tech.
+                {{ else }}
+                    This portfolio highlights steady progress, clear reasoning, and a genuine interest in technology.
+                {{ end }}
+            </p>
+        </section>
 
-    <section class="article-list">
         {{ range $pag.Pages }}
             {{ partial "article-list/default" . }}
         {{ end }}

@@ -53,16 +53,19 @@ languages:
         - identifier: github
           name: GitHub
           url: "https://github.com/alexandrefroissart"
+          weight: 1
           params:
             icon: brand-github
         - identifier: linkedin
           name: LinkedIn
           url: "https://www.linkedin.com/in/alexandre-froissart/"
+          weight: 2
           params:
             icon: brand-linkedin
         - identifier: gmail
           name: Gmail
           url: "mailto:alexandre.froissart.pro@gmail.com"
+          weight: 3
           params:
             icon: brand-gmail
             newTab: false
@@ -118,16 +121,19 @@ languages:
         - identifier: github
           name: GitHub
           url: "https://github.com/alexandrefroissart"
+          weight: 1
           params:
             icon: brand-github
         - identifier: linkedin
           name: LinkedIn
           url: "https://www.linkedin.com/in/alexandre-froissart/"
+          weight: 2
           params:
             icon: brand-linkedin
         - identifier: gmail
           name: Gmail
           url: "mailto:alexandre.froissart.pro@gmail.com"
+          weight: 3
           params:
             icon: brand-gmail
             newTab: false
