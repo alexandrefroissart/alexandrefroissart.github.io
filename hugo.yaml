@@ -60,6 +60,12 @@ languages:
           url: "https://www.linkedin.com/in/alexandre-froissart/"
           params:
             icon: brand-linkedin
+        - identifier: gmail
+          name: Gmail
+          url: "mailto:alexandre.froissart.pro@gmail.com"
+          params:
+            icon: brand-gmail
+            newTab: false
     permalinks:
       root-me-challenges: /rootme/:slug/
       sadservers: /sadservers/:slug/
@@ -119,6 +125,12 @@ languages:
           url: "https://www.linkedin.com/in/alexandre-froissart/"
           params:
             icon: brand-linkedin
+        - identifier: gmail
+          name: Gmail
+          url: "mailto:alexandre.froissart.pro@gmail.com"
+          params:
+            icon: brand-gmail
+            newTab: false
     permalinks:
       root-me-challenges: /root-me-challenges/:slug/
       sadservers: /sadservers/:slug/
