@@ -135,10 +135,13 @@
     border-radius: 0 !important;
 }
 
-/* Bannière IA principale: on remplit bien le rectangle, comme sur la version précédente */
+/* Bannière IA principale: plein cadre + léger zoom (home et /news), sans déformation */
+.home-news-page .article-list .article-header .article-image a[href*="chatgpt-gpt-5-3-instant"] img,
 .home-news-page .article-list .article-header .article-image img[src*="waveform-traffic"] {
     object-fit: cover !important;
-    object-position: center !important;
+    object-position: center 46% !important;
+    transform: scale(1.18);
+    transform-origin: center;
 }
 
 .home-news-page .article-list .article-title {
