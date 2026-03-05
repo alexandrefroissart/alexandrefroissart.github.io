@@ -827,6 +827,33 @@ body:not(.article-page) .right-sidebar .rootme-link {
         margin: 0 !important;
     }
 
+    /* Toujours afficher le switch thème juste sous le sélecteur de langue */
+    body.show-menu #main-menu .menu-bottom-section {
+        margin-top: 16px !important;
+    }
+
+    body.show-menu #main-menu .menu-bottom-section>.menu {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 14px !important;
+    }
+
+    body.show-menu #main-menu #i18n-switch,
+    body.show-menu #main-menu #dark-mode-toggle {
+        display: inline-flex !important;
+        width: 100%;
+        align-items: center;
+    }
+
+    body.show-menu #main-menu #dark-mode-toggle {
+        margin-top: 0 !important;
+    }
+
+    body.show-menu #main-menu #dark-mode-toggle span {
+        display: inline !important;
+    }
+
     /* OPTIMISATION ARTICLES MOBILE */
     /* ----------------------------- */
     .article-page {
