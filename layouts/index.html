@@ -10,27 +10,27 @@
     {{ $isFrench := eq .Site.Language.Lang "fr" }}
     <section class="home-intro">
         <h1 class="home-intro-title">
-            {{ if $isFrench }}Bienvenue sur mon portfolio{{ else }}Welcome to my portfolio{{ end }}
+            {{ if $isFrench }}Bienvenue sur mon portfolio technique{{ else }}Welcome to my technical portfolio{{ end }}
         </h1>
         <p>
             {{ if $isFrench }}
-                Je partage ici ma veille IA, mes challenges Root-Me / SadServers et mes retours d'expérience en admin systèmes et réseaux.
+                Je m'appelle Alexandre Froissart, et j'ai construit ce site comme un journal de progression en admin systèmes et réseaux.
             {{ else }}
-                I share my AI watch, Root-Me / SadServers challenges, and hands-on system and network administration notes here.
+                My name is Alexandre Froissart, and I built this website as a progress journal in systems and network administration.
             {{ end }}
         </p>
         <p>
             {{ if $isFrench }}
-                Je documente ce que je teste réellement: nouveautés IA, challenges sécurité, et cas concrets côté Linux / réseau.
+                Chaque contenu part d'un test réel: challenges Root-Me / SadServers, labs Linux et réseau, ou sorties IA vérifiées avec des essais concrets.
             {{ else }}
-                I document what I actually test: AI updates, security challenges, and concrete Linux/network cases.
+                Every post comes from hands-on testing: Root-Me / SadServers challenges, Linux and network labs, or AI releases validated through practical checks.
             {{ end }}
         </p>
         <p>
             {{ if $isFrench }}
-                Le but est de montrer une méthode de travail claire, des résultats vérifiables, et une progression concrète.
+                L'objectif est simple: donner une vision claire de mon niveau actuel, de ma façon de raisonner, et de la valeur que je peux apporter rapidement en alternance.
             {{ else }}
-                The goal is to show a clear work method, verifiable results, and concrete progress.
+                The goal is simple: give a clear view of my current level, how I reason, and the value I can bring quickly in an apprenticeship role.
             {{ end }}
         </p>
     </section>
