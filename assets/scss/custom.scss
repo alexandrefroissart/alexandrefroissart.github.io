@@ -121,27 +121,31 @@
     min-height: 280px;
     overflow: hidden;
     border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    display: block;
     background: #0f1115;
+}
+
+.home-news-page .article-list .article-header .article-image>a {
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 .home-news-page .article-list .article-header .article-image img {
     width: 100%;
-    height: 280px !important;
-    max-height: 280px !important;
+    height: 100% !important;
+    max-height: none !important;
     object-fit: contain !important;
     border-radius: 0 !important;
+    display: block;
 }
 
-/* Bannière IA principale: plein cadre + léger zoom (home et /news), sans déformation */
+/* Bannière IA principale: plein cadre bord à bord (home et /news) */
 .home-news-page .article-list .article-header .article-image a[href*="chatgpt-gpt-5-3-instant"] img,
 .home-news-page .article-list .article-header .article-image img[src*="waveform-traffic"] {
     object-fit: cover !important;
-    object-position: center 46% !important;
-    transform: scale(1.18);
-    transform-origin: center;
+    object-position: left center !important;
+    transform: none !important;
 }
 
 .home-news-page .article-list .article-title {
@@ -386,32 +390,32 @@
     animation-delay: 140ms;
 }
 
-/* Sidebar droite: home alignée avec la taille des items à gauche */
-.home-news-page .right-sidebar .widget-title.section-title {
+/* Sidebar droite: taille homogène sur tous les onglets (home/news/rootme/sadservers) */
+body:not(.article-page) .right-sidebar .widget-title.section-title {
     font-size: 1.52rem !important;
     font-weight: 500 !important;
     text-transform: none !important;
 }
 
-.home-news-page .right-sidebar .widget.archives .archives-year a {
+body:not(.article-page) .right-sidebar .widget.archives .archives-year a {
     font-size: 1.3rem !important;
     padding: 12px 15px !important;
 }
 
-.home-news-page .right-sidebar .tagCloud .tagCloud-tags a {
+body:not(.article-page) .right-sidebar .tagCloud .tagCloud-tags a {
     font-size: 1.24rem !important;
     padding: 6px 11px !important;
 }
 
-.home-news-page .right-sidebar .rootme-value {
+body:not(.article-page) .right-sidebar .rootme-value {
     font-size: 1.18rem !important;
 }
 
-.home-news-page .right-sidebar .rootme-label {
+body:not(.article-page) .right-sidebar .rootme-label {
     font-size: 0.68rem !important;
 }
 
-.home-news-page .right-sidebar .rootme-link {
+body:not(.article-page) .right-sidebar .rootme-link {
     font-size: 0.9rem !important;
 }
 
@@ -474,9 +478,14 @@
         min-height: 200px;
     }
 
+    .home-news-page .article-list .article-header .article-image>a {
+        width: 100%;
+        height: 100%;
+    }
+
     .home-news-page .article-list .article-header .article-image img {
-        height: 200px !important;
-        max-height: 200px !important;
+        height: 100% !important;
+        max-height: none !important;
     }
 
     .home-news-page .article-list .article-title {
