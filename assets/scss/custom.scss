@@ -199,6 +199,41 @@
     margin-bottom: 0.55em;
 }
 
+/* Articles challenges: même confort de lecture que l'article IA */
+.article-page:not(.news-article-page) .article-content {
+    max-width: none;
+    width: clamp(0px, 100%, 108ch);
+    margin-inline: auto;
+    font-size: 1.28rem;
+}
+
+.article-page:not(.news-article-page) .article-content p,
+.article-page:not(.news-article-page) .article-content li {
+    font-size: 1em;
+    line-height: 1.68;
+    text-wrap: pretty;
+    orphans: 2;
+    widows: 2;
+}
+
+.article-page:not(.news-article-page) .article-content h2 {
+    font-size: 1.75rem;
+    text-wrap: balance;
+}
+
+.article-page:not(.news-article-page) .article-content h3 {
+    font-size: 1.5rem;
+    text-wrap: balance;
+}
+
+.article-page:not(.news-article-page) .article-content>p {
+    margin: 0.72em 0;
+}
+
+.article-page:not(.news-article-page) .article-content ul li {
+    margin-bottom: 0.55em;
+}
+
 .news-article-page .article-content table.news-model-table {
     font-size: 0.84em;
 }
@@ -457,11 +492,24 @@
         width: 100%;
     }
 
+    .article-page:not(.news-article-page) .article-content {
+        font-size: 1.18rem;
+        width: 100%;
+    }
+
     .news-article-page .article-content h2 {
         font-size: 1.55rem;
     }
 
+    .article-page:not(.news-article-page) .article-content h2 {
+        font-size: 1.55rem;
+    }
+
     .news-article-page .article-content h3 {
+        font-size: 1.35rem;
+    }
+
+    .article-page:not(.news-article-page) .article-content h3 {
         font-size: 1.35rem;
     }
 
