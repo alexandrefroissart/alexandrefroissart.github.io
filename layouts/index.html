@@ -7,6 +7,27 @@
     {{ $sorted := $filtered.ByDate.Reverse }}
     {{ $pag := .Paginate $sorted }}
 
+    {{ $isFrench := eq .Site.Language.Lang "fr" }}
+    <section class="home-intro">
+        <h1 class="home-intro-title">
+            {{ if $isFrench }}Bienvenue sur mon portfolio{{ else }}Welcome to my portfolio{{ end }}
+        </h1>
+        <p>
+            {{ if $isFrench }}
+                Je partage ici ma veille IA, mes challenges Root-Me / SadServers et mes retours d'expérience en admin systèmes et réseaux.
+            {{ else }}
+                I share my AI watch, Root-Me / SadServers challenges, and hands-on system and network administration notes here.
+            {{ end }}
+        </p>
+        <p>
+            {{ if $isFrench }}
+                L'objectif est simple : montrer ma méthode, mes tests terrain et ma progression de façon claire, utile et concrète.
+            {{ else }}
+                The goal is simple: show my method, real-world tests, and progress in a clear, practical way.
+            {{ end }}
+        </p>
+    </section>
+
     <section class="article-list">
         {{ range $pag.Pages }}
             {{ partial "article-list/default" . }}

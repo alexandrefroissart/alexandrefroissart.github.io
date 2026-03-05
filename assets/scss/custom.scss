@@ -39,6 +39,29 @@
 /* ----------------------------------------------------------- */
 /* 2. PAGE D'ACCUEIL - Les cartes d'articles (Liste)           */
 /* ----------------------------------------------------------- */
+.home-intro {
+    background: var(--card-background);
+    border-radius: var(--card-border-radius);
+    box-shadow: var(--shadow-l1);
+    border: 1px solid var(--card-separator-color);
+    padding: 1.35rem 1.5rem;
+    margin-bottom: var(--section-separation);
+}
+
+.home-intro .home-intro-title {
+    margin: 0 0 0.55rem;
+    font-size: 1.9rem;
+    line-height: 1.3;
+}
+
+.home-intro p {
+    margin: 0.45rem 0 0;
+    font-size: 1.08rem;
+    line-height: 1.65;
+    color: var(--card-text-color-secondary);
+    text-wrap: pretty;
+}
+
 /* On cible les articles dans la liste compacte de la home */
 .article-list--compact article a {
     flex-direction: column-reverse !important;
@@ -459,6 +482,19 @@ body:not(.article-page) .right-sidebar .rootme-link {
 }
 
 @media (max-width: 768px) {
+    .home-intro {
+        padding: 1rem 1.05rem;
+    }
+
+    .home-intro .home-intro-title {
+        font-size: 1.55rem;
+    }
+
+    .home-intro p {
+        font-size: 1rem;
+        line-height: 1.6;
+    }
+
     .section-card .section-image {
         height: 190px;
         min-height: 190px;
