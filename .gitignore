@@ -2,6 +2,7 @@
 public/
 resources/
 .hugo_build.lock
+.debug/
 
 # macOS
 .DS_Store
@@ -12,3 +13,5 @@ resources/
 # Python cache
 __pycache__/
 *.pyc
+scripts/.venv/
+.venv-rootme/
