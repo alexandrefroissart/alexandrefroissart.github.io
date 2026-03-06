@@ -5,18 +5,25 @@
 /* ----------------------------------------------------------- */
 .section-card {
     flex-direction: column-reverse !important;
-    /* Image au dessus */
     padding: 0 !important;
     gap: 0 !important;
     overflow: hidden;
+    position: relative;
+    border-radius: 24px;
+    border: 1px solid color-mix(in srgb, var(--card-separator-color) 72%, var(--accent-color) 28%);
+    background:
+        linear-gradient(180deg,
+            color-mix(in srgb, var(--card-background) 94%, white 6%) 0%,
+            color-mix(in srgb, var(--card-background) 98%, black 2%) 100%);
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
 }
 
 .section-card .section-image {
     width: 100%;
     margin: 0 !important;
     background-color: #0f1115;
-    height: 250px;
-    min-height: 250px;
+    height: 260px;
+    min-height: 260px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -31,8 +38,40 @@
 }
 
 .section-card .section-details {
-    padding: 20px;
+    padding: 24px 26px 28px;
     width: 100%;
+}
+
+.section-list-header {
+    margin-bottom: 1.9rem;
+}
+
+.section-card .section-count {
+    margin: 0;
+    color: var(--card-text-color-tertiary);
+    font-size: 0.84rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.section-card .section-term {
+    margin: 0;
+    color: var(--card-text-color-main);
+    font-size: clamp(2.2rem, 3.1vw, 2.9rem);
+    line-height: 1.04;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+}
+
+.section-card .section-description {
+    margin: 0;
+    max-width: 68ch;
+    color: var(--card-text-color-secondary);
+    font-size: 1.12rem;
+    line-height: 1.62;
+    font-weight: 400;
+    text-wrap: pretty;
 }
 
 
@@ -40,32 +79,133 @@
 /* 2. PAGE D'ACCUEIL - Les cartes d'articles (Liste)           */
 /* ----------------------------------------------------------- */
 .home-intro {
-    background: var(--card-background);
-    border-radius: var(--card-border-radius);
-    box-shadow: var(--shadow-l1);
-    border: 1px solid var(--card-separator-color);
-    padding: 1.55rem 1.7rem;
+    position: relative;
+    overflow: hidden;
+    background:
+        linear-gradient(180deg,
+            color-mix(in srgb, var(--card-background) 96%, white 4%) 0%,
+            color-mix(in srgb, var(--card-background) 99%, black 1%) 100%);
+    border-radius: 24px;
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.14);
+    border: 1px solid color-mix(in srgb, var(--card-separator-color) 88%, white 12%);
+    padding: 1.65rem 1.85rem 1.75rem;
     margin-top: 0;
     margin-bottom: 0;
 }
 
-.home-intro .home-intro-title {
-    margin: 0 0 0.7rem;
-    font-size: 2.6rem;
-    line-height: 1.3;
+.home-intro::before {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 5px;
+    background: linear-gradient(180deg,
+            color-mix(in srgb, var(--accent-color) 68%, white 32%) 0%,
+            color-mix(in srgb, var(--accent-color) 36%, white 64%) 100%);
+    pointer-events: none;
 }
 
-.home-intro p {
-    margin: 0.55rem 0 0;
-    font-size: 1.34rem;
-    line-height: 1.72;
-    color: var(--card-text-color-secondary);
+.home-intro-shell {
+    display: grid;
+    grid-template-columns: minmax(220px, 0.95fr) minmax(0, 1.45fr);
+    gap: 2.2rem;
+    align-items: start;
+}
+
+.home-intro-head {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    padding-right: 0.65rem;
+}
+
+.home-intro .home-intro-kicker {
+    margin: 0;
+    color: color-mix(in srgb, var(--card-text-color-main) 72%, var(--accent-color) 28%);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.home-intro .home-intro-title {
+    margin: 0;
+    color: color-mix(in srgb, var(--card-text-color-main) 94%, var(--body-background) 6%);
+    max-width: 10ch;
+    text-align: left;
+    font-size: clamp(2.05rem, 2.3vw, 2.42rem);
+    font-weight: 680;
+    line-height: 1.02;
+    letter-spacing: -0.04em;
     text-wrap: pretty;
 }
 
-/* Home uniquement: intro positionnée plus bas pour démarrer visuellement en face de l'identité à gauche */
+.home-intro .home-intro-copy {
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    min-height: 100%;
+    padding-left: 1.6rem;
+    border-left: 1px solid color-mix(in srgb, var(--card-separator-color) 78%, white 22%);
+}
+
+.home-intro p {
+    margin: 0;
+    max-width: 32ch;
+    font-size: 1.24rem;
+    line-height: 1.7;
+    color: color-mix(in srgb, var(--card-text-color-main) 78%, var(--card-text-color-secondary) 22%);
+    text-wrap: pretty;
+}
+
 .home-news-page .home-intro {
-    margin-top: clamp(6.5rem, 7.5vw, 7.5rem);
+    margin-top: clamp(10.75rem, 10.8vw, 12rem);
+}
+
+body:not(.article-page) .article-list article,
+body:not(.article-page) .article-list--compact article {
+    border-radius: 22px;
+    overflow: hidden;
+    border: 1px solid color-mix(in srgb, var(--card-separator-color) 82%, white 18%);
+    background:
+        linear-gradient(180deg,
+            color-mix(in srgb, var(--card-background) 94%, white 6%) 0%,
+            color-mix(in srgb, var(--card-background) 98%, black 2%) 100%);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
+    transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+body:not(.article-page) .article-list article:hover,
+body:not(.article-page) .article-list--compact article:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+    border-color: color-mix(in srgb, var(--card-separator-color) 60%, var(--accent-color) 40%);
+}
+
+body:not(.article-page) .article-list article .article-details,
+body:not(.article-page) .article-list--compact article .article-details {
+    padding: 1.25rem 1.35rem 1.35rem !important;
+}
+
+body:not(.article-page) .article-list--compact article .article-title {
+    font-size: 1.7rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+}
+
+body:not(.article-page) .article-list--compact article .article-time {
+    color: color-mix(in srgb, var(--card-text-color-main) 58%, var(--card-text-color-secondary) 42%);
+    font-size: 1.02rem;
+}
+
+.article-list--compact article .article-details {
+    gap: 10px !important;
+}
+
+.article-list--compact article .article-time time {
+    font-size: 1.08rem !important;
 }
 
 /* On cible les articles dans la liste compacte de la home */
@@ -444,15 +584,33 @@ body:not(.article-page) .right-sidebar .tagCloud .tagCloud-tags a {
 }
 
 body:not(.article-page) .right-sidebar .rootme-value {
-    font-size: 1.18rem !important;
+    font-size: 1.42rem !important;
+    line-height: 1.1 !important;
 }
 
 body:not(.article-page) .right-sidebar .rootme-label {
-    font-size: 0.68rem !important;
+    font-size: 0.82rem !important;
+    letter-spacing: 0.07em !important;
 }
 
 body:not(.article-page) .right-sidebar .rootme-link {
-    font-size: 0.9rem !important;
+    font-size: 1rem !important;
+}
+
+body:not(.article-page) .right-sidebar .rootme-update {
+    font-size: 0.7rem !important;
+}
+
+.right-sidebar .rootme-card {
+    padding: 1.15rem !important;
+}
+
+.right-sidebar .rootme-verified {
+    font-size: 0.72rem !important;
+}
+
+.right-sidebar .rootme-stats {
+    margin-bottom: 0.95rem !important;
 }
 
 /* Archives: badges catégories sans tuiles vides */
@@ -483,18 +641,22 @@ body:not(.article-page) .right-sidebar .rootme-link {
 
 /* Sidebar article: TOC plus discrète */
 .article-page .right-sidebar .widget-title.section-title {
-    font-size: 1.16rem !important;
-    font-weight: 400 !important;
+    font-size: 1.52rem !important;
+    font-weight: 500 !important;
     text-transform: none !important;
 }
 
+.article-page .right-sidebar .widget--toc {
+    padding: 1.5rem 1.55rem !important;
+}
+
 .article-page .right-sidebar .widget--toc #TableOfContents {
-    font-size: 1.02rem;
-    line-height: 1.52;
+    font-size: 1.32rem;
+    line-height: 1.74;
 }
 
 .article-page .right-sidebar .widget--toc #TableOfContents li {
-    margin: 6px 0 6px 12px;
+    margin: 12px 0 12px 14px;
     padding: 0;
 }
 
@@ -509,30 +671,63 @@ body:not(.article-page) .right-sidebar .rootme-link {
 }
 
 .article-page .right-sidebar .rootme-value {
-    font-size: 1.02rem !important;
+    font-size: 1.28rem !important;
+    line-height: 1.1 !important;
 }
 
 .article-page .right-sidebar .rootme-label {
-    font-size: 0.62rem !important;
+    font-size: 0.76rem !important;
+    letter-spacing: 0.07em !important;
 }
 
 .article-page .right-sidebar .rootme-link {
-    font-size: 0.82rem !important;
+    font-size: 0.96rem !important;
+}
+
+.article-page .right-sidebar .rootme-update {
+    font-size: 0.68rem !important;
 }
 
 @media (max-width: 768px) {
     .home-intro {
-        padding: 1.15rem 1.15rem;
+        border-radius: 22px;
+        padding: 1.25rem 1.15rem 1.3rem;
         margin-top: calc(var(--section-separation) * 0.35);
     }
 
+    .home-intro-shell {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .home-intro-head {
+        padding-right: 0;
+        gap: 0.65rem;
+    }
+
+    .home-intro .home-intro-kicker {
+        font-size: 0.74rem;
+        margin-bottom: 0.6rem;
+    }
+
     .home-intro .home-intro-title {
-        font-size: 1.95rem;
+        max-width: 100%;
+        font-size: 1.82rem;
+        line-height: 1.06;
+    }
+
+    .home-intro .home-intro-copy {
+        gap: 0.8rem;
+        padding-left: 0;
+        padding-top: 0.95rem;
+        border-left: 0;
+        border-top: 1px solid color-mix(in srgb, var(--card-separator-color) 78%, white 22%);
     }
 
     .home-intro p {
+        max-width: 100%;
         font-size: 1.16rem;
-        line-height: 1.66;
+        line-height: 1.68;
     }
 
     .home-news-page .home-intro {
@@ -544,8 +739,20 @@ body:not(.article-page) .right-sidebar .rootme-link {
     }
 
     .section-card .section-image {
-        height: 190px;
-        min-height: 190px;
+        height: 200px;
+        min-height: 200px;
+    }
+
+    .section-card .section-details {
+        padding: 18px 18px 20px;
+    }
+
+    .section-card .section-term {
+        font-size: 1.8rem;
+    }
+
+    .section-card .section-description {
+        font-size: 1rem;
     }
 
     .news-article-page .article-header .article-image {
@@ -649,23 +856,170 @@ body:not(.article-page) .right-sidebar .rootme-link {
 }
 
 /* ----------------------------------------------------------- */
-/* 4. BADGES DE CATÉGORIES - Couleurs personnalisées          */
+/* 4. BADGES - Système de couleurs sémantique                 */
 /* ----------------------------------------------------------- */
 
-/* Root-Me et catégories associées : fond noir */
-.article-category a[href*="root-me"],
-.article-category a[href*="réseau"],
-.article-category a[href*="reseau"],
-.article-category a[href*="network"] {
-    background-color: #000000 !important;
-    color: #ffffff !important;
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a) {
+    --badge-strong-bg: var(--card-background);
+    --badge-strong-fg: var(--card-text-color-main);
+    --badge-strong-border: var(--card-separator-color);
+    --badge-accent: var(--accent-color);
+    --badge-soft-bg: color-mix(in srgb, var(--card-background) 94%, white 6%);
+    --badge-soft-fg: var(--card-text-color-main);
+    --badge-soft-border: var(--card-separator-color);
+    transition: transform 160ms ease, box-shadow 160ms ease, background-color 160ms ease, color 160ms ease;
 }
 
-/* SadServers et catégories associées : fond jaune */
-.article-category a[href*="sadservers"],
-.article-category a[href*="linux"] {
-    background-color: #fbbf24 !important;
-    color: #000000 !important;
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a) {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--badge-strong-bg) !important;
+    color: var(--badge-strong-fg) !important;
+    border-color: var(--badge-strong-border) !important;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+:is(.article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a) {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    background: var(--badge-soft-bg) !important;
+    color: var(--badge-soft-fg) !important;
+    border: 1px solid var(--badge-soft-border) !important;
+    box-shadow: none !important;
+    padding-left: 0.88rem !important;
+}
+
+:is(.article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)::before {
+    content: "";
+    width: 7px;
+    height: 7px;
+    margin-right: 0.48rem;
+    border-radius: 999px;
+    background: var(--badge-accent);
+    flex-shrink: 0;
+}
+
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a):hover {
+    transform: translateY(-1px);
+}
+
+/* Root-Me / CTF */
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/categories/root-me/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/root-me/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/comcyber"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/hack"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/cracking"] {
+    --badge-accent: #0f1115;
+    --badge-strong-bg: #0f1115;
+    --badge-strong-fg: #f5f7fa;
+    --badge-strong-border: rgba(255, 255, 255, 0.1);
+    --badge-soft-bg: color-mix(in srgb, #0f1115 24%, var(--card-background) 76%);
+    --badge-soft-fg: #e9edf4;
+    --badge-soft-border: rgba(255, 255, 255, 0.1);
+}
+
+/* Réseau / protocoles / analyse trafic */
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/categories/r%C3%A9seau/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/categories/reseau/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/ethernet/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/wireshark/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/pcap/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/ftp/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/http/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/base64/"] {
+    --badge-accent: #0d6efd;
+    --badge-strong-bg: #0d6efd;
+    --badge-strong-fg: #f8fbff;
+    --badge-strong-border: rgba(13, 110, 253, 0.45);
+    --badge-soft-bg: color-mix(in srgb, #0d6efd 26%, var(--card-background) 74%);
+    --badge-soft-fg: #ddebff;
+    --badge-soft-border: rgba(13, 110, 253, 0.25);
+}
+
+/* SadServers / Linux / troubleshooting système */
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/categories/sadservers/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/categories/linux/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/troubleshooting/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/process/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/lsof/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/systemd/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/postgres/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/ssl/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/apache/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/bash/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/linux/"] {
+    --badge-accent: #d6a115;
+    --badge-strong-bg: #f4c542;
+    --badge-strong-fg: #161616;
+    --badge-strong-border: rgba(244, 197, 66, 0.5);
+    --badge-soft-bg: color-mix(in srgb, #f4c542 28%, var(--card-background) 72%);
+    --badge-soft-fg: #f5e3a8;
+    --badge-soft-border: rgba(244, 197, 66, 0.24);
+}
+
+/* Web / surface utilisateur */
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/categories/web---client/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/categories/web---serveur/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/javascript/"] {
+    --badge-accent: #d94f70;
+    --badge-strong-bg: #d94f70;
+    --badge-strong-fg: #fff7f9;
+    --badge-strong-border: rgba(217, 79, 112, 0.4);
+    --badge-soft-bg: color-mix(in srgb, #d94f70 24%, var(--card-background) 76%);
+    --badge-soft-fg: #ffd7df;
+    --badge-soft-border: rgba(217, 79, 112, 0.22);
+}
+
+/* IA / veille / OpenAI */
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/categories/news-ia/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/categories/openai/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/chatgpt/"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/gpt-"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/gemini-"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/claude-"],
+:is(.article-category a, .archives-categories-inline a, .widget-categories-cloud .tagCloud-tags a, .article-footer .article-tags a, .widget-keywords-cloud .tagCloud-tags a)[href*="/tags/rumeur-ia/"] {
+    --badge-accent: #8ea885;
+    --badge-strong-bg: #8ea885;
+    --badge-strong-fg: #f7fbf4;
+    --badge-strong-border: rgba(142, 168, 133, 0.45);
+    --badge-soft-bg: color-mix(in srgb, #8ea885 24%, var(--card-background) 76%);
+    --badge-soft-fg: #e6f0e2;
+    --badge-soft-border: rgba(142, 168, 133, 0.24);
+}
+
+.widget-categories-cloud .tagCloud-tags {
+    gap: 0.7rem;
+}
+
+.widget-categories-cloud .tagCloud-tags a {
+    padding: 0.42rem 0.76rem !important;
+    border-radius: 999px !important;
+    font-size: 0.98rem !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+}
+
+.widget-keywords-cloud .tagCloud-tags {
+    gap: 0.55rem;
+}
+
+.widget-keywords-cloud .tagCloud-tags a {
+    min-height: 32px;
+    padding: 0.32rem 0.7rem !important;
+    border-radius: 999px !important;
+    font-size: 0.92rem !important;
+    font-weight: 550 !important;
+    text-decoration: none !important;
+}
+
+.article-footer .article-tags a {
+    min-height: 32px;
+    padding: 0.32rem 0.72rem !important;
+    border-radius: 999px !important;
+    font-size: 0.92rem !important;
+    font-weight: 550 !important;
 }
 
 /* ----------------------------------------------------------- */
