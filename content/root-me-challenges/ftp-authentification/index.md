@@ -10,22 +10,17 @@ tags: ["FTP", "Wireshark", "PCAP", "Facile"]
 
 {{< rootme-challenge slug="ftp-authentification" >}}
 
----
+Cette capture montre un cas classique : un service FTP sans chiffrement laisse passer `USER` et `PASS` en clair.
 
-## Contexte
+Le travail consiste surtout à aller rapidement vers les bons paquets, puis à confirmer proprement ce que le flux révèle.
 
-FTP transmet l'authentification en clair (USER/PASS) si aucune couche chiffrée n'est utilisée.  
-Le but est d'identifier ces échanges dans un fichier `.pcap`.
-
----
-
-## Environnement / Setup
+## Environnement
 
 - **Machine** : VM Debian (XFCE) sur VMware Fusion (MacBook Pro M1 Pro)
 - **Utilisateur** : `alex`
 - **Outil** : Wireshark
 
-### Installation (sécurité)
+### Installation et hygiène minimale
 
 ```bash
 sudo apt-get update
@@ -37,23 +32,25 @@ Pendant l'installation, Debian demande :
 > "Should non-superusers be able to capture packets?"
 > ➡️ **Réponse : Non**
 
-**Pourquoi ?** J'évite d'autoriser la capture réseau aux utilisateurs non-root (réduction de surface d'attaque / moindre privilège).
+Je laisse la capture réservée à `root` pour rester sur une logique de moindre privilège.
 
----
+## Démarche
 
-## Analyse (méthode)
+### 1. Ouvrir la capture
 
-1. J'ouvre la capture : `Téléchargements/ch1.pcap`
+J'ouvre `Téléchargements/ch1.pcap` dans Wireshark.
 
-2. Dans Wireshark :
-   - Je filtre sur FTP (ou je repère les trames où le protocole est FTP)
-   - Je cherche la séquence d'authentification FTP :
-     - `USER ...`
-     - `PASS ...`
+### 2. Cibler la phase d'authentification
 
-3. Je vérifie dans le détail du paquet (panneau du bas) la commande FTP envoyée.
+Dans Wireshark :
 
----
+- je filtre sur le trafic FTP ;
+- je repère la séquence d'authentification ;
+- je cherche les commandes `USER` puis `PASS`.
+
+### 3. Confirmer dans le détail des paquets
+
+Je vérifie ensuite dans le panneau du bas la commande FTP exacte envoyée par le client.
 
 ## Observations
 
@@ -62,18 +59,20 @@ Pendant l'installation, Debian demande :
 - Le mot de passe est présent dans la commande `PASS` :
   - **PASS** = `[REDACTED]` *(valeur volontairement masquée)*
 
----
-
 ## Résultat
 
 ✅ J'ai localisé les identifiants FTP dans le flux applicatif de la capture réseau.  
 ✅ **Challenge validé sur Root-Me.**
 
----
+## Ce que je retiens
 
-## Compétences démontrées
+- FTP en clair reste très simple à auditer dans une capture réseau.
+- Wireshark permet d'aller vite si on se concentre d'abord sur la séquence applicative utile.
+- Même sur un exercice simple, je garde une logique de moindre privilège pendant la mise en place.
+
+## Compétences mobilisées
 
 - Analyse PCAP avec Wireshark
-- Lecture de protocole FTP (authentification en clair)
-- Extraction d'informations côté couche application
-- Hygiène sécurité : moindre privilège lors de l'installation/capture
+- Lecture du protocole FTP et de son authentification en clair
+- Extraction d'informations au niveau applicatif
+- Hygiène sécurité lors de l'installation et de la capture

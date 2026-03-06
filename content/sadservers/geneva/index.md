@@ -10,23 +10,25 @@ tags: ["ssl"]
 
 {{< sadservers-scenario slug="geneva" >}}
 
----
+Le but ici n'est pas de refaire toute la configuration Nginx, mais d'aller directement au bon endroit : retrouver le certificat utilisé, en générer un nouveau, puis vérifier que le service présente bien le bon fichier.
 
-## Contexte
+## Environnement
 
-Il y a un serveur web Nginx qui tourne sur cette machine, configuré pour servir un site simple en HTTPS. Cependant, le certificat actuel a expiré ou n'est pas valide. L'objectif est de renouveler le certificat SSL.
+- **Service** : Nginx en HTTPS
+- **Objectif** : remplacer un certificat expiré ou invalide
+- **Outils** : `grep`, `openssl`, `systemctl`
 
----
+## Démarche
 
-## Analyse
+### 1. Retrouver la configuration SSL active
 
-Je commence par chercher où se trouve la configuration SSL de Nginx pour identifier les fichiers de certificat utilisés.
+Je commence par chercher où la configuration SSL de Nginx référence les fichiers de certificat.
 
 ```bash
 grep -r "ssl" /etc/nginx/
 ```
 
-Cette commande me révèle les lignes intéressantes dans `/etc/nginx/sites-available/default` :
+Cette commande fait ressortir les lignes utiles dans `/etc/nginx/sites-available/default` :
 
 ```nginx
 listen 443 ssl;
@@ -34,13 +36,11 @@ ssl_certificate /etc/nginx/ssl/nginx.crt;
 ssl_certificate_key /etc/nginx/ssl/nginx.key;
 ```
 
-Les fichiers cibles sont donc `/etc/nginx/ssl/nginx.crt` (le certificat public) et `/etc/nginx/ssl/nginx.key` (la clé privée).
+Les fichiers cibles sont donc `/etc/nginx/ssl/nginx.crt` pour le certificat public et `/etc/nginx/ssl/nginx.key` pour la clé privée.
 
----
+### 2. Régénérer un certificat propre
 
-## Solution (version non divulguée)
-
-Pour renouveler le certificat, je génère une nouvelle paire clé/certificat auto-signée avec `openssl`.
+Je régénère ensuite une nouvelle paire clé/certificat auto-signée avec `openssl`.
 
 Je remplace ensuite les fichiers SSL utilisés par Nginx.
 
@@ -50,39 +50,42 @@ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
   -out <chemin_certificat_ssl>
 ```
 
-Lors de la génération, `openssl` me demande le "Distinguished Name" (DN).
+Pendant la génération, `openssl` demande le **Distinguished Name**.
 
-Je renseigne des valeurs cohérentes avec le serveur (pays, organisation, CN du host), sans publier ici le jeu exact.
+Je renseigne des valeurs cohérentes avec le serveur, sans publier ici le jeu exact.
 
-Une fois les fichiers générés, je redémarre Nginx pour prendre en charge le nouveau certificat :
+Une fois les fichiers générés, je redémarre Nginx pour qu'il prenne en charge le nouveau certificat :
 
 ```bash
 sudo systemctl restart nginx
 ```
 
----
+### 3. Vérifier le certificat servi
 
-## Vérification
-
-Je vérifie que le certificat est bien chargé et valide en utilisant `openssl s_client` pour se connecter localement au serveur et inspecter le certificat servi.
+Je contrôle ensuite que Nginx présente bien le nouveau certificat avec `openssl s_client`.
 
 **Vérification des dates :**
 ```bash
 echo | openssl s_client -connect <hote>:443 2>/dev/null | openssl x509 -noout -dates
 ```
-*Résultat attendu : `notBefore` doit être récent et `notAfter` doit être postérieur.*
+*Résultat attendu : `notBefore` récent, `notAfter` plus loin dans le temps.*
 
 **Vérification du sujet :**
 ```bash
 echo | openssl s_client -connect <hote>:443 2>/dev/null | openssl x509 -noout -subject
 ```
 
-Si les dates sont correctes et que Nginx redémarre sans erreur, la correction est validée.
+Si les dates sont bonnes et que Nginx redémarre sans erreur, la correction est validée.
 
----
+## Ce que je retiens
 
-## Compétences démontrées
+- Sur ce type d'exercice, le plus important est de retrouver vite les bons fichiers au lieu de repartir de zéro.
+- `openssl s_client` reste un réflexe très utile pour vérifier ce que le service expose vraiment.
+- Une vérification après redémarrage est indispensable : générer un certificat ne suffit pas, il faut aussi confirmer qu'il est bien servi.
 
-- **OpenSSL** : Génération de certificats auto-signés (req, x509).
-- **Nginx** : Localisation de la configuration SSL et redémarrage du service.
-- **Troubleshooting** : Vérification de la validité d'un certificat en ligne de commande.
+## Compétences mobilisées
+
+- OpenSSL pour générer un certificat auto-signé
+- Lecture de configuration Nginx
+- Vérification d'un certificat en ligne de commande
+- Troubleshooting d'un service HTTPS

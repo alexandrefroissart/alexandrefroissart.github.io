@@ -10,34 +10,27 @@ tags: ["Ethernet", "Wireshark", "Base64", "HTTP", "Facile"]
 
 {{< rootme-challenge slug="ethernet-trame" >}}
 
----
+Ce challenge demande de repartir d'une trame Ethernet brute en hexadécimal pour retrouver l'information sensible qu'elle transporte.
 
-## Contexte
+Ici, le point important est une authentification HTTP Basic visible directement dans la charge utile.
 
-Ce challenge consiste à analyser une trame Ethernet brute fournie en hexadécimal.  
-L'objectif est d'identifier les informations sensibles transmises, notamment une authentification HTTP Basic.
-
----
-
-## Environnement / Setup
+## Environnement
 
 - **Machine** : VM Debian (XFCE) sur VMware Fusion (MacBook Pro M1 Pro)
 - **Utilisateur** : `alex`
 - **Outils** : CyberChef, décodeur Base64 en ligne
 
-### Données fournies
+## Donnée fournie
 
 ```
 [Trame brute fournie par l'énoncé - valeur complète non reproduite ici]
 ```
 
----
+## Démarche
 
-## Analyse (méthode)
+### 1. Repasser la trame en ASCII
 
-### 1. Conversion hexadécimal → ASCII
-
-En convertissant la trame hexadécimale en ASCII, on peut identifier la requête HTTP :
+En convertissant la trame hexadécimale en ASCII, on fait ressortir la requête HTTP contenue dans le flux :
 
 ```
 GET / HTTP/1.1
@@ -47,44 +40,42 @@ Host: www.myipv6.org
 Accept: */*
 ```
 
-### 2. Identification de l'authentification HTTP Basic
+### 2. Isoler l'élément utile
 
-La ligne clé est :
+La ligne à retenir est :
+
 ```
 Authorization: Basic [REDACTED_BASE64]
 ```
 
-L'authentification **HTTP Basic** encode les credentials au format `username:password` en **Base64**.
+Une authentification **HTTP Basic** encode simplement le couple `username:password` en **Base64**.
 
-### 3. Décodage Base64
+### 3. Vérifier le Base64
 
-La chaîne `Y29uZmk6ZGVudGlhbA==` se termine par deux signes `==`, ce qui est caractéristique d'un encodage Base64.
+La chaîne `Y29uZmk6ZGVudGlhbA==` se termine par `==`, ce qui correspond bien à un encodage Base64.
 
-Décodage :
+Une fois décodée, on retrouve le format attendu :
+
 ```
 [REDACTED_BASE64] → [username]:[password]
 ```
 
-**Résultat** :
+**Ce que j'obtiens** :
 - Username : `[REDACTED]`
 - Password : `[REDACTED]`
 
 Les identifiants exacts sont volontairement masqués pour respecter la confidentialité des challenges.
 
----
+## Ce que je retiens
 
-## Remarques
-
-- **HTTP Basic Auth** : Ce mécanisme d'authentification transmet les credentials en clair (encodé Base64, mais **pas chiffré**). C'est pourquoi il est dangereux sans HTTPS.
-- **Base64** : L'encodage Base64 se reconnaît souvent par :
+- **HTTP Basic** transmet les credentials en clair. Base64 est un encodage, pas un chiffrement.
+- **Base64** se repère souvent par :
   - Caractères alphanumériques + `+` et `/`
-  - Terminaison par `=` ou `==` (padding)
-- **Outils utiles** :
+  - Terminaison par `=` ou `==`
+- **Outils pratiques** :
   - CyberChef (https://gchq.github.io/CyberChef/)
   - Décodeurs Base64 en ligne
   - `echo "Y29uZmk6ZGVudGlhbA==" | base64 -d` (ligne de commande)
-
----
 
 ## Résultat
 
@@ -92,9 +83,7 @@ Les identifiants exacts sont volontairement masqués pour respecter la confident
 ✅ J'ai décodé l'authentification Basic en Base64.  
 ✅ **Challenge validé sur Root-Me.**
 
----
-
-## Compétences démontrées
+## Compétences mobilisées
 
 - Lecture et analyse de trames réseau brutes (hexadécimal)
 - Compréhension du protocole HTTP et de l'authentification Basic

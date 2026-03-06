@@ -3,113 +3,94 @@ Root-Me Challenge Info Box Shortcode
 Usage: {{< rootme-challenge slug="ftp-authentification">}}
 
     Les données sont lues depuis data/rootme_challenges.json
-    */}}
+*/}}
 
-    {{ $slug := .Get "slug" }}
-    {{ $challenge := index .Site.Data.rootme_challenges $slug }}
+{{ $slug := .Get "slug" }}
+{{ $challenge := index .Site.Data.rootme_challenges $slug }}
 
-    {{ if $challenge }}
+{{ if $challenge }}
+{{ $s := newScratch }}
+{{ $s.Set "difficulte" $challenge.difficulte }}
+{{ $s.Set "rubrique" $challenge.rubrique }}
 
-    {{/* Translations mappings for dynamic content using Scratch to avoid scope issues */}}
-    {{ $s := newScratch }}
-    {{ $s.Set "difficulte" $challenge.difficulte }}
-    {{ $s.Set "rubrique" $challenge.rubrique }}
+{{ if eq .Site.Language.Lang "en" }}
+{{ if eq $challenge.difficulte "Très facile" }}
+{{ $s.Set "difficulte" "Very Easy" }}
+{{ else if eq $challenge.difficulte "Facile" }}
+{{ $s.Set "difficulte" "Easy" }}
+{{ else if eq $challenge.difficulte "Moyen" }}
+{{ $s.Set "difficulte" "Medium" }}
+{{ else if eq $challenge.difficulte "Difficile" }}
+{{ $s.Set "difficulte" "Hard" }}
+{{ else if eq $challenge.difficulte "Très difficile" }}
+{{ $s.Set "difficulte" "Very Hard" }}
+{{ end }}
 
-    {{ if eq .Site.Language.Lang "en" }}
-    {{ if eq $challenge.difficulte "Très facile" }}
-    {{ $s.Set "difficulte" "Very Easy" }}
-    {{ else if eq $challenge.difficulte "Facile" }}
-    {{ $s.Set "difficulte" "Easy" }}
-    {{ else if eq $challenge.difficulte "Moyen" }}
-    {{ $s.Set "difficulte" "Medium" }}
-    {{ else if eq $challenge.difficulte "Difficile" }}
-    {{ $s.Set "difficulte" "Hard" }}
-    {{ else if eq $challenge.difficulte "Très difficile" }}
-    {{ $s.Set "difficulte" "Very Hard" }}
-    {{ end }}
+{{ if eq $challenge.rubrique "Réseau" }}
+{{ $s.Set "rubrique" "Network" }}
+{{ else if eq $challenge.rubrique "Web - Client" }}
+{{ $s.Set "rubrique" "Web - Client" }}
+{{ end }}
+{{ end }}
 
-    {{ if eq $challenge.rubrique "Réseau" }}
-    {{ $s.Set "rubrique" "Network" }}
-    {{ else if eq $challenge.rubrique "Web - Client" }}
-    {{ $s.Set "rubrique" "Web - Client" }}
-    {{/* Add other mappings as needed */}}
-    {{ end }}
-    {{ end }}
+{{ $filled := 1 }}
+{{ if eq $challenge.difficulte "Facile" }}
+{{ $filled = 2 }}
+{{ else if eq $challenge.difficulte "Moyen" }}
+{{ $filled = 3 }}
+{{ else if eq $challenge.difficulte "Difficile" }}
+{{ $filled = 4 }}
+{{ else if eq $challenge.difficulte "Très difficile" }}
+{{ $filled = 5 }}
+{{ end }}
 
-    <div
-        style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; padding: 2rem; margin-bottom: 2.5rem; border: 1px solid #0f3460;">
-        <div
-            style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem;">
-            <div>
-                <h2 style="margin: 0 0 0.75rem 0; color: #4fc3f7; font-size: 2rem;">{{ $challenge.titre }}</h2>
-                <p style="margin: 0; color: #26c6da; font-weight: 600; font-size: 1.4rem;">🏆 {{ $challenge.score }}
-                    Points</p>
-            </div>
-            <div style="display: flex; gap: 0.75rem;">
-                <a href="{{ $challenge.url }}" target="_blank"
-                    style="background: #1976d2; color: white; padding: 0.75rem 1.5rem; border-radius: 6px; text-decoration: none; font-size: 1rem; font-weight: bold; white-space: nowrap;">{{
-                    T "rootme_see" }}</a>
-            </div>
+<section class="challenge-panel challenge-panel--rootme">
+    <div class="challenge-panel__top">
+        <div class="challenge-panel__heading">
+            <p class="challenge-panel__eyebrow">Root-Me</p>
+            <h2 class="challenge-panel__title">{{ $challenge.titre }}</h2>
+            <p class="challenge-panel__subtitle">{{ $challenge.score }} points</p>
         </div>
-        <hr style="border: none; border-top: 1px solid #0f3460; margin: 1.5rem 0;">
-        <!-- Grille Layout -->
-        <div
-            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1.5rem; text-align: center;">
-            <div>
-                <p
-                    style="margin: 0; font-size: 1rem; color: #90a4ae; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">
-                    {{ T "rootme_author" }}</p>
-                <p
-                    style="margin: 0.4rem 0 0 0; color: #e0e0e0; font-size: 1.5rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                    {{ $challenge.auteur }}</p>
-                <p style="margin: 0.2rem 0 0 0; font-size: 0.9rem; color: #78909c;">{{ $challenge.date }}</p>
-            </div>
-            <div>
-                <p
-                    style="margin: 0; font-size: 1rem; color: #90a4ae; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">
-                    {{ T "rootme_level" }}</p>
-                <p style="margin: 0.4rem 0 0 0;">
-                    {{ $diff := $challenge.difficulte }}
-                    {{ $bars := "■□□□□" }}
-                    {{ if eq $diff "Très facile" }}{{ $bars = "■□□□□" }}
-                    {{ else if eq $diff "Facile" }}{{ $bars = "■■□□□" }}
-                    {{ else if eq $diff "Moyen" }}{{ $bars = "■■■□□" }}
-                    {{ else if eq $diff "Difficile" }}{{ $bars = "■■■■□" }}
-                    {{ else if eq $diff "Très difficile" }}{{ $bars = "■■■■■" }}
-                    {{ end }}
 
-                    {{/* Split the bars string into two parts for coloring */}}
-                    <span style="color: #4caf50; font-size: 1.8rem;">{{ substr $bars 0 (strings.Count "■" $bars)
-                        }}</span><span style="color: #616161; font-size: 1.8rem;">{{ substr $bars (strings.Count "■"
-                        $bars) }}</span>
-                </p>
-                <p style="margin: 0.2rem 0 0 0; font-size: 0.9rem; color: #78909c;">{{ $s.Get "difficulte" }}</p>
+        <a class="challenge-panel__cta" href="{{ $challenge.url }}" target="_blank" rel="noopener noreferrer">
+            {{ T "rootme_see" }}
+        </a>
+    </div>
+
+    <div class="challenge-panel__grid">
+        <div class="challenge-panel__metric">
+            <p class="challenge-panel__label">{{ T "rootme_author" }}</p>
+            <p class="challenge-panel__value">{{ $challenge.auteur }}</p>
+            <p class="challenge-panel__meta">{{ $challenge.date }}</p>
+        </div>
+
+        <div class="challenge-panel__metric">
+            <p class="challenge-panel__label">{{ T "rootme_level" }}</p>
+            <div class="challenge-panel__difficulty" aria-label="{{ $s.Get "difficulte" }}">
+                {{ range seq 5 }}
+                <span class="challenge-panel__difficulty-bar{{ if le . $filled }} is-active{{ end }}"></span>
+                {{ end }}
             </div>
-            <div>
-                <p
-                    style="margin: 0; font-size: 1rem; color: #90a4ae; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">
-                    {{ T "rootme_validations" }}</p>
-                <div
-                    style="display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 0.4rem;">
-                    <span style="color: #4fc3f7; font-weight: bold; font-size: 1.8rem;">{{ $challenge.validations
-                        }}</span>
-                    {{ if $challenge.note }}
-                    <span
-                        style="background: #ef5350; color: white; padding: 0.2rem 0.5rem; border-radius: 4px; font-size: 0.9rem; font-weight: bold;">{{
-                        $challenge.note }}</span>
-                    {{ end }}
-                </div>
-                <p style="margin: 0.2rem 0 0 0; font-size: 0.9rem; color: #78909c;">{{ T "rootme_challengers" }}</p>
-            </div>
-            <div>
-                <p
-                    style="margin: 0; font-size: 1rem; color: #90a4ae; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">
-                    {{ T "rootme_category" }}</p>
-                <p style="margin: 0.4rem 0 0 0; color: #e0e0e0; font-size: 1.5rem; font-weight: 600;">{{
-                    $s.Get "rubrique" }}</p>
-            </div>
+            <p class="challenge-panel__meta">{{ $s.Get "difficulte" }}</p>
+        </div>
+
+        <div class="challenge-panel__metric">
+            <p class="challenge-panel__label">{{ T "rootme_validations" }}</p>
+            <p class="challenge-panel__value">
+                {{ $challenge.validations }}
+                {{ if $challenge.note }}
+                <span class="challenge-panel__pill">{{ $challenge.note }}</span>
+                {{ end }}
+            </p>
+            <p class="challenge-panel__meta">{{ T "rootme_challengers" }}</p>
+        </div>
+
+        <div class="challenge-panel__metric">
+            <p class="challenge-panel__label">{{ T "rootme_category" }}</p>
+            <p class="challenge-panel__value">{{ $s.Get "rubrique" }}</p>
         </div>
     </div>
-    {{ else }}
-    <!-- Challenge data not found for slug: {{ $slug }} -->
-    {{ end }}
+</section>
+{{ else }}
+<!-- Challenge data not found for slug: {{ $slug }} -->
+{{ end }}

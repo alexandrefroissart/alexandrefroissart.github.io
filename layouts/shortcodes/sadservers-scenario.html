@@ -3,128 +3,97 @@ SadServers Scenario Info Box Shortcode
 Usage: {{< sadservers-scenario slug="saint-john">}}
 
     Les données sont lues depuis data/sadservers_scenarios.json
-    */}}
+*/}}
 
-    {{ $slug := .Get "slug" }}
-    {{ $scenario := index .Site.Data.sadservers_scenarios $slug }}
+{{ $slug := .Get "slug" }}
+{{ $scenario := index .Site.Data.sadservers_scenarios $slug }}
 
-    {{ if $scenario }}
+{{ if $scenario }}
+{{ $niveau := $scenario.niveau | default "N/A" }}
+{{ $type := $scenario.type | default "N/A" }}
+{{ $access := $scenario.access | default "Public" }}
+{{ $time := $scenario.time_to_solve | default "N/A" }}
+{{ $yes := "Oui" }}
+{{ $no := "Non" }}
+{{ if eq .Site.Language.Lang "en" }}
+{{ $yes = "Yes" }}
+{{ $no = "No" }}
+{{ end }}
 
-    {{/* Default values for missing fields */}}
-    {{ $niveau := $scenario.niveau | default "N/A" }}
-    {{ $type := $scenario.type | default "N/A" }}
-    {{ $access := $scenario.access | default "Public" }}
-    {{ $time := $scenario.time_to_solve | default "N/A" }}
+{{ $levelClass := "challenge-panel__chip--easy" }}
+{{ if eq $niveau "Medium" }}
+{{ $levelClass = "challenge-panel__chip--medium" }}
+{{ else if eq $niveau "Hard" }}
+{{ $levelClass = "challenge-panel__chip--hard" }}
+{{ end }}
 
-    {{/* Level color based on difficulty */}}
-    {{ $levelColor := "#4caf50" }}{{/* Default green for Easy */}}
-    {{ if eq $niveau "Medium" }}
-    {{ $levelColor = "#ff9800" }}
-    {{ else if eq $niveau "Hard" }}
-    {{ $levelColor = "#f44336" }}
+<section class="challenge-panel challenge-panel--sadservers">
+    <div class="challenge-panel__top">
+        <div class="challenge-panel__heading">
+            <p class="challenge-panel__eyebrow">SadServers</p>
+            <h2 class="challenge-panel__title">{{ $scenario.titre }}</h2>
+
+            <div class="challenge-panel__chips">
+                {{ if $scenario.niveau }}
+                <span class="challenge-panel__chip {{ $levelClass }}">{{ $niveau }}</span>
+                {{ end }}
+                {{ if $scenario.type }}
+                <span class="challenge-panel__chip challenge-panel__chip--info">{{ $type }}</span>
+                {{ end }}
+                {{ if $scenario.root_access }}
+                <span class="challenge-panel__chip challenge-panel__chip--root">Root</span>
+                {{ end }}
+            </div>
+        </div>
+
+        <a class="challenge-panel__cta" href="{{ $scenario.url }}" target="_blank" rel="noopener noreferrer">
+            {{ T "sadservers_see" }}
+        </a>
+    </div>
+
+    {{ if $scenario.tags }}
+    <div class="challenge-panel__tags">
+        {{ range $scenario.tags }}
+        <span class="challenge-panel__tag">{{ . }}</span>
+        {{ end }}
+    </div>
     {{ end }}
 
-    <div
-        style="background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%); border-radius: 12px; padding: 2rem; margin-bottom: 2.5rem; border: 1px solid #f9a825;">
-        {{/* Header: Title + Button */}}
-        <div
-            style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 1.5rem;">
-            <div>
-                <h2 style="margin: 0 0 0.75rem 0; color: #f9a825; font-size: 2.8rem;">{{ $scenario.titre }}</h2>
-                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                    {{ if $scenario.niveau }}
-                    <span
-                        style="background: {{ $levelColor }}; color: white; padding: 0.4rem 1rem; border-radius: 6px; font-size: 1.4rem; font-weight: bold;">{{
-                        $niveau }}</span>
-                    {{ end }}
-                    {{ if $scenario.type }}
-                    <span
-                        style="background: #2196f3; color: white; padding: 0.4rem 1rem; border-radius: 6px; font-size: 1.4rem; font-weight: bold;">{{
-                        $type }}</span>
-                    {{ end }}
-                    {{ if $scenario.root_access }}
-                    <span
-                        style="background: #9c27b0; color: white; padding: 0.4rem 1rem; border-radius: 6px; font-size: 1.4rem; font-weight: bold;">🔐
-                        Root</span>
-                    {{ end }}
-                </div>
-            </div>
-            <div style="display: flex; gap: 0.75rem;">
-                <a href="{{ $scenario.url }}" target="_blank"
-                    style="background: #f9a825; color: #1a1a2e; padding: 0.8rem 1.6rem; border-radius: 8px; text-decoration: none; font-size: 1.5rem; font-weight: bold; white-space: nowrap;">{{
-                    T "sadservers_see" }}</a>
-            </div>
+    {{ if $scenario.description }}
+    <div class="challenge-panel__summary">
+        <p><strong>{{ T "sadservers_description" }}:</strong> {{ $scenario.description }}</p>
+    </div>
+    {{ end }}
+
+    {{ if or $scenario.root_access $scenario.access $scenario.time_to_solve }}
+    <div class="challenge-panel__grid">
+        <div class="challenge-panel__metric">
+            <p class="challenge-panel__label">{{ T "sadservers_root_access" }}</p>
+            <p class="challenge-panel__value">{{ if $scenario.root_access }}{{ $yes }}{{ else }}{{ $no }}{{ end }}</p>
         </div>
 
-        <hr style="border: none; border-top: 1px solid #f9a825; margin: 1.5rem 0; opacity: 0.3;">
-
-        {{/* Tags */}}
-        {{ if $scenario.tags }}
-        <div style="margin-bottom: 1.5rem;">
-            <span
-                style="color: #90a4ae; font-size: 1.3rem; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600;">Tags:
-            </span>
-            {{ range $scenario.tags }}
-            <span
-                style="background: #37474f; color: #4fc3f7; padding: 0.3rem 0.8rem; border-radius: 6px; font-size: 1.2rem; margin-right: 0.4rem;">{{
-                . }}</span>
-            {{ end }}
+        {{ if $scenario.access }}
+        <div class="challenge-panel__metric">
+            <p class="challenge-panel__label">{{ T "sadservers_access" }}</p>
+            <p class="challenge-panel__value">{{ $access }}</p>
         </div>
         {{ end }}
 
-        {{/* Description */}}
-        {{ if $scenario.description }}
-        <div style="background: rgba(0,0,0,0.2); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem;">
-            <p style="margin: 0; color: #e0e0e0; font-size: 1.4rem; line-height: 1.6;">
-                <strong style="color: #f9a825;">{{ T "sadservers_description" }}:</strong> {{ $scenario.description }}
-            </p>
-        </div>
-        {{ end }}
-
-        {{/* Info Grid - Only show if at least one field has data */}}
-        {{ if or $scenario.root_access $scenario.access $scenario.time_to_solve }}
-        <div
-            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; text-align: left;">
-            {{/* Root Access */}}
-            <div style="background: rgba(0,0,0,0.15); padding: 1rem; border-radius: 8px;">
-                <span style="color: #90a4ae; font-size: 1.2rem; text-transform: uppercase;">{{ T
-                    "sadservers_root_access" }}</span>
-                <p style="margin: 0.4rem 0 0 0; color: #e0e0e0; font-size: 1.6rem; font-weight: 600;">
-                    {{ if $scenario.root_access }}✅ True{{ else }}❌ False{{ end }}
-                </p>
-            </div>
-
-            {{/* Access */}}
-            {{ if $scenario.access }}
-            <div style="background: rgba(0,0,0,0.15); padding: 1rem; border-radius: 8px;">
-                <span style="color: #90a4ae; font-size: 1.2rem; text-transform: uppercase;">{{ T "sadservers_access"
-                    }}</span>
-                <p style="margin: 0.4rem 0 0 0; color: #e0e0e0; font-size: 1.6rem; font-weight: 600;">{{ $access }}</p>
-            </div>
-            {{ end }}
-
-            {{/* Time to Solve */}}
-            {{ if $scenario.time_to_solve }}
-            <div style="background: rgba(0,0,0,0.15); padding: 1rem; border-radius: 8px;">
-                <span style="color: #90a4ae; font-size: 1.2rem; text-transform: uppercase;">{{ T "sadservers_time"
-                    }}</span>
-                <p style="margin: 0.4rem 0 0 0; color: #f9a825; font-size: 1.6rem; font-weight: 600;">⏱️ {{ $time }}</p>
-            </div>
-            {{ end }}
-        </div>
-        {{ end }}
-
-        {{/* Test Condition */}}
-        {{ if $scenario.test }}
-        <div
-            style="background: rgba(76, 175, 80, 0.1); border-left: 3px solid #4caf50; padding: 0.75rem 1rem; margin-top: 1rem; border-radius: 0 6px 6px 0;">
-            <p style="margin: 0; color: #a5d6a7; font-size: 1.4rem;">
-                <strong style="color: #4caf50;">{{ T "sadservers_test" }}:</strong> {{ $scenario.test }}
-            </p>
+        {{ if $scenario.time_to_solve }}
+        <div class="challenge-panel__metric">
+            <p class="challenge-panel__label">{{ T "sadservers_time" }}</p>
+            <p class="challenge-panel__value">{{ $time }}</p>
         </div>
         {{ end }}
     </div>
-
-    {{ else }}
-    <!-- SadServers scenario data not found for slug: {{ $slug }} -->
     {{ end }}
+
+    {{ if $scenario.test }}
+    <div class="challenge-panel__note">
+        <p><strong>{{ T "sadservers_test" }}:</strong> {{ $scenario.test }}</p>
+    </div>
+    {{ end }}
+</section>
+{{ else }}
+<!-- SadServers scenario data not found for slug: {{ $slug }} -->
+{{ end }}

@@ -10,27 +10,19 @@ tags: ["lsof", "process", "troubleshooting", "Easy"]
 
 {{< sadservers-scenario slug="saint-john" >}}
 
----
+Here, the problem is simple but very realistic: a file `/var/log/bad.log` grows continuously, and you have to identify the process responsible without touching either the file or the source script.
 
-## Context
-
-A log file `/var/log/bad.log` continually grows on the system. You need to identify which process is writing to it and stop it **without deleting** the source file or script.
-
----
-
-## Environment / Setup
+## Environment
 
 - **Machine**: VM SadServers (Ubuntu/Debian)
 - **User**: `admin` (with sudo access)
 - **Target file**: `/var/log/bad.log`
 
----
-
-## Analysis (method)
+## Approach
 
 ### 1. Identify the process that is writing to the file
 
-The `lsof` (LiSt Open Files) command lists all files open on the system, including those currently being written.
+The `lsof` command lists open files on the system, including those currently being written.
 
 ```bash
 sudo lsof /var/log/bad.log
@@ -39,51 +31,42 @@ sudo lsof /var/log/bad.log
 **Result**:
 ```
 COMMAND PID USER FD TYPE DEVICE SIZE/OFF NODE NAME
-[process_identifie] [PID] admin 3w REG ... /var/log/bad.log
+[identified_process] [PID] admin 3w REG ... /var/log/bad.log
 ```
 
-**Analysis**:
-- **COMMAND**: `[processus_identifie]` → process responsible for writing
-- **PID**: `[PID]` → process identifier
-- **USER**: `admin` → the owner user
-- **FD**: `3w` → File Descriptor 3 in **write** mode (writing)
+- **COMMAND**: `[identified_process]` -> process responsible for writing
+- **PID**: `[PID]` -> process identifier
+- **USER**: `admin` -> owner user
+- **FD**: `3w` -> file descriptor 3 in **write** mode
 - **TYPE**: `REG` → regular file
 
-We deduce that the identified process (PID found with `lsof`) writes in `/var/log/bad.log`.
+The process found with `lsof` is therefore the one which writes to `/var/log/bad.log`.
 
-### 2. Stop the process
+### 2. Stop the process properly
 
-To stop the process without deleting the Python file, we use the `kill` command with the PID:
+To stop it without deleting the Python file, I use `kill` with the PID marked just before:
 
 ```bash
 sudo kill <PID_IDENTIFIED>
 ```
 
-This command sends a `SIGTERM` (graceful termination) signal to process 587.
+This command sends a `SIGTERM` signal, therefore a clean termination, to the identified process.
 
-### 3. Verification
+### 3. Verify that writing stops
 
-To confirm that the process is stopped and the file is no longer growing:
+To confirm that the process is stopped and that the file is no longer growing:
 
 ```bash
 tail -f /var/log/bad.log
 ```
 
-If no new lines appear, the process is terminated successfully.
+If no new lines appear, the correction is good.
 
----
+## What I remember
 
-## Notes
-
-- **`lsof`**: Very powerful command for system troubleshooting. It allows you to see which processes have which files open.
-- **`kill` vs `kill -9`**: 
-  - `kill <PID>` sends SIGTERM (clean shutdown)
-  - `kill -9 <PID>` sends SIGKILL (forced shutdown, to be used as a last resort)
-- **Alternatives**:
-  - `fuser /var/log/bad.log`: Another method to identify processes using a file
-  - `ps aux | grep badlog`: To check if the process is still active
-
----
+- `lsof` is a very good reflex for system troubleshooting when a file grows or remains locked.
+- I start with `SIGTERM` before considering a `kill -9`, because a clean shutdown is always better.
+- `fuser /var/log/bad.log` would also have made it possible to quickly identify the process.
 
 ## Result
 
@@ -92,9 +75,7 @@ If no new lines appear, the process is terminated successfully.
 ✅ File `/var/log/bad.log` no longer grows  
 ✅ **Challenge validated on SadServers.**
 
----
-
-## Demonstrated skills
+## Skills mobilized
 
 - Using `lsof` to identify open files
 - Understanding of Linux processes and PIDs

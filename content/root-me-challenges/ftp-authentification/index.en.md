@@ -8,24 +8,19 @@ categories: ["Root-Me", "Réseau"]
 tags: ["FTP", "Wireshark", "PCAP", "Facile"]
 ---
 
-{{< rootme-challenge slug="ftp-authentication" >}}
+{{< rootme-challenge slug="ftp-authentification" >}}
 
----
+This capture shows a classic case: an FTP service without encryption lets `USER` and `PASS` pass in plain text.
 
-## Context
+The work mainly consists of quickly going to the right packets, then properly confirming what the flow reveals.
 
-FTP transmits authentication in clear text (USER/PASS) if no encrypted layer is used.  
-The goal is to identify these exchanges in a `.pcap` file.
-
----
-
-## Environment / Setup
+## Environment
 
 - **Machine**: VM Debian (XFCE) on VMware Fusion (MacBook Pro M1 Pro)
 - **User**: `alex`
 - **Tool**: Wireshark
 
-### Installation (security)
+### Installation and minimum hygiene
 
 ```bash
 sudo apt-get update
@@ -37,43 +32,47 @@ During installation, Debian asks:
 > "Should non-superusers be able to capture packets?"
 > ➡️ **Answer: No**
 
-**Why?** I avoid allowing network capture to non-root users (reduction of attack surface / least privilege).
+I leave the capture reserved for `root` to maintain least privilege logic.
 
----
+## Approach
 
-## Analysis (method)
+### 1. Open capture
 
-1. I open the capture: `Downloads/ch1.pcap`
+I open `Downloads/ch1.pcap` in Wireshark.
 
-2. In Wireshark:
-   - I filter on FTP (or I identify the frames where the protocol is FTP)
-   - I am looking for the FTP authentication sequence:
-     - `USE ...`
-     - `PASS...`
+### 2. Target the authentication phase
 
-3. I check in the packet details (bottom panel) the FTP command sent.
+In Wireshark:
 
----
+- I filter on FTP traffic;
+- I locate the authentication sequence;
+- I am looking for the `USER` then `PASS` commands.
 
-## Comments
+### 3. Confirm in package detail
+
+I then check in the bottom panel for the exact FTP command sent by the client.
+
+## Observations
 
 - I identify the user sent via `USER`:
   - **USER** = `[REDACTED]` *(value deliberately hidden)*
 - The password is present in the `PASS` command:
   - **PASS** = `[REDACTED]` *(value deliberately hidden)*
 
----
-
 ## Result
 
 ✅ I located the FTP identifiers in the network capture application flow.  
 ✅ **Challenge validated on Root-Me.**
 
----
+## What I remember
 
-## Demonstrated skills
+- Clear FTP remains very simple to audit in a network capture.
+- Wireshark allows you to move quickly if you first focus on the useful application sequence.
+- Even on a simple exercise, I keep a logic of least privilege during the implementation.
+
+## Skills mobilized
 
 - PCAP analysis with Wireshark
-- FTP protocol reading (clear authentication)
-- Extraction of information on the application layer
-- Hygiene and safety: least privilege during installation/capture
+- Reading the FTP protocol and its authentication in plain text
+- Extraction of information at the application level
+- Hygiene safety during installation and capture
