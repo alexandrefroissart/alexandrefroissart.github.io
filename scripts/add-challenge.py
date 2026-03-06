@@ -9,61 +9,29 @@ Commande recommandée:
 
 Ce script va :
 1. Récupérer l'ID et le titre du challenge depuis l'URL
-2. Modifier scripts/fetch-rootme.py pour ajouter le challenge
-3. Créer les dossiers et fichiers markdown (fr/en)
-4. Lancer la mise à jour des données
+2. Créer les dossiers et fichiers markdown (fr/en)
+3. Lancer la mise à jour des données
 """
 
 import sys
 import re
-import os
 import json
+import subprocess
 import urllib.request
 import urllib.error
 from pathlib import Path
 import unicodedata
+
+from rootme_common import build_rootme_cookies, env_flag, extract_last_path_slug, load_env
 
 # Chemins
 SCRIPT_DIR = Path(__file__).parent
 ROOT_DIR = SCRIPT_DIR.parent
 FETCH_SCRIPT = SCRIPT_DIR / "fetch-rootme.py"
 CONTENT_DIR = ROOT_DIR / "content" / "root-me-challenges"
-ENV_FILE = ROOT_DIR / ".env"
-
-def load_env():
-    """Charge les variables d'environnement depuis .env s'il existe."""
-    env_vars = {}
-    if ENV_FILE.exists():
-        with open(ENV_FILE, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith('#'):
-                    if "=" not in line:
-                        continue
-                    key, value = line.split('=', 1)
-                    env_vars[key.strip()] = value.strip().strip('"').strip("'")
-    # Les variables d'environnement du système priment sur le .env
-    env_vars.update(os.environ)
-    return env_vars
-
-ENV = load_env()
-def build_rootme_cookies(env):
-    if env.get("ROOTME_COOKIES"):
-        return env.get("ROOTME_COOKIES", "")
-    parts = []
-    spip = env.get("spip_session") or env.get("SPIP_SESSION") or env.get("ROOTME_SPIP_SESSION")
-    phpsess = env.get("PHPSESSID") or env.get("ROOTME_PHPSESSID")
-    anubis = env.get("anubis-cookie-auth") or env.get("ANUBIS_COOKIE_AUTH") or env.get("ROOTME_ANUBIS_COOKIE_AUTH")
-    if spip:
-        parts.append(f"spip_session={spip}")
-    if phpsess:
-        parts.append(f"PHPSESSID={phpsess}")
-    if anubis:
-        parts.append(f"anubis-cookie-auth={anubis}")
-    return "; ".join(parts)
-
+ENV = load_env(ROOT_DIR)
 ROOTME_COOKIES = build_rootme_cookies(ENV)
-USE_API_DETAILS = (os.environ.get("ROOTME_USE_API_DETAILS") or ENV.get("ROOTME_USE_API_DETAILS", "0")) == "1"
+USE_API_DETAILS = env_flag(ENV, "ROOTME_USE_API_DETAILS", False)
 
 CHALLENGES_FILE = ROOT_DIR / "data" / "rootme_challenges.json"
 SADSERVERS_DATA_FILE = ROOT_DIR / "data" / "sadservers_scenarios.json"
@@ -484,9 +452,7 @@ def get_challenge_info(url):
                 title = "Titre Inconnu"
             
             # Nettoyage du titre pour le slug si besoin (mais on préfère le slug de l'URL)
-            slug = url.split('/')[-1]
-            if not slug or slug == "":
-                slug = url.split('/')[-2]
+            slug = extract_last_path_slug(url)
                 
             if challenge_id:
                 return {
@@ -503,9 +469,7 @@ def get_challenge_info(url):
 
     
     # Extraction du slug depuis l'URL si besoin
-    slug = url.split('/')[-1]
-    if not slug or slug == "":
-        slug = url.split('/')[-2]
+    slug = extract_last_path_slug(url)
 
     # Tentative via API
     print("⚠️ Tentative via API (ROOTME_API_KEY requise)...")
@@ -828,10 +792,8 @@ def run_fetch_script():
         venv_python = venv_dir / "bin" / "python3"
         if not venv_python.exists():
             venv_python = venv_dir / "bin" / "python"
-        if venv_python.exists():
-            ret = os.system(f"{venv_python} {FETCH_SCRIPT}")
-        else:
-            ret = os.system(f"python3 {FETCH_SCRIPT}")
+        cmd = [str(venv_python), str(FETCH_SCRIPT)] if venv_python.exists() else ["python3", str(FETCH_SCRIPT)]
+        ret = subprocess.run(cmd, cwd=ROOT_DIR, check=False).returncode
         if ret != 0:
             print("⚠️ La mise à jour des données a échoué (429 ?). Pas de panique, le workflow quotidien s'en chargera demain.")
     except Exception as e:
@@ -958,7 +920,6 @@ def main():
             sys.exit(1)
             
         slug = m.group(1)
-        slug = m.group(1)
         print(f"🚀 Analyse de '{slug}'...")
 
         # 1. Récupérer les données
@@ -987,7 +948,7 @@ def main():
     
     # Sinon Root-Me (logique existante)
     info = None
-    slug = url.split('/')[-1] or url.split('/')[-2]
+    slug = extract_last_path_slug(url)
 
     # 1. Option: ID manuel force
     if manual_id:

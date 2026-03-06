@@ -20,96 +20,28 @@ from http.client import IncompleteRead
 from pathlib import Path
 from datetime import datetime
 from html import unescape
-import unicodedata
 import random
+from rootme_common import build_rootme_cookies, env_flag, env_get, load_env, normalize_space
 try:
     from bs4 import BeautifulSoup  # type: ignore
 except Exception:
     BeautifulSoup = None
 
 # Configuration Root-Me
-ENV_FILE = Path(__file__).parent.parent / ".env"
+ROOT_DIR = Path(__file__).parent.parent
+ENV = load_env(ROOT_DIR)
 
-def load_env_file():
-    env_vars = {}
-    if ENV_FILE.exists():
-        with open(ENV_FILE, 'r', encoding='utf-8') as f:
-            for line in f:
-                line = line.strip()
-                if line and not line.startswith('#'):
-                    if "=" not in line:
-                        continue
-                    key, value = line.split('=', 1)
-                    env_vars[key.strip()] = value.strip().strip('"').strip("'")
-    return env_vars
-
-def merge_env():
-    env_vars = load_env_file()
-    # Les variables d'environnement du système priment sur le .env
-    env_vars.update(os.environ)
-    return env_vars
-
-ENV = merge_env()
-
-def env_get(key, default=None):
-    val = ENV.get(key)
-    if val is None:
-        return default
-    if isinstance(val, str):
-        val = val.strip()
-        if val == "":
-            return default
-    return val
-
-ROOTME_UID = str(env_get("ROOTME_UID", "1071705"))
-ROOTME_USER = env_get("ROOTME_USER", "Alexandre-Froissart")
-ROOTME_API_KEY = env_get("ROOTME_API_KEY", "")
-
-def env_flag(key, default=False):
-    """Parse a boolean-ish env value from merged ENV/.env."""
-    val = env_get(key, None)
-    if val is None:
-        return default
-    s = str(val).strip().lower()
-    if s in ("1", "true", "yes", "y", "on"):
-        return True
-    if s in ("0", "false", "no", "n", "off"):
-        return False
-    return default
+ROOTME_UID = str(env_get(ENV, "ROOTME_UID", "1071705"))
+ROOTME_USER = env_get(ENV, "ROOTME_USER", "Alexandre-Froissart")
+ROOTME_API_KEY = env_get(ENV, "ROOTME_API_KEY", "")
 
 # CI should set:
 # - ROOTME_SCRAPE_HTML=0 to avoid anti-bot HTML pages
 # - ROOTME_STRICT=1 to fail if we can't refresh Root-Me data
-ROOTME_SCRAPE_HTML = env_flag("ROOTME_SCRAPE_HTML", True)
-ROOTME_STRICT = env_flag("ROOTME_STRICT", False)
-def _clean_env_value(env, key):
-    val = env.get(key)
-    if val is None:
-        return None
-    if isinstance(val, str):
-        val = val.strip()
-    if not val:
-        return None
-    return val
-
-def build_rootme_cookies(env):
-    rootme_cookies = _clean_env_value(env, "ROOTME_COOKIES")
-    if rootme_cookies:
-        return rootme_cookies
-    parts = []
-    spip = _clean_env_value(env, "spip_session") or _clean_env_value(env, "SPIP_SESSION") or _clean_env_value(env, "ROOTME_SPIP_SESSION")
-    phpsess = _clean_env_value(env, "PHPSESSID") or _clean_env_value(env, "ROOTME_PHPSESSID")
-    anubis = _clean_env_value(env, "anubis-cookie-auth") or _clean_env_value(env, "ANUBIS_COOKIE_AUTH") or _clean_env_value(env, "ROOTME_ANUBIS_COOKIE_AUTH")
-    if spip:
-        parts.append(f"spip_session={spip}")
-    if phpsess:
-        parts.append(f"PHPSESSID={phpsess}")
-    if anubis:
-        parts.append(f"anubis-cookie-auth={anubis}")
-    return "; ".join(parts)
-
+ROOTME_SCRAPE_HTML = env_flag(ENV, "ROOTME_SCRAPE_HTML", True)
+ROOTME_STRICT = env_flag(ENV, "ROOTME_STRICT", False)
 ROOTME_COOKIES = build_rootme_cookies(ENV)  # Cookies complets (e.g. "spip_session=...; api_key=...")
-ROOTME_PROFILE_URL = env_get("ROOTME_PROFILE_URL") or f"https://www.root-me.org/{ROOTME_USER}"
+ROOTME_PROFILE_URL = env_get(ENV, "ROOTME_PROFILE_URL") or f"https://www.root-me.org/{ROOTME_USER}"
 
 # Chemins
 SCRIPT_DIR = Path(__file__).parent
@@ -117,7 +49,6 @@ DATA_DIR = SCRIPT_DIR.parent / "data"
 PROFILE_FILE = DATA_DIR / "rootme.json"
 CHALLENGES_FILE = DATA_DIR / "rootme_challenges.json"
 CONTENT_DIR = SCRIPT_DIR.parent / "content" / "root-me-challenges"
-ROOT_DIR = SCRIPT_DIR.parent
 DEFAULT_VENV_DIR = ROOT_DIR / ".venv-rootme"
 
 API_DISABLED = False
@@ -235,11 +166,6 @@ def ensure_beautifulsoup():
 # Best-effort install on startup so scraping is robust.
 ensure_beautifulsoup()
 
-
-def normalize_space(text):
-    if not text:
-        return ""
-    return re.sub(r"\s+", " ", text.replace("\xa0", " ")).strip()
 
 def is_basic_profile_url(url):
     if not url:

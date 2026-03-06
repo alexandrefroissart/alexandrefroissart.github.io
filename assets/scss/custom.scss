@@ -1,5 +1,27 @@
 /* Custom CSS pour les bannières style Root-Me */
 
+$af-radius-xl: 24px;
+$af-radius-lg: 22px;
+$af-radius-md: 18px;
+$af-radius-note: 16px;
+$af-radius-pill: 999px;
+$af-shadow-elevated: 0 18px 42px rgba(0, 0, 0, 0.18);
+$af-shadow-soft: 0 14px 34px rgba(0, 0, 0, 0.12);
+$af-shadow-panel: 0 18px 42px rgba(0, 0, 0, 0.12);
+
+@mixin af-surface($top, $bottom, $border-color, $radius: $af-radius-xl, $shadow: $af-shadow-elevated, $angle: 180deg) {
+    border-radius: $radius;
+    border: 1px solid $border-color;
+    background: linear-gradient($angle, $top 0%, $bottom 100%);
+    box-shadow: $shadow;
+}
+
+@mixin af-surface-block($top, $bottom, $border-color, $radius: $af-radius-md) {
+    border-radius: $radius;
+    background: linear-gradient(160deg, $top 0%, $bottom 100%);
+    border: 1px solid $border-color;
+}
+
 /* ----------------------------------------------------------- */
 /* 1. HEADER DE SECTION (Page /rootme/)                        */
 /* ----------------------------------------------------------- */
@@ -9,13 +31,11 @@
     gap: 0 !important;
     overflow: hidden;
     position: relative;
-    border-radius: 24px;
-    border: 1px solid color-mix(in srgb, var(--card-separator-color) 72%, var(--accent-color) 28%);
-    background:
-        linear-gradient(180deg,
-            color-mix(in srgb, var(--card-background) 94%, white 6%) 0%,
-            color-mix(in srgb, var(--card-background) 98%, black 2%) 100%);
-    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+    @include af-surface(
+        color-mix(in srgb, var(--card-background) 94%, white 6%),
+        color-mix(in srgb, var(--card-background) 98%, black 2%),
+        color-mix(in srgb, var(--card-separator-color) 72%, var(--accent-color) 28%)
+    );
 }
 
 .section-card .section-image {
@@ -81,13 +101,12 @@
 .home-intro {
     position: relative;
     overflow: hidden;
-    background:
-        linear-gradient(180deg,
-            color-mix(in srgb, var(--card-background) 96%, white 4%) 0%,
-            color-mix(in srgb, var(--card-background) 99%, black 1%) 100%);
-    border-radius: 24px;
-    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.14);
-    border: 1px solid color-mix(in srgb, var(--card-separator-color) 88%, white 12%);
+    @include af-surface(
+        color-mix(in srgb, var(--card-background) 96%, white 4%),
+        color-mix(in srgb, var(--card-background) 99%, black 1%),
+        color-mix(in srgb, var(--card-separator-color) 88%, white 12%),
+        $shadow: 0 18px 42px rgba(0, 0, 0, 0.14)
+    );
     padding: 1.65rem 1.85rem 1.75rem;
     margin-top: 0;
     margin-bottom: 0;
@@ -165,21 +184,21 @@
 
 body:not(.article-page) .article-list article,
 body:not(.article-page) .article-list--compact article {
-    border-radius: 22px;
     overflow: hidden;
-    border: 1px solid color-mix(in srgb, var(--card-separator-color) 82%, white 18%);
-    background:
-        linear-gradient(180deg,
-            color-mix(in srgb, var(--card-background) 94%, white 6%) 0%,
-            color-mix(in srgb, var(--card-background) 98%, black 2%) 100%);
-    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.12);
+    @include af-surface(
+        color-mix(in srgb, var(--card-background) 94%, white 6%),
+        color-mix(in srgb, var(--card-background) 98%, black 2%),
+        color-mix(in srgb, var(--card-separator-color) 82%, white 18%),
+        $radius: $af-radius-lg,
+        $shadow: $af-shadow-soft
+    );
     transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 
 body:not(.article-page) .article-list article:hover,
 body:not(.article-page) .article-list--compact article:hover {
     transform: translateY(-2px);
-    box-shadow: 0 18px 42px rgba(0, 0, 0, 0.18);
+    box-shadow: $af-shadow-elevated;
     border-color: color-mix(in srgb, var(--card-separator-color) 60%, var(--accent-color) 40%);
 }
 
@@ -563,13 +582,13 @@ body:not(.article-page) .article-list--compact article .article-time {
     position: relative;
     overflow: hidden;
     padding: 1.45rem;
-    border-radius: 24px;
+    border-radius: $af-radius-xl;
     border: 1px solid color-mix(in srgb, var(--card-separator-color) 76%, white 24%);
     background:
         radial-gradient(circle at 100% 0%, color-mix(in srgb, var(--challenge-accent) 18%, transparent) 0%, transparent 42%),
         linear-gradient(160deg, var(--challenge-shell-top) 0%, var(--challenge-shell-bottom) 100%);
     box-shadow:
-        0 18px 42px rgba(0, 0, 0, 0.12),
+        $af-shadow-panel,
         inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
 
@@ -653,7 +672,7 @@ body:not(.article-page) .article-list--compact article .article-time {
     justify-content: center;
     min-height: 44px;
     padding: 0.78rem 1.05rem;
-    border-radius: 999px;
+    border-radius: $af-radius-pill;
     background: color-mix(in srgb, var(--challenge-accent) 88%, white 12%);
     color: var(--challenge-cta-text);
     font-size: 0.94rem;
@@ -687,7 +706,7 @@ body:not(.article-page) .article-list--compact article .article-time {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 999px;
+    border-radius: $af-radius-pill;
     font-weight: 650;
     line-height: 1.2;
 }
@@ -747,11 +766,11 @@ body:not(.article-page) .article-list--compact article .article-time {
 
 .challenge-panel__metric {
     padding: 0.95rem 1rem;
-    border-radius: 18px;
-    background: linear-gradient(160deg,
-            color-mix(in srgb, var(--challenge-card-strong) 92%, white 8%) 0%,
-            color-mix(in srgb, var(--challenge-card) 96%, black 4%) 100%);
-    border: 1px solid color-mix(in srgb, var(--card-separator-color) 74%, white 26%);
+    @include af-surface-block(
+        color-mix(in srgb, var(--challenge-card-strong) 92%, white 8%),
+        color-mix(in srgb, var(--challenge-card) 96%, black 4%),
+        color-mix(in srgb, var(--card-separator-color) 74%, white 26%)
+    );
 }
 
 .challenge-panel__label {
@@ -787,7 +806,7 @@ body:not(.article-page) .article-list--compact article .article-time {
 .challenge-panel__difficulty-bar {
     width: 18px;
     height: 7px;
-    border-radius: 999px;
+    border-radius: $af-radius-pill;
     background: rgba(255, 255, 255, 0.1);
 }
 
@@ -813,11 +832,11 @@ body:not(.article-page) .article-list--compact article .article-time {
 }
 
 .challenge-panel__summary {
-    border-radius: 18px;
-    background: linear-gradient(160deg,
-            color-mix(in srgb, var(--challenge-card) 88%, white 12%) 0%,
-            color-mix(in srgb, var(--challenge-card) 96%, black 4%) 100%);
-    border: 1px solid color-mix(in srgb, var(--card-separator-color) 70%, white 30%);
+    @include af-surface-block(
+        color-mix(in srgb, var(--challenge-card) 88%, white 12%),
+        color-mix(in srgb, var(--challenge-card) 96%, black 4%),
+        color-mix(in srgb, var(--card-separator-color) 70%, white 30%)
+    );
 }
 
 .challenge-panel__summary p,
@@ -834,7 +853,7 @@ body:not(.article-page) .article-list--compact article .article-time {
 
 .challenge-panel__note {
     border-left: 3px solid color-mix(in srgb, var(--challenge-accent) 72%, white 28%);
-    border-radius: 0 16px 16px 0;
+    border-radius: 0 $af-radius-note $af-radius-note 0;
     background: color-mix(in srgb, var(--challenge-accent) 10%, var(--card-background) 90%);
 }
 
@@ -1114,7 +1133,7 @@ body:not(.article-page) .right-sidebar .rootme-update {
 
 @media (max-width: 768px) {
     .home-intro {
-        border-radius: 22px;
+        border-radius: $af-radius-lg;
         padding: 1.25rem 1.15rem 1.3rem;
         margin-top: calc(var(--section-separation) * 0.35);
     }
@@ -1425,7 +1444,7 @@ body:not(.article-page) .right-sidebar .rootme-update {
 
 .widget-categories-cloud .tagCloud-tags a {
     padding: 0.42rem 0.76rem !important;
-    border-radius: 999px !important;
+    border-radius: $af-radius-pill !important;
     font-size: 0.98rem !important;
     font-weight: 600 !important;
     text-decoration: none !important;
@@ -1438,7 +1457,7 @@ body:not(.article-page) .right-sidebar .rootme-update {
 .widget-keywords-cloud .tagCloud-tags a {
     min-height: 32px;
     padding: 0.32rem 0.7rem !important;
-    border-radius: 999px !important;
+    border-radius: $af-radius-pill !important;
     font-size: 0.94rem !important;
     font-weight: 550 !important;
     text-decoration: none !important;
@@ -1470,7 +1489,7 @@ body:not(.article-page) .right-sidebar .rootme-update {
 .article-footer .article-tags a {
     min-height: 32px;
     padding: 0.32rem 0.72rem !important;
-    border-radius: 999px !important;
+    border-radius: $af-radius-pill !important;
     font-size: 0.92rem !important;
     font-weight: 550 !important;
 }
