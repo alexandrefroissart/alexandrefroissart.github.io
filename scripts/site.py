@@ -490,6 +490,7 @@ def build_command(_: argparse.Namespace) -> None:
 
 def serve_command(args: argparse.Namespace) -> None:
     port = str(args.port)
+    print(f"Aperçu local: http://127.0.0.1:{port}")
     run(
         [
             "hugo",

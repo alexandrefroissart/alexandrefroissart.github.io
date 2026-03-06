@@ -89,11 +89,31 @@ Pour Root-Me ou SadServers :
 3. `./scripts/site.sh build`
 4. `./scripts/site.sh publish "Ajout challenge ..."`
 
+## Quand tu rediges
+
+Pour une vraie commande shell, utilise un bloc `bash` :
+
+```bash
+grep -R SSL /etc/nginx
+```
+
+Pour un prompt, une consigne ou un texte de test, utilise un bloc `text` sans numeros de ligne :
+
+```text {linenos=false}
+Fais-moi un mini-cours clair pour comprendre...
+```
+
+Regle simple :
+
+- `bash` = commande technique, avec numeros de ligne
+- `text {linenos=false}` = prompt, citation, consigne, sans numeros
+
 ## Notes pratiques
 
 - Les mots-cles se mettent dans `tags: [...]`
 - Les categories se mettent dans `categories: [...]`
 - Pour une image d'article, mets-la de preference dans `static/img/news/<slug>/`
 - Ensuite utilise un chemin du type `/img/news/<slug>/mon-image.jpg`
+- Pour voir le rendu en direct pendant que tu ecris : `./scripts/site.sh serve`, puis ouvre [http://127.0.0.1:1313](http://127.0.0.1:1313)
 
 Le but est que tu puisses tout gerer seul avec des commandes courtes et toujours les memes.

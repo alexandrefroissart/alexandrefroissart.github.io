@@ -509,6 +509,16 @@ body:not(.article-page) .article-list--compact article .article-time {
     display: block;
 }
 
+.article-page .article-content .highlight:has(code[data-lang="text"]) .chroma .lntd:first-child,
+.article-page .article-content .highlight:has(code[data-lang="text"]) .chroma .lnt,
+.article-page .article-content .highlight:has(code[data-lang="text"]) .chroma .ln {
+    display: none;
+}
+
+.article-page .article-content .highlight:has(code[data-lang="text"]) .chroma .lntd:last-child {
+    width: 100%;
+}
+
 .article-page:not(.news-article-page) .article-content blockquote {
     margin: 1.25rem 0;
     padding: 1rem 1.1rem 1rem 1.2rem;

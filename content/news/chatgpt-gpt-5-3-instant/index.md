@@ -114,7 +114,7 @@ Je n'ai pas retrouvé cette date telle quelle dans les release notes web publiqu
 
 Prompt utilisé:
 
-```text
+```text {linenos=false}
 Je veux laver ma voiture.
 Le car wash est à 50 mètres de chez moi.
 Je dois y aller à pied ou en voiture ?
@@ -154,7 +154,7 @@ Réponds en une phrase.
 
 Prompt utilisé:
 
-```text
+```text {linenos=false}
 Fais-moi un mini-cours clair pour comprendre et comparer NFS et SMB/CIFS...
 Je veux qu'il ait 20000 caractères (espace inclus), et termine par une dernière ligne exactement : [FIN]
 ```
