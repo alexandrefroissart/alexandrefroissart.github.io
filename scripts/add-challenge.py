@@ -3,6 +3,10 @@
 Script pour ajouter AUTOMATIQUEMENT un nouveau challenge Root-Me.
 Usage: ./add-challenge.py <URL_DU_CHALLENGE>
 
+Commande recommandée:
+    ./scripts/site.sh rootme <URL>
+    ./scripts/site.sh sadservers <URL>
+
 Ce script va :
 1. Récupérer l'ID et le titre du challenge depuis l'URL
 2. Modifier scripts/fetch-rootme.py pour ajouter le challenge
@@ -934,6 +938,7 @@ def update_frontmatter_dates(info):
 def main():
     if len(sys.argv) < 2:
         print("Usage: ./add-challenge.py <URL_CHALLENGE> [ID_CHALLENGE]")
+        print("Commande recommandée: ./scripts/site.sh rootme <URL> ou ./scripts/site.sh sadservers <URL>")
         print("   Exemples:")
         print("     ./add-challenge.py https://www.root-me.org/...")
         print("     ./add-challenge.py https://www.root-me.org/... 1014")
