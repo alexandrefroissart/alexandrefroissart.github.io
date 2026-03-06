@@ -2,6 +2,12 @@
 """
 Boite a outils simple pour gerer le site sans passer par l'IA.
 
+Workflow recommande:
+  - rediger directement les pages Markdown a partir des modeles dans modeles/
+  - utiliser ce script surtout pour build, preview, traduction et publication
+
+Les commandes de creation restent disponibles, mais elles sont optionnelles.
+
 Commandes principales:
   ./scripts/site.sh news
   ./scripts/site.sh rootme <url>

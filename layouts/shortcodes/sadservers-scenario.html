@@ -5,8 +5,8 @@ Usage: {{< sadservers-scenario slug="saint-john">}}
     Les données sont lues depuis data/sadservers_scenarios.json
 */}}
 
-{{ $slug := .Get "slug" }}
-{{ $scenario := index .Site.Data.sadservers_scenarios $slug }}
+{{ $slug := default .Page.File.ContentBaseName (.Get "slug") }}
+{{ $scenario := or (index .Site.Data.sadservers_scenarios $slug) .Page.Params.sadservers_meta }}
 
 {{ if $scenario }}
 {{ $niveau := $scenario.niveau | default "N/A" }}

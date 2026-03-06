@@ -5,8 +5,8 @@ Usage: {{< rootme-challenge slug="ftp-authentification">}}
     Les données sont lues depuis data/rootme_challenges.json
 */}}
 
-{{ $slug := .Get "slug" }}
-{{ $challenge := index .Site.Data.rootme_challenges $slug }}
+{{ $slug := default .Page.File.ContentBaseName (.Get "slug") }}
+{{ $challenge := or (index .Site.Data.rootme_challenges $slug) .Page.Params.rootme_meta }}
 
 {{ if $challenge }}
 {{ $s := newScratch }}

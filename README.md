@@ -1,31 +1,69 @@
 # Gestion rapide du site
 
-Le site se gère maintenant avec une seule commande :
+Le workflow recommande maintenant est simple :
 
-```bash
-./scripts/site.sh
-```
+1. tu dupliques un modele Markdown dans `modeles/`
+2. tu edits ton fichier tranquillement
+3. tu regardes le rendu en local
+4. tu publies quand c'est pret
 
-Sans argument, tu as un petit menu.
+Le terminal ne sert plus surtout qu'a :
+
+- previsualiser
+- verifier
+- traduire
+- publier
+
+## Modeles a copier
+
+- `modeles/news.md`
+- `modeles/rootme.md`
+- `modeles/sadservers.md`
+
+Tu peux ouvrir ces fichiers, copier leur contenu, puis le coller dans ton nouveau `index.md`.
+
+## Ou mettre tes pages
+
+- `content/news/<slug>/index.md`
+- `content/root-me-challenges/<slug>/index.md`
+- `content/sadservers/<slug>/index.md`
+
+## Workflow recommande
+
+### Pour une news
+
+1. cree le dossier `content/news/<slug>/`
+2. copie `modeles/news.md` dans `content/news/<slug>/index.md`
+3. remplace le titre, la description, les categories, les tags et le texte
+4. mets ton image dans `static/img/news/<slug>/`
+5. utilise un chemin du type `/img/news/<slug>/mon-image.jpg`
+
+### Pour un challenge Root-Me
+
+1. cree le dossier `content/root-me-challenges/<slug>/`
+2. copie `modeles/rootme.md` dans `content/root-me-challenges/<slug>/index.md`
+3. remplis le bloc `rootme_meta:` a la main
+4. redige ton writeup
+
+### Pour un scenario SadServers
+
+1. cree le dossier `content/sadservers/<slug>/`
+2. copie `modeles/sadservers.md` dans `content/sadservers/<slug>/index.md`
+3. remplis le bloc `sadservers_meta:` a la main
+4. redige ton writeup
 
 ## Commandes utiles
 
-Créer une news :
+Lancer le site en local :
 
 ```bash
-./scripts/site.sh news
+./scripts/site.sh serve
 ```
 
-Ajouter un challenge Root-Me depuis son URL :
+Voir l'etat du contenu :
 
 ```bash
-./scripts/site.sh rootme "https://www.root-me.org/fr/Challenges/Reseau/ftp-authentification"
-```
-
-Ajouter un scenario SadServers depuis son URL :
-
-```bash
-./scripts/site.sh sadservers "https://sadservers.com/scenario/saint-john"
+./scripts/site.sh status
 ```
 
 Traduire une seule page :
@@ -40,54 +78,13 @@ Traduire tout ce qui n'a pas encore de version anglaise :
 ./scripts/site.sh translate
 ```
 
-Builder le site :
-
-```bash
-./scripts/site.sh build
-```
-
-Lancer le site en local :
-
-```bash
-./scripts/site.sh serve
-```
-
-Voir les brouillons et les pages sans traduction anglaise :
-
-```bash
-./scripts/site.sh status
-```
-
 Publier sur GitHub :
 
 ```bash
 ./scripts/site.sh publish "Mon message de commit"
 ```
 
-## Organisation simple
-
-- `content/news/` : tes articles d'actualite
-- `content/root-me-challenges/` : tes challenges Root-Me
-- `content/sadservers/` : tes scenarios SadServers
-- `static/img/` : tes images
-- `data/rootme_challenges.json` et `data/sadservers_scenarios.json` : les donnees recuperees automatiquement
-
-## Workflow conseille
-
-Pour une news :
-
-1. `./scripts/site.sh news`
-2. Tu rediges la page creee
-3. `./scripts/site.sh translate content/news/ton-slug/index.md`
-4. `./scripts/site.sh build`
-5. `./scripts/site.sh publish "Ajout news ..."`
-
-Pour Root-Me ou SadServers :
-
-1. `./scripts/site.sh rootme "<url>"` ou `./scripts/site.sh sadservers "<url>"`
-2. Tu completes le contenu genere
-3. `./scripts/site.sh build`
-4. `./scripts/site.sh publish "Ajout challenge ..."`
+Les commandes `news`, `rootme` et `sadservers` existent encore, mais elles sont maintenant optionnelles.
 
 ## Quand tu rediges
 
@@ -110,10 +107,7 @@ Regle simple :
 
 ## Notes pratiques
 
-- Les mots-cles se mettent dans `tags: [...]`
-- Les categories se mettent dans `categories: [...]`
-- Pour une image d'article, mets-la de preference dans `static/img/news/<slug>/`
-- Ensuite utilise un chemin du type `/img/news/<slug>/mon-image.jpg`
-- Pour voir le rendu en direct pendant que tu ecris : `./scripts/site.sh serve`, puis ouvre [http://127.0.0.1:1313](http://127.0.0.1:1313)
-
-Le but est que tu puisses tout gerer seul avec des commandes courtes et toujours les memes.
+- les mots-cles se mettent dans `tags: [...]`
+- les categories se mettent dans `categories: [...]`
+- pour voir le rendu en direct pendant que tu ecris : `./scripts/site.sh serve`
+- ensuite ouvre [http://127.0.0.1:1313](http://127.0.0.1:1313)
