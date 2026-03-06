@@ -450,6 +450,55 @@ body:not(.article-page) .article-list--compact article .article-time {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
 }
 
+.article-page .article-content .highlight {
+    padding: 0.9rem 0.95rem 0.95rem;
+}
+
+.article-page .article-content .highlight pre {
+    padding-top: 1.8rem;
+    overflow-x: visible;
+}
+
+.article-page .article-content .highlight pre code,
+.article-page .article-content .highlight .chroma code {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.article-page .article-content .copyCodeButton {
+    top: 0.72rem;
+    right: 0.72rem;
+    z-index: 3;
+    opacity: 1;
+    padding: 0.42rem 0.8rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+}
+
+.article-page .article-content .copyCodeButton:hover {
+    filter: brightness(1.04);
+}
+
+.article-page .article-content .chroma .lntd:first-child,
+.article-page .article-content .chroma .lnt,
+.article-page .article-content .chroma .ln {
+    display: none;
+}
+
+.article-page .article-content .chroma .lntable,
+.article-page .article-content .chroma .lntable>tbody,
+.article-page .article-content .chroma .lntable>tbody>tr,
+.article-page .article-content .chroma .lntd:last-child {
+    display: block;
+    width: 100%;
+}
+
+.article-page .article-content .chroma .lntd:last-child {
+    overflow-x: visible;
+}
+
 .article-page:not(.news-article-page) .article-content blockquote {
     margin: 1.25rem 0;
     padding: 1rem 1.1rem 1rem 1.2rem;
