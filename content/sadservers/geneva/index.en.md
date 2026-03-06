@@ -5,7 +5,7 @@ image: "/img/banners/sadservers.png"
 draft: false
 reading_time: 10
 categories: ["SadServers", "Linux"]
-tags: ["ssl"]
+tags: ["SSL"]
 ---
 
 {{< sadservers-scenario slug="geneva" >}}

@@ -451,12 +451,12 @@ body:not(.article-page) .article-list--compact article .article-time {
 }
 
 .article-page .article-content .highlight {
-    padding: 0.72rem 0.82rem 0.82rem;
+    padding: 0.72rem 5rem 0.82rem 0.82rem;
     background: color-mix(in srgb, var(--pre-background-color) 94%, black 6%);
 }
 
 .article-page .article-content .highlight pre {
-    padding-top: 1.75rem;
+    padding-top: 0;
     overflow-x: visible;
 }
 
