@@ -8,6 +8,7 @@
     {{ $pag := .Paginate $sorted }}
 
     {{ $isFrench := eq .Site.Language.Lang "fr" }}
+    {{ $aboutPage := .Site.GetPage "/page/about" }}
     <section class="article-list home-feed">
         <section class="home-intro">
             <div class="home-intro-shell">
@@ -23,9 +24,9 @@
                 <div class="home-intro-copy">
                     <p>
                         {{ if $isFrench }}
-                            Je construis ce portfolio en parallèle de ma formation au CESI Saint-Nazaire, pour garder une trace claire de ma progression.
+                            Je développe ce portfolio en parallèle de ma formation au CESI Saint-Nazaire, pour documenter concrètement ce que j'apprends et ce que je mets en pratique.
                         {{ else }}
-                            I am building this portfolio alongside my systems and network administration training, to keep a clear record of my progress.
+                            I am building this portfolio alongside my systems and network administration training, to document what I learn and what I apply in practice.
                         {{ end }}
                     </p>
                     <p>
@@ -35,6 +36,21 @@
                             You will find my Root-Me and SadServers challenges here, along with the IT topics I take time to analyze when they deserve real field feedback.
                         {{ end }}
                     </p>
+                    <p>
+                        {{ if $isFrench }}
+                            J'avance avec une logique simple : comprendre à fond, structurer proprement, puis rester fiable dans la durée, surtout sur les sujets systèmes, réseaux et sécurité opérationnelle.
+                        {{ else }}
+                            I work with a simple mindset: understand the subject deeply, structure it properly, and stay reliable over time, especially across systems, networks, and operational security.
+                        {{ end }}
+                    </p>
+
+                    {{ with $aboutPage }}
+                        <p class="home-intro-link-row">
+                            <a class="home-intro-link" href="{{ .RelPermalink }}">
+                                {{ if $isFrench }}En savoir plus sur ma façon de travailler{{ else }}A few words about how I work{{ end }}
+                            </a>
+                        </p>
+                    {{ end }}
                 </div>
             </div>
         </section>
