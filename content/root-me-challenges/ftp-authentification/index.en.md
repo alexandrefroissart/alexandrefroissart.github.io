@@ -6,6 +6,12 @@ draft: false
 rootme_id: 96
 categories: ["Root-Me", "Réseau"]
 tags: ["FTP", "Wireshark", "PCAP", "Facile"]
+context: "Root-Me challenge focused on network analysis from a PCAP capture containing cleartext FTP traffic."
+objective: "Quickly recover the FTP credentials visible in the flow and validate cleanly what the capture reveals."
+tools:
+  - "Wireshark"
+  - "FTP"
+  - "PCAP"
 ---
 
 {{< rootme-challenge slug="ftp-authentification" >}}

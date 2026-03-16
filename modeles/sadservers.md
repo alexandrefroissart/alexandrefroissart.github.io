@@ -1,6 +1,6 @@
 ---
 title: "\"Nom du scenario\": titre de ta page"
-date: 2026-03-06
+date: 2026-03-13
 image: "/img/banners/sadservers.png"
 draft: false
 reading_time: 10
@@ -11,22 +11,22 @@ sadservers_meta:
   titre: "\"Nom du scenario\": titre officiel"
   url: "https://sadservers.com/scenario/mon-scenario"
   niveau: "Easy"
-  type: "Linux"
-  root_access: false
-  access: "SSH"
+  type: "Fix"
+  root_access: true
+  access: "Public"
   time_to_solve: "10 minutes"
   tags: ["SSL"]
   description: "Description officielle courte."
-  test: "Commande ou condition de verification officielle."
+  test: "Commande ou condition de verification."
 ---
 
 {{< sadservers-scenario >}}
 
-Resume ici le probleme du scenario et ce que tu as du corriger.
+Resume ici le probleme du scenario et la logique de resolution.
 
 ## Environnement
 
-- **Service** : ...
+- **Service / fichier** : ...
 - **Objectif** : ...
 - **Outils** : ...
 
@@ -38,7 +38,7 @@ Resume ici le probleme du scenario et ce que tu as du corriger.
 # commande
 ```
 
-Explique ici ce que la commande montre.
+Explique ce que la commande montre.
 
 ### 2. Correction
 
@@ -46,7 +46,7 @@ Explique ici ce que la commande montre.
 # commande
 ```
 
-Explique ici ce que tu corriges et pourquoi.
+Explique ce que tu corriges et pourquoi.
 
 ### 3. Verification
 
@@ -59,6 +59,11 @@ Explique ici ce que tu corriges et pourquoi.
 - ...
 - ...
 - ...
+
+## Resultat
+
+✅ ...
+✅ **Challenge valide sur SadServers.**
 
 ## Competences mobilisees
 

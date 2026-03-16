@@ -1,12 +1,12 @@
 ---
 title: "Titre de l'article"
 slug: "mon-slug"
-date: 2026-03-06T10:00:00+01:00
+date: 2026-03-13T10:00:00+01:00
 image: "/img/news/mon-slug/mon-image.jpg"
 draft: false
-categories: ["News IA", "OpenAI"]
-tags: ["ChatGPT", "GPT-5.3 Instant"]
-description: "Description courte de l'article."
+categories: ["News IA"]
+tags: ["ChatGPT"]
+description: "Resume court de l'article."
 ---
 
 ## En bref
@@ -17,13 +17,13 @@ description: "Description courte de l'article."
 
 ## Ce qui change
 
-Explique ici l'information principale.
+Explique ici le point important.
 
 Va droit au but.
 
-## Mon avis
+## Lecture terrain
 
-Mets ici ton retour perso, ton ressenti terrain, et ce que tu retiens.
+Dis ce que ca change vraiment dans un usage concret.
 
 ## Sources
 

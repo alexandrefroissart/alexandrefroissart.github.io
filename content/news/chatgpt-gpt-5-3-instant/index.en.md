@@ -7,6 +7,12 @@ draft: false
 categories: ["News IA", "OpenAI"]
 tags: ["ChatGPT", "GPT-5.3 Instant", "GPT-5.2 Thinking", "GPT-5.2 Instant", "GPT-5.4 Thinking", "Rumeur IA"]
 description: "GPT-5.3 Instant arrive dans ChatGPT: ce qui change, et ce qu'on sait (ou pas) sur GPT-5.3 Thinking."
+context: "Fast analysis of an OpenAI model release with a practical angle on real usage, product positioning, and caution around unconfirmed points."
+objective: "Separate what is official from what is still field observation, then explain what this release changes in day-to-day use."
+tools:
+  - "ChatGPT"
+  - "Manual comparison"
+  - "Announcement review"
 ---
 
 ## In brief

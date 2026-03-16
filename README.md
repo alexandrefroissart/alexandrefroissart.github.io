@@ -1,56 +1,28 @@
-# Gestion rapide du site
+# Gerer le site simplement
 
-Le workflow recommande maintenant est simple :
+Le projet est organise pour que tu puisses surtout travailler dans `content/`, `static/img/` et `modeles/`.
 
-1. tu dupliques un modele Markdown dans `modeles/`
-2. tu edits ton fichier tranquillement
-3. tu regardes le rendu en local
-4. tu publies quand c'est pret
+## Les dossiers a connaitre
 
-Le terminal ne sert plus surtout qu'a :
+- `content/` : les pages du site
+- `static/img/` : les images
+- `modeles/` : les modeles a copier
+- `scripts/site.sh` : la commande simple pour previsualiser, verifier et publier
 
-- previsualiser
-- verifier
-- traduire
-- publier
+## Ou creer tes pages
 
-## Modeles a copier
+- News : `content/news/<slug>/index.md`
+- Root-Me : `content/root-me-challenges/<slug>/index.md`
+- SadServers : `content/sadservers/<slug>/index.md`
 
-- `modeles/news.md`
-- `modeles/rootme.md`
-- `modeles/sadservers.md`
+Le principe recommande :
 
-Tu peux ouvrir ces fichiers, copier leur contenu, puis le coller dans ton nouveau `index.md`.
-
-## Ou mettre tes pages
-
-- `content/news/<slug>/index.md`
-- `content/root-me-challenges/<slug>/index.md`
-- `content/sadservers/<slug>/index.md`
-
-## Workflow recommande
-
-### Pour une news
-
-1. cree le dossier `content/news/<slug>/`
-2. copie `modeles/news.md` dans `content/news/<slug>/index.md`
-3. remplace le titre, la description, les categories, les tags et le texte
-4. mets ton image dans `static/img/news/<slug>/`
-5. utilise un chemin du type `/img/news/<slug>/mon-image.jpg`
-
-### Pour un challenge Root-Me
-
-1. cree le dossier `content/root-me-challenges/<slug>/`
-2. copie `modeles/rootme.md` dans `content/root-me-challenges/<slug>/index.md`
-3. remplis le bloc `rootme_meta:` a la main
-4. redige ton writeup
-
-### Pour un scenario SadServers
-
-1. cree le dossier `content/sadservers/<slug>/`
-2. copie `modeles/sadservers.md` dans `content/sadservers/<slug>/index.md`
-3. remplis le bloc `sadservers_meta:` a la main
-4. redige ton writeup
+1. cree le dossier
+2. copie le bon modele depuis `modeles/`
+3. renomme-le en `index.md`
+4. remplace le titre, la description, les tags et le texte
+5. ajoute l'image si besoin dans `static/img/`
+6. lance l'aperçu local
 
 ## Commandes utiles
 
@@ -66,16 +38,16 @@ Voir l'etat du contenu :
 ./scripts/site.sh status
 ```
 
-Traduire une seule page :
+Traduire une page en anglais si tu en as besoin :
 
 ```bash
 ./scripts/site.sh translate content/news/mon-article/index.md
 ```
 
-Traduire tout ce qui n'a pas encore de version anglaise :
+Builder le site :
 
 ```bash
-./scripts/site.sh translate
+./scripts/site.sh build
 ```
 
 Publier sur GitHub :
@@ -84,30 +56,42 @@ Publier sur GitHub :
 ./scripts/site.sh publish "Mon message de commit"
 ```
 
-Les commandes `news`, `rootme` et `sadservers` existent encore, mais elles sont maintenant optionnelles.
+## Anglais
 
-## Quand tu rediges
+Le francais est la source principale.
 
-Pour une vraie commande shell, utilise un bloc `bash` :
+Tu peux publier une page seulement en francais.
 
-```bash
-grep -R SSL /etc/nginx
-```
+La version anglaise est optionnelle. Si tu en veux une, utilise `translate` puis relis le resultat.
 
-Pour un prompt, une consigne ou un texte de test, utilise un bloc `text` sans numeros de ligne :
+## Root-Me et SadServers
 
-```text {linenos=false}
-Fais-moi un mini-cours clair pour comprendre...
-```
+Tu as deux manieres de faire :
 
-Regle simple :
+1. simple : tu copies `modeles/rootme.md` ou `modeles/sadservers.md` puis tu remplis les metadonnees toi-meme
+2. assistee : tu utilises `./scripts/site.sh rootme <url>` ou `./scripts/site.sh sadservers <url>`
 
-- `bash` = commande technique, avec numeros de ligne
-- `text {linenos=false}` = prompt, citation, consigne, sans numeros
+Si tu veux juste ajouter du contenu sans te prendre la tete, commence par les modeles.
 
-## Notes pratiques
+## Images
 
-- les mots-cles se mettent dans `tags: [...]`
-- les categories se mettent dans `categories: [...]`
-- pour voir le rendu en direct pendant que tu ecris : `./scripts/site.sh serve`
-- ensuite ouvre [http://127.0.0.1:1313](http://127.0.0.1:1313)
+- banniere commune : `/img/banners/...`
+- image specifique d'article : `/img/news/<slug>/...`
+
+Dans le frontmatter, il faut toujours utiliser un chemin qui commence par `/img/...`, jamais `static/img/...`.
+
+## Regle simple d'edition
+
+- texte normal : markdown classique
+- vraie commande shell : bloc `bash`
+- prompt, citation ou texte a lire tel quel : bloc `text {linenos=false}`
+
+## A retenir
+
+Pour l'edition quotidienne, tu peux presque tout faire sans toucher au code :
+
+- copier un modele
+- modifier `index.md`
+- ajouter une image
+- lancer `serve`
+- publier

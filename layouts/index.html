@@ -1,14 +1,21 @@
 {{ define "body-class" }}home-news-page{{ end }}
 
 {{ define "main" }}
-    {{ $homeSections := default .Site.Params.mainsections .Site.Params.homesections }}
+    {{ $homeSections := default .Site.Params.mainSections .Site.Params.homeSections }}
     {{ $pages := where .Site.RegularPages "Section" "in" $homeSections }}
     {{ $filtered := where $pages "Params.hidden" "!=" true }}
     {{ $sorted := $filtered.ByDate.Reverse }}
     {{ $pag := .Paginate $sorted }}
-
+    {{ $newsPages := where $filtered "Section" "eq" "news" }}
+    {{ $rootmePages := where $filtered "Section" "eq" "root-me-challenges" }}
+    {{ $sadserversPages := where $filtered "Section" "eq" "sadservers" }}
+    {{ $newsSection := .Site.GetPage "section" "news" }}
+    {{ $rootmeSection := .Site.GetPage "section" "root-me-challenges" }}
+    {{ $sadserversSection := .Site.GetPage "section" "sadservers" }}
     {{ $isFrench := eq .Site.Language.Lang "fr" }}
     {{ $aboutPage := .Site.GetPage "/page/about" }}
+    {{ $rootmeData := .Site.Data.rootme }}
+
     <section class="article-list home-feed">
         <section class="home-intro">
             <div class="home-intro-shell">
@@ -53,6 +60,128 @@
                     {{ end }}
                 </div>
             </div>
+        </section>
+
+        <section class="home-proof">
+            <article class="home-proof-card">
+                <p class="home-proof-card__eyebrow">{{ if $isFrench }}Formation / positionnement{{ else }}Training / focus{{ end }}</p>
+                <h2 class="home-proof-card__title">{{ if $isFrench }}Alternance CESI, ancrage systèmes, réseaux et sécurité{{ else }}CESI apprenticeship, focused on systems, networks, and security{{ end }}</h2>
+                <p class="home-proof-card__body">
+                    {{ if $isFrench }}
+                        Je construis ce portfolio pendant ma formation au CESI Saint-Nazaire pour garder une trace concrète de ce que j'apprends, pratique et vérifie.
+                    {{ else }}
+                        I am building this portfolio during my apprenticeship at CESI Saint-Nazaire to keep a practical record of what I learn, apply, and verify.
+                    {{ end }}
+                </p>
+            </article>
+
+            <article class="home-proof-card">
+                <p class="home-proof-card__eyebrow">{{ if $isFrench }}Production{{ else }}Published work{{ end }}</p>
+                <h2 class="home-proof-card__title">{{ len $filtered }} {{ if $isFrench }}contenus publiés{{ else }}published pieces{{ end }}</h2>
+                <p class="home-proof-card__body">
+                    {{ if $isFrench }}
+                        {{ len $newsPages }} analyses `News`, {{ len $rootmePages }} write-ups Root-Me et {{ len $sadserversPages }} scénarios SadServers déjà documentés.
+                    {{ else }}
+                        {{ len $newsPages }} `News` analyses, {{ len $rootmePages }} Root-Me write-ups, and {{ len $sadserversPages }} documented SadServers scenarios.
+                    {{ end }}
+                </p>
+            </article>
+
+            <article class="home-proof-card">
+                <p class="home-proof-card__eyebrow">{{ if $isFrench }}Preuves techniques{{ else }}Technical proof{{ end }}</p>
+                <h2 class="home-proof-card__title">
+                    {{ with $rootmeData }}
+                        {{ .score }} {{ if $isFrench }}points Root-Me{{ else }}Root-Me points{{ end }}
+                    {{ else }}
+                        {{ len $rootmePages | default 0 }} Root-Me
+                    {{ end }}
+                </h2>
+                <p class="home-proof-card__body">
+                    {{ if $isFrench }}
+                        {{ len $rootmePages }} write-ups Root-Me et {{ len $sadserversPages }} scénarios SadServers servent ici de preuves concrètes de progression.
+                    {{ else }}
+                        {{ len $rootmePages }} Root-Me write-ups and {{ len $sadserversPages }} SadServers scenarios provide concrete proof of progress here.
+                    {{ end }}
+                </p>
+            </article>
+        </section>
+
+        <section class="home-section-block">
+            <div class="home-section-block__header">
+                <p class="home-section-block__eyebrow">{{ if $isFrench }}Trois univers principaux{{ else }}Three main areas{{ end }}</p>
+                <h2 class="home-section-block__title">{{ if $isFrench }}Une entrée claire pour chaque type de contenu{{ else }}A clear entry point for each content type{{ end }}</h2>
+            </div>
+
+            <div class="home-spotlight-grid">
+                {{ with first 1 ($newsPages.ByDate.Reverse) }}
+                    {{ range . }}
+                        <article class="home-spotlight-card">
+                            <p class="home-spotlight-card__eyebrow">News</p>
+                            <h3 class="home-spotlight-card__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                            <p class="home-spotlight-card__meta">{{ .Date | time.Format ":date_long" }}</p>
+                            <p class="home-spotlight-card__summary">{{ .Description | default .Summary | plainify | truncate 150 }}</p>
+                            {{ with $newsSection }}
+                                <a class="home-spotlight-card__link" href="{{ .RelPermalink }}">{{ if $isFrench }}Voir la section{{ else }}Browse section{{ end }}</a>
+                            {{ end }}
+                        </article>
+                    {{ end }}
+                {{ end }}
+
+                {{ with first 1 ($rootmePages.ByDate.Reverse) }}
+                    {{ range . }}
+                        <article class="home-spotlight-card">
+                            <p class="home-spotlight-card__eyebrow">Root-Me</p>
+                            <h3 class="home-spotlight-card__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                            <p class="home-spotlight-card__meta">{{ .Date | time.Format ":date_long" }}</p>
+                            <p class="home-spotlight-card__summary">{{ .Description | default .Summary | plainify | truncate 150 }}</p>
+                            {{ with $rootmeSection }}
+                                <a class="home-spotlight-card__link" href="{{ .RelPermalink }}">{{ if $isFrench }}Voir la section{{ else }}Browse section{{ end }}</a>
+                            {{ end }}
+                        </article>
+                    {{ end }}
+                {{ end }}
+
+                {{ with first 1 ($sadserversPages.ByDate.Reverse) }}
+                    {{ range . }}
+                        <article class="home-spotlight-card">
+                            <p class="home-spotlight-card__eyebrow">SadServers</p>
+                            <h3 class="home-spotlight-card__title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+                            <p class="home-spotlight-card__meta">{{ .Date | time.Format ":date_long" }}</p>
+                            <p class="home-spotlight-card__summary">{{ .Description | default .Summary | plainify | truncate 150 }}</p>
+                            {{ with $sadserversSection }}
+                                <a class="home-spotlight-card__link" href="{{ .RelPermalink }}">{{ if $isFrench }}Voir la section{{ else }}Browse section{{ end }}</a>
+                            {{ end }}
+                        </article>
+                    {{ end }}
+                {{ end }}
+            </div>
+        </section>
+
+        <section class="home-section-block home-method">
+            <div class="home-section-block__header">
+                <p class="home-section-block__eyebrow">{{ if $isFrench }}Méthode de travail{{ else }}How I work{{ end }}</p>
+                <h2 class="home-section-block__title">{{ if $isFrench }}Une logique simple, répétable et utile à relire{{ else }}A simple process that stays useful when revisited{{ end }}</h2>
+            </div>
+
+            <div class="home-method-grid">
+                <article class="home-method-card">
+                    <h3>{{ if $isFrench }}Comprendre{{ else }}Understand{{ end }}</h3>
+                    <p>{{ if $isFrench }}Revenir aux bases, clarifier le problème, puis aller au bon niveau de détail avant d'agir.{{ else }}Start from first principles, clarify the problem, then go to the right level of detail before acting.{{ end }}</p>
+                </article>
+                <article class="home-method-card">
+                    <h3>{{ if $isFrench }}Documenter{{ else }}Document{{ end }}</h3>
+                    <p>{{ if $isFrench }}Garder une trace lisible de la démarche pour que le contenu reste utile plus tard, pour moi comme pour les autres.{{ else }}Keep a readable record of the approach so the content remains useful later, for me and for others.{{ end }}</p>
+                </article>
+                <article class="home-method-card">
+                    <h3>{{ if $isFrench }}Vérifier{{ else }}Verify{{ end }}</h3>
+                    <p>{{ if $isFrench }}Tester ce qui est fait, valider le résultat et éviter de présenter comme acquis ce qui ne l'est pas encore.{{ else }}Test what was done, validate the result, and avoid presenting unfinished work as settled.{{ end }}</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="home-feed-heading">
+            <p class="home-section-block__eyebrow">{{ if $isFrench }}Contenu récent{{ else }}Recent content{{ end }}</p>
+            <h2 class="home-section-block__title">{{ if $isFrench }}Publications et analyses les plus récentes{{ else }}Latest publications and write-ups{{ end }}</h2>
         </section>
 
         {{ range $pag.Pages }}

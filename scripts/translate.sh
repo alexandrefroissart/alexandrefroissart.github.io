@@ -1,4 +1,8 @@
 #!/bin/bash
-# Wrapper script to run the translation with the virtual environment
 cd "$(dirname "$0")/.."
-scripts/.venv/bin/python3 scripts/translate.py "$@"
+
+if [ -x "scripts/.venv/bin/python3" ]; then
+  scripts/.venv/bin/python3 scripts/translate.py "$@"
+else
+  python3 scripts/translate.py "$@"
+fi

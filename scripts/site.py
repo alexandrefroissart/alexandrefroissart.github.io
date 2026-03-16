@@ -4,7 +4,7 @@ Boite a outils simple pour gerer le site sans passer par l'IA.
 
 Workflow recommande:
   - rediger directement les pages Markdown a partir des modeles dans modeles/
-  - utiliser ce script surtout pour build, preview, traduction et publication
+  - utiliser ce script surtout pour preview, build, traduction si besoin et publication
 
 Les commandes de creation restent disponibles, mais elles sont optionnelles.
 
@@ -531,12 +531,12 @@ def status_command(_: argparse.Namespace) -> None:
         if not en_file.exists():
             missing_en.append(md_file)
 
-    print(f"Pages FR: {len(fr_files)}")
-    print(f"Traductions EN manquantes: {len(missing_en)}")
+    print(f"Pages FR publiees: {len(fr_files)}")
+    print(f"Versions EN optionnelles manquantes: {len(missing_en)}")
     print(f"Brouillons: {len(drafts)}")
 
     if missing_en:
-        print("\nSans version EN :")
+        print("\nSans version EN (optionnel) :")
         for path in missing_en[:10]:
             print(f"  - {path.relative_to(ROOT_DIR)}")
 
@@ -565,12 +565,12 @@ def menu() -> None:
             """\
             Gestion du site
             1. Nouvelle news
-            2. Ajouter un challenge Root-Me
-            3. Ajouter un scenario SadServers
-            4. Traduire une page
-            5. Traduire tout
+            2. Ajouter un challenge Root-Me (assiste)
+            3. Ajouter un scenario SadServers (assiste)
+            4. Traduire une page en anglais
+            5. Traduire plusieurs pages
             6. Build
-            7. Preview local
+            7. Apercu local
             8. Etat du contenu
             9. Publier sur GitHub
             """
@@ -601,7 +601,7 @@ def menu() -> None:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(description="Outil simple pour gérer le site")
+    parser = argparse.ArgumentParser(description="Outil simple pour gerer le site")
     sub = parser.add_subparsers(dest="command")
 
     news = sub.add_parser("news", help="Créer une nouvelle news")
@@ -625,7 +625,7 @@ def build_parser() -> argparse.ArgumentParser:
     sadservers.add_argument("url", nargs="?")
     sadservers.set_defaults(func=add_sadservers)
 
-    translate = sub.add_parser("translate", help="Traduire une page ou tout le contenu")
+    translate = sub.add_parser("translate", help="Traduire une page en anglais si besoin")
     translate.add_argument("path", nargs="?")
     translate.add_argument("--force", action="store_true")
     translate.set_defaults(func=translate_command)
@@ -637,7 +637,7 @@ def build_parser() -> argparse.ArgumentParser:
     serve.add_argument("--port", type=int, default=1313)
     serve.set_defaults(func=serve_command)
 
-    status = sub.add_parser("status", help="Voir les brouillons et traductions manquantes")
+    status = sub.add_parser("status", help="Voir les brouillons et les versions EN optionnelles")
     status.set_defaults(func=status_command)
 
     publish = sub.add_parser("publish", help="Commit + push sur GitHub")

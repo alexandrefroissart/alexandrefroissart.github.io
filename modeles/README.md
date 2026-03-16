@@ -1,20 +1,24 @@
-# Modeles de depart
+# Modeles
 
-Ces fichiers sont faits pour etre copies puis modifies a la main.
+Ces fichiers sont prevus pour etre copies dans `content/`, puis modifies a la main.
 
-Workflow simple :
+## Workflow le plus simple
 
-1. cree ton dossier cible dans `content/`
-2. copie le modele adapte
-3. renomme-le en `index.md`
-4. remplis le frontmatter et le texte
-5. lance `./scripts/site.sh serve`
-6. ouvre [http://127.0.0.1:1313](http://127.0.0.1:1313)
+1. cree le dossier cible
+2. copie le bon modele
+3. renomme le fichier en `index.md`
+4. remplace le frontmatter utile
+5. ecris ton contenu
+6. lance `./scripts/site.sh serve`
 
-Les trois modeles disponibles :
+## Modeles disponibles
 
 - `news.md`
 - `rootme.md`
 - `sadservers.md`
 
-Pour Root-Me et SadServers, les blocs `rootme_meta` et `sadservers_meta` permettent maintenant de remplir les informations directement dans le fichier, sans passer par le script.
+## Important
+
+- la version anglaise est optionnelle
+- si tu veux une traduction, cree ensuite `index.en.md`
+- pour les images, utilise des chemins `/img/...`

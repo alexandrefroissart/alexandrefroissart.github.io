@@ -1,0 +1,47 @@
+{{ $contextLabel := cond (eq .Site.Language.Lang "fr") "Contexte" "Context" }}
+{{ $objectiveLabel := cond (eq .Site.Language.Lang "fr") "Objectif" "Objective" }}
+{{ $toolsLabel := cond (eq .Site.Language.Lang "fr") "Outils" "Tools" }}
+{{ $contextValue := .Params.context }}
+{{ $objectiveValue := .Params.objective }}
+{{ $toolsValue := .Params.tools }}
+
+<section class="article-content">
+    {{ if or $contextValue $objectiveValue $toolsValue }}
+        <section class="article-brief">
+            {{ with $contextValue }}
+                <div class="article-brief__item">
+                    <p class="article-brief__label">{{ $contextLabel }}</p>
+                    <p class="article-brief__value">{{ . }}</p>
+                </div>
+            {{ end }}
+
+            {{ with $objectiveValue }}
+                <div class="article-brief__item">
+                    <p class="article-brief__label">{{ $objectiveLabel }}</p>
+                    <p class="article-brief__value">{{ . }}</p>
+                </div>
+            {{ end }}
+
+            {{ with $toolsValue }}
+                {{ $toolsList := slice }}
+                {{ if reflect.IsSlice . }}
+                    {{ $toolsList = . }}
+                {{ else }}
+                    {{ $toolsList = slice . }}
+                {{ end }}
+                <div class="article-brief__item">
+                    <p class="article-brief__label">{{ $toolsLabel }}</p>
+                    <div class="article-brief__tools">
+                        {{ range $toolsList }}
+                            <span class="article-brief__tool">{{ . }}</span>
+                        {{ end }}
+                    </div>
+                </div>
+            {{ end }}
+        </section>
+    {{ end }}
+
+    <!-- Refer to https://discourse.gohugo.io/t/responsive-tables-in-markdown/10639/5 -->
+    {{ $wrappedTable := printf "<div class=\"table-wrapper\">${1}</div>" }}
+    {{ .Content | replaceRE "(<table>(?:.|\n)+?</table>)" $wrappedTable | safeHTML }}
+</section>

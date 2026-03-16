@@ -6,6 +6,12 @@ draft: false
 reading_time: 10
 categories: ["SadServers", "Linux"]
 tags: ["lsof", "process", "troubleshooting", "Easy"]
+context: "SadServers troubleshooting scenario around a log file that keeps growing in the background."
+objective: "Identify which process is writing to the log without touching the source script, then stop it cleanly."
+tools:
+  - "lsof"
+  - "kill"
+  - "tail"
 ---
 
 {{< sadservers-scenario slug="saint-john" >}}

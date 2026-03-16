@@ -1,0 +1,46 @@
+{{- $context := .Context -}}
+{{- $limit := default 4 .Params.limit -}}
+{{- $sections := default $context.Site.Params.mainSections $context.Site.Params.homeSections -}}
+{{- $pages := where $context.Site.RegularPages "Section" "in" $sections -}}
+{{- $filtered := where $pages "Params.hidden" "!=" true -}}
+{{- $recent := first $limit ($filtered.ByDate.Reverse) -}}
+{{- $isFrench := eq $context.Site.Language.Lang "fr" -}}
+
+{{- if gt (len $recent) 0 -}}
+<section class="widget recent-signals">
+    <div class="widget-icon">
+        {{ partial "helper/icon" "messages" }}
+    </div>
+    <h2 class="widget-title section-title">{{ if $isFrench }}Signaux récents{{ else }}Recent signals{{ end }}</h2>
+
+    <div class="recent-signals-list">
+        {{ range $recent }}
+            {{- $sectionClass := "misc" -}}
+            {{- if eq .Section "news" -}}
+                {{- $sectionClass = "news" -}}
+            {{- else if eq .Section "root-me-challenges" -}}
+                {{- $sectionClass = "rootme" -}}
+            {{- else if eq .Section "sadservers" -}}
+                {{- $sectionClass = "sadservers" -}}
+            {{- end -}}
+            <article class="recent-signals-item recent-signals-item--{{ $sectionClass }}">
+                <a href="{{ .RelPermalink }}">
+                    <span class="recent-signals-item__section">
+                        {{- if eq .Section "news" -}}
+                            {{- if $isFrench }}News IA{{ else }}AI News{{ end -}}
+                        {{- else if eq .Section "root-me-challenges" -}}
+                            Root-Me
+                        {{- else if eq .Section "sadservers" -}}
+                            SadServers
+                        {{- else -}}
+                            Misc
+                        {{- end -}}
+                    </span>
+                    <span class="recent-signals-item__title">{{ .Title }}</span>
+                    <span class="recent-signals-item__meta">{{ .Date | time.Format ":date_medium" }}</span>
+                </a>
+            </article>
+        {{ end }}
+    </div>
+</section>
+{{- end -}}

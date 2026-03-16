@@ -1,26 +1,26 @@
 ---
-title: "Titre de ton writeup"
-date: 2026-03-06
+title: "Titre du write-up"
+date: 2026-03-13
 image: "/img/banners/rootme-banner.png"
 draft: false
 categories: ["Root-Me", "Réseau"]
-tags: ["Ethernet", "Wireshark", "Facile"]
+tags: ["Wireshark", "Facile"]
 
 rootme_meta:
   titre: "Titre officiel Root-Me"
   url: "https://www.root-me.org/fr/Challenges/Reseau/mon-challenge"
   auteur: "Auteur"
-  date: "2026-03-06"
+  date: "2026-03-13"
   score: 10
   difficulte: "Facile"
   validations: 12345
-  note: "Facile"
+  note: "22%"
   rubrique: "Réseau"
 ---
 
 {{< rootme-challenge >}}
 
-Resume ici en 2 ou 3 phrases le but du challenge et ce qu'il t'a appris.
+Resume ici le challenge et ce qu'il t'a fait pratiquer.
 
 ## Environnement
 
@@ -28,21 +28,21 @@ Resume ici en 2 ou 3 phrases le but du challenge et ce qu'il t'a appris.
 - **Utilisateur** : ...
 - **Outils** : ...
 
-## Donnee fournie
+## Donnee utile
 
 ```text {linenos=false}
-[Donnee ou extrait utile]
+[Extrait utile]
 ```
 
 ## Demarche
 
-### 1. Premiere etape
+### 1. Observation
 
 ```bash
 # commande
 ```
 
-Explique ici ce que tu observes et pourquoi cette etape est utile.
+Explique ce que tu vois et pourquoi c'est utile.
 
 ### 2. Verification ou exploitation
 
@@ -50,7 +50,7 @@ Explique ici ce que tu observes et pourquoi cette etape est utile.
 # commande
 ```
 
-Explique ici le resultat utile, sans divulguer une reponse confidentielle du challenge.
+Explique le resultat sans divulguer une reponse sensible si tu veux rester discret.
 
 ## Ce que je retiens
 
@@ -61,7 +61,6 @@ Explique ici le resultat utile, sans divulguer une reponse confidentielle du cha
 ## Resultat
 
 ✅ ...
-
 ✅ **Challenge valide sur Root-Me.**
 
 ## Competences mobilisees

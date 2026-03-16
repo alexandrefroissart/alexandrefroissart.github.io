@@ -1,47 +1,45 @@
-# Workflows d'automatisation
+# Workflows avances
 
-Ce fichier documente les scripts d'automatisation pour la gestion du site.
+Ce fichier est seulement la pour la partie automatisation.
 
-## 1. Ajouter un nouveau challenge
+Pour l'edition normale du site, lis plutot `README.md`.
 
-Ce script permet d'ajouter automatiquement un challenge (Root-Me ou SadServers). Il détecte le type de lien, récupère les infos (titre, description, points, etc.) et crée les fichiers markdown.
+## Ce qui reste automatise
 
-**Commande :**
+- mise a jour des donnees Root-Me affichees sur le site
+- creation assistee d'un challenge Root-Me ou SadServers a partir d'une URL
+- traduction facultative vers l'anglais
+
+## Commandes avancees
+
+Ajouter un challenge Root-Me depuis son URL :
+
 ```bash
-python3 scripts/add-challenge.py <URL_DU_CHALLENGE>
+./scripts/site.sh rootme "https://www.root-me.org/fr/Challenges/Reseau/ftp-authentification"
 ```
 
-**Exemples :**
-*   **Root-Me :**
-    ```bash
-    python3 scripts/add-challenge.py "https://www.root-me.org/fr/Challenges/Cryptanalyse/Hash-DCC2"
-    ```
-*   **SadServers :**
-    ```bash
-    python3 scripts/add-challenge.py "https://sadservers.com/scenario/saskatoon"
-    ```
+Ajouter un scenario SadServers depuis son URL :
 
-## 2. Mettre à jour le profil Root-Me
+```bash
+./scripts/site.sh sadservers "https://sadservers.com/scenario/geneva"
+```
 
-Ce script met à jour les statistiques globales (rang, points) et les détails des challenges (validations, difficulté) dans les fichiers markdown existants.
+Mettre a jour les donnees Root-Me :
 
-**Commande :**
 ```bash
 python3 scripts/fetch-rootme.py
 ```
 
-> **Note :** La mise à jour des données est également lancée automatiquement après l'ajout d'un challenge via `add-challenge.py`.
+## GitHub Actions
 
-### Automatisation GitHub Actions (recommandé : API)
-Sur les runners GitHub-hosted, les pages HTML Root‑Me sont souvent protégées (anti-bot). Pour une mise à jour fiable, l'automatisation utilise l'API Root‑Me.
+Le workflow planifie :
 
-Secrets GitHub requis :
-- `ROOTME_API_KEY` : ta clé API Root‑Me (auth via cookie `api_key=...`).
+- rafraichit les donnees Root-Me
+- rebuild le site
+- deploye sur GitHub Pages
 
-Optionnel (plutôt pour usage local) :
-- `ROOTME_COOKIES` : chaîne complète `spip_session=...; PHPSESSID=...; anubis-cookie-auth=...`
-- ou `ROOTME_SPIP_SESSION`, `ROOTME_PHPSESSID`, `ROOTME_ANUBIS_COOKIE_AUTH`
+Secrets attendus cote GitHub :
 
-Variables de contrôle (déjà configurées dans le workflow CI) :
-- `ROOTME_SCRAPE_HTML=0` : désactive le scraping HTML (évite anti-bot).
-- `ROOTME_STRICT=1` : fait échouer le run si les données Root‑Me ne peuvent pas être rafraîchies via l'API (pas de cache silencieux).
+- `ROOTME_API_KEY`
+
+Le scraping HTML Root-Me n'est pas la voie recommandee en CI.

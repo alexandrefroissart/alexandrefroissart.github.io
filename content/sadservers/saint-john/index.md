@@ -6,6 +6,12 @@ draft: false
 reading_time: 10
 categories: ["SadServers", "Linux"]
 tags: ["lsof", "process", "troubleshooting", "Easy"]
+context: "Scénario SadServers de troubleshooting système autour d'un fichier de log qui grossit en continu."
+objective: "Identifier le processus qui écrit dans le log sans toucher au script source, puis l'arrêter proprement."
+tools:
+  - "lsof"
+  - "kill"
+  - "tail"
 ---
 
 {{< sadservers-scenario slug="saint-john" >}}
